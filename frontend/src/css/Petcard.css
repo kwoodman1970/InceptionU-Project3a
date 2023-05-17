@@ -1,0 +1,9 @@
+
+.Petcard.p-3.m-2 {
+    width: 400px;
+    height: 800px;
+    margin: 20px;
+    border-radius: 10%;
+    border-style: solid;
+    border-color: aquamarine;
+}
