@@ -2,17 +2,17 @@ const mongoose = require('mongoose');
 
 var petSchema = new mongoose.Schema(
   {
-    // owner: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'Supplier',
-    //   required: true,
-    // },
-    // adoptionRequest: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Request',
-    //   },
-    // ],
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Supplier',
+      required: true,
+    },
+    adoptionRequest: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Request',
+      },
+    ],
     name: {
       type: String,
       required: true,
@@ -43,7 +43,7 @@ var petSchema = new mongoose.Schema(
       type: Boolean,
     },
     pictures: {
-      type: [Buffer],
+      type: [String],
     },
     aboutAnimal: {
       type: String,
