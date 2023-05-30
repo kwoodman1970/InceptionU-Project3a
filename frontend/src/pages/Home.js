@@ -246,20 +246,20 @@ const Home = () => {
                                 petId={pet._id}
                                 species={pet.species}
                                 breed={pet.breed}
-                                img={pet.images[0]} // Assuming the first image is used as the thumbnail
+                                img={pet.pictures.length > 0 ? pet.pictures[0] : null}
                                 name={pet.name}
                                 key={pet.id}
                                 desc={pet.description}
-                                address={
-                                  pet.owner.businessInfo
-                                    ? pet.owner.businessInfo.address + ', ' + pet.owner.businessInfo.city + ', ' + pet.owner.businessInfo.province
-                                    : 'NaN'
-                                }
-                                tel={
-                                  pet.owner.phone
-                                    ? pet.owner.phone
-                                    : 'XXX-XXX-XXXX'
-                                }
+                                // address={
+                                //   pet.owner.businessInfo
+                                //     ? pet.owner.businessInfo.address + ', ' + pet.owner.businessInfo.city + ', ' + pet.owner.businessInfo.province
+                                //     : 'NaN'
+                                // }
+                                // tel={
+                                //   pet.owner.phone
+                                //     ? pet.owner.phone
+                                //     : 'XXX-XXX-XXXX'
+                                // }
                               />
                             </>
                           );
