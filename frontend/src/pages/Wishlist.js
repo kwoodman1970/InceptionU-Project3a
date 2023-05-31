@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Petcard from '../components/Petcard';
+import PetcardProfile from '../components/PetcardProfile';
 import { useSelector, useDispatch } from 'react-redux';
 import { getWishList, reset } from '../features/auth/authSlice';
 import Meta from '../components/Meta';
@@ -28,7 +28,7 @@ const Wishlist = () => {
           <div className='col-12 d-flex flex-wrap aligin-items-center justify-content-begin py-3 px-3 my-auto'>
             {wishlistState?.length > 0 ? (
               wishlistState.map((pet, i) => (
-                <Petcard
+                <PetcardProfile
                   petId={pet._id}
                   img={pet.images[0]}
                   name={pet.name}

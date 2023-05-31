@@ -1,7 +1,6 @@
 import React from 'react';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
-import Petcard from '../components/Petcard';
 import ReviewList from '../components/ReviewList';
 import { Rating } from 'react-simple-star-rating';
 import { useState, useEffect } from 'react';
@@ -152,7 +151,7 @@ const SinglePet = () => {
               <div className='main-product-image'>
                 <div>
                   <ImageZoom
-                    src={pet.images[0] ? imgPath + pet.images[0] : placeholder}
+                    src={pet.pictures[0] ? imgPath + pet.pictures[0] : placeholder}
                     zoom='300'
                   />
                 </div>
@@ -160,28 +159,28 @@ const SinglePet = () => {
               <div className='other-product-image d-flex flex-wrap gap-10'>
                 <div>
                   <ImageZoom
-                    src={pet.images[1] ? imgPath + pet.images[1] : placeholder}
+                    src={pet.pictures[1] ? imgPath + pet.pictures[1] : placeholder}
                     zoom='300'
                     className='img-fluid rounded-lg'
                   />
                 </div>
                 <div>
                   <ImageZoom
-                    src={pet.images[2] ? imgPath + pet.images[2] : placeholder}
+                    src={pet.pictures[2] ? imgPath + pet.pictures[2] : placeholder}
                     zoom='300'
                     className='img-fluid rounded-lg'
                   />
                 </div>
                 <div>
                   <ImageZoom
-                    src={pet.images[3] ? imgPath + pet.images[3] : placeholder}
+                    src={pet.pictures[3] ? imgPath + pet.pictures[3] : placeholder}
                     zoom='300'
                     className='img-fluid rounded-lg'
                   />
                 </div>
                 <div>
                   <ImageZoom
-                    src={pet.images[4] ? imgPath + pet.images[4] : placeholder}
+                    src={pet.pictures[4] ? imgPath + pet.pictures[4] : placeholder}
                     zoom='300'
                     className='img-fluid rounded-lg'
                   />
@@ -219,8 +218,8 @@ const SinglePet = () => {
                   <div className='d-flex algin-items-center gap-10 my-3'>
                     <h3 className='product-header'>Health Records:</h3>
                     <p className='product-data '>
-                      {pet.health
-                        ? pet.health
+                      {pet.records.length > 0
+                        ? pet.records[0].treatment
                           .toLowerCase()
                           .replace(/( |^)[a-z]/g, (L) => L.toUpperCase())
                         : 'N/A'}

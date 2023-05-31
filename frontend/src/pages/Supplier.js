@@ -11,7 +11,7 @@ import { ReactComponent as EmptyIcon } from '../icons/rateEmpty.svg';
 import { useSelector, useDispatch } from 'react-redux';
 import ReviewList from '../components/ReviewList';
 import { Pagination, Skeleton } from 'antd';
-import Petcard from '../components/Petcard';
+import PetcardProfile from '../components/PetcardProfile';
 
 const satisfactionWeightAdopted = 0.1;
 const communicationWeightAdopted = 0.2;
@@ -195,7 +195,7 @@ function Supplier() {
                       if (pets.length > 0) {
                         return (
                           <>
-                            <Petcard
+                            <PetcardProfile
                               petId={pet._id}
                               species={pet.species}
                               breed={pet.breed}

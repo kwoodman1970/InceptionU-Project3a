@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Petcard from '../components/Petcard';
+import PetcardProfile from '../components/PetcardProfile';
 import WelcomeWithRegister from '../components/WelcomeWithRegister';
 import Advertisement from '../components/Advertisement';
 import About from '../components/About';
@@ -242,7 +242,7 @@ const Home = () => {
                         if (pets.length > 0) {
                           return (
                             <>
-                              <Petcard
+                              <PetcardProfile
                                 petId={pet._id}
                                 species={pet.species}
                                 breed={pet.breed}
