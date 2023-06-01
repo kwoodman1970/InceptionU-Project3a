@@ -296,7 +296,7 @@ const SinglePet = () => {
                 <div className='border-bottom  py-4'>
                   <h3 className='title'>Description</h3>
                   <div className='bg-white '>
-                    <p className='product-header'>{pet.description}</p>
+                    <p className='product-header'>{pet.about}</p>
                   </div>
                 </div>
 

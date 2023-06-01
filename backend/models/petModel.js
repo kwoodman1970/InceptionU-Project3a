@@ -2,23 +2,31 @@ const mongoose = require('mongoose');
 
 var petSchema = new mongoose.Schema(
   {
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Supplier',
+    cardType: {
+      type:  String,
+      required: true,
+      default: 'Supplier',
+      enum: ['Supplier', 'Adopter'],
+    },
+    creationDate: {
+      type: Date,
       required: true,
     },
-    adoptionRequest: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Request',
-      },
-    ],
+    creationAccountNum: {
+      type: String,
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      refPath: 'cardType',
+      required: true,
+    },
     name: {
       type: String,
       required: true,
     },
     postalCodeLocation: {
       type: String,
+      required: true,
     },
     species: {
       type: String,
@@ -26,9 +34,14 @@ var petSchema = new mongoose.Schema(
     },
     breed: {
       type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
     },
     dateOfBirth: {
       type: Date,
+      required: true,
     },
     adoptionDate: {
       type: Date,
@@ -36,20 +49,24 @@ var petSchema = new mongoose.Schema(
     dateOfDeath: {
       type: Date,
     },
-    activateDeactivate: {
+    active: {
       type: Boolean,
     },
-    searchability: {
+    searchable: {
       type: Boolean,
+      required: true,
     },
     pictures: {
       type: [String],
     },
-    aboutAnimal: {
+    about: {
       type: String,
     },
     sex: {
       type: String,
+      default: "Unknown",
+      enum: ["Unknown", "Male", "Female"],
+      required: true,
     },
     reproductiveStatus: {
       type: String,
@@ -57,14 +74,15 @@ var petSchema = new mongoose.Schema(
     alteredDate: {
       type: Date,
     },
-    tattooNumber: {
+    tattooID: {
       type: String,
     },
-    microchipNumber: {
+    microchipID: {
       type: String,
     },
-    petSize: {
+    size: {
       type: String,
+      required: true,
     },
     energyLevel: {
       type: String,
@@ -79,21 +97,15 @@ var petSchema = new mongoose.Schema(
       type: String,
     },
     allergyFriendly: {
-      type: String,
+      type: Boolean,
     },
     socializedWith: {
-      type: String,
+      type: [String],
     },
     specialNeeds: {
-      type: String,
+      type: [String],
     },
 
-    price: {
-      type: Number,
-    },
-    description: {
-      type: String,
-    },
     status: {
       type: String,
       default: 'Available',
