@@ -8,13 +8,6 @@ var petSchema = new mongoose.Schema(
       default: 'Supplier',
       enum: ['Supplier', 'Adopter'],
     },
-    creationDate: {
-      type: Date,
-      required: true,
-    },
-    creationAccountNum: {
-      type: String,
-    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       refPath: 'cardType',
