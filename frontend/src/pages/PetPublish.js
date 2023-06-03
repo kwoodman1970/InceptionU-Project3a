@@ -15,16 +15,12 @@ import { AiOutlineClose } from 'react-icons/ai';
 
 let schema = Yup.object().shape({
   name: Yup.string().required('* Name is required'),
+  postalCodeLocation: Yup.string().required('* Postal Code Location is required'),
   species: Yup.string().required('* Species is required'),
   breed: Yup.string().required('* Breed is required'),
-  age: Yup.string().required('* Age is required'),
-  color: Yup.string().required('* Pet color is required'),
-  eyeColor: Yup.string().required('* Pet eye color is required'),
+  dateOfBirth: Yup.string().required('* Date of Birth is required'),
+  sex: Yup.string().required('* Sex is required'),
   size: Yup.string().required('* Pet size is required'),
-  weight: Yup.number().required('* Pet weight is required'),
-  price: Yup.number().required('* Pet price is required'),
-  images: Yup.array().required('* Pet images is required'),
-  description: Yup.string().required('* Pet description is required'),
 });
 const PetPublish = () => {
   const dispatch = useDispatch();
@@ -95,7 +91,7 @@ const PetPublish = () => {
       species: '',
       breed: '',
       age: '',
-      color: '',
+      hairColor: '',
       eyeColor: '',
       size: '',
       weight: '',
@@ -149,10 +145,17 @@ const PetPublish = () => {
         onSubmit={formik.handleSubmit}
         className='d-flex flex-column gap-10'>
         <div className='my-2 w-100 rounded-3 mx-auto '>
+          <input
+            type='hidden'
+            name='owner'
+            id='owner'
+            value='Supplier'
+          />
+
           <CustomInput
             type='text'
             name='name'
-            label='Pet name'
+            label='Pet Name *'
             i_id='pet-name'
             onChange={formik.handleChange('name')}
             value={formik.values.name}
@@ -164,6 +167,21 @@ const PetPublish = () => {
             ) : null}
           </div>
 
+          <CustomInput
+            type='text'
+            name='postalCodeLocation'
+            label='Postal Code *'
+            i_id='postal-code'
+            onChange={formik.handleChange('postalCodeLocation')}
+            value={formik.values.postalCodeLocation}
+            onBlur={formik.handleChange('postalCodeLocation')}
+          />
+          <div className='error '>
+            {formik.touched.postalCodeLocation && formik.errors.postalCodeLocation ? (
+              <div>{formik.errors.postalCodeLocation}</div>
+            ) : null}
+          </div>
+
           <select
             style={{ fontSize: '14px', height: '58px' }}
             className='  mt-3 form-select text-dark'
@@ -171,7 +189,7 @@ const PetPublish = () => {
             onChange={formik.handleChange('species')}
             onBlur={formik.handleBlur('species')}
             value={formik.values.species}>
-            <option value=''>Select Species</option>
+            <option value=''>Select Species *</option>
 
             {speciesState.map((i, j) => {
               return (
@@ -193,7 +211,7 @@ const PetPublish = () => {
             onChange={formik.handleChange('breed')}
             onBlur={formik.handleBlur('breed')}
             value={formik.values.breed}>
-            <option value=''>Select Breed</option>
+            <option value=''>Select Breed *</option>
 
             {speciesState.map((i, j) => {
               return (
@@ -210,37 +228,249 @@ const PetPublish = () => {
           </div>
 
           <CustomInput
-            type='text'
-            name='age'
-            label='Pet Age'
-            id='pet-Age'
-            onChange={formik.handleChange('age')}
-            onBlur={formik.handleBlur('age')}
-            value={formik.values.age}
+            type='number'
+            name='price'
+            label='Price'
+            i_id='price'
+            onChange={formik.handleChange('price')}
+            value={formik.values.price}
+            onBlur={formik.handleChange('price')}
           />
           <div className='error '>
-            {formik.touched.age && formik.errors.age ? (
-              <div>{formik.errors.age}</div>
+            {formik.touched.price && formik.errors.price ? (
+              <div>{formik.errors.price}</div>
+            ) : null}
+          </div>
+
+          <CustomInput
+            type='date'
+            name='dateOfBirth'
+            label='Date Of Birth *'
+            id='date-of-birth'
+            onChange={formik.handleChange('dateOfBirth')}
+            onBlur={formik.handleBlur('dateOfBirth')}
+            value={formik.values.dateOfBirth}
+          />
+          <div className='error '>
+            {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (
+              <div>{formik.errors.dateOfBirth}</div>
             ) : null}
           </div>
           <CustomInput
-            type='text'
-            label='Pet Color'
-            id='pet-color'
+            type='date'
+            name='adoptionDate'
+            label='Adoption Date'
+            id='adoption-date'
+            onChange={formik.handleChange('adoptionDate')}
+            onBlur={formik.handleBlur('adoptionDate')}
+            value={formik.values.adoptionDate}
+          />
+          <div className='error '>
+            {formik.touched.adoptionDate && formik.errors.adoptionDate ? (
+              <div>{formik.errors.adoptionDate}</div>
+            ) : null}
+          </div>
+          <CustomInput
+            type='date'
+            name='dateOfDeath'
+            label='Date Of Death'
+            id='date-of-death'
+            onChange={formik.handleChange('dateOfDeath')}
+            onBlur={formik.handleBlur('dateOfDeath')}
+            value={formik.values.dateOfDeath}
+          />
+          <div className='error '>
+            {formik.touched.dateOfDeath && formik.errors.dateOfDeath ? (
+              <div>{formik.errors.dateOfDeath}</div>
+            ) : null}
+          </div>
+          <input
+            type='checkbox'
+            name='active'
+            id='active'
+            onChange={formik.handleChange('active')}
+            onBlur={formik.handleBlur('active')}
+            value={formik.values.active}
+          />
+          <label style={{ fontSize: '13px' }} htmlFor='active'>
+          &nbsp;Active?
+          </label>
+          <div className='error '>
+            {formik.touched.active && formik.errors.active ? (
+              <div>{formik.errors.active}</div>
+            ) : null}
+          </div>
+          <input
+            type='checkbox'
+            name='searchable'
+            id='searchable'
+            onChange={formik.handleChange('searchable')}
+            onBlur={formik.handleBlur('searchable')}
+            value={formik.values.searchable}
+          />
+          <label style={{ fontSize: '13px' }} htmlFor='searchable'>
+          &nbsp;Searchable?
+          </label>
+          <div className='error '>
+            {formik.touched.searchable && formik.errors.searchable ? (
+              <div>{formik.errors.searchable}</div>
+            ) : null}
+          </div>
+          <textarea
+            style={{ fontSize: '14px' }}
+            className='mt-0 form-control text-dark'
+            placeholder='Enter Description'
+            onChange={formik.handleChange('about')}
+            value={formik.values.about}>
+          </textarea>
+          <select
+            style={{ fontSize: '14px', height: '58px' }}
+            className='  mt-3 form-select text-dark'
+            name='sex'
+            onChange={formik.handleChange('energyLevel')}
+            onBlur={formik.handleBlur('energyLevel')}
+            value={formik.values.energyLevel}>
+            <option value=''>Select Sex *</option>
+            <option value='male'>Male</option>
+            <option value='female'>Female</option>
+            <option value='unknown'>Unknown</option>
+          </select>
+          <div className='error '>
+            {formik.touched.sex && formik.errors.sex ? (
+              <div>{formik.errors.sex}</div>
+            ) : null}
+          </div>
+          <div className='error '>
+            {formik.touched.description && formik.errors.description ? (
+              <div>{formik.errors.description}</div>
+            ) : null}
+          </div>
+          <CustomInput
+            type='reproductiveStatus'
+            label='Reproductive Status'
+            id='reproductive-status'
             name='color'
-            onChange={formik.handleChange('color')}
-            onBlur={formik.handleBlur('color')}
-            value={formik.values.color}
+            onChange={formik.handleChange('reproductiveStatus')}
+            onBlur={formik.handleBlur('reproductiveStatus')}
+            value={formik.values.reproductiveStatus}
           />
           <div className='error '>
-            {formik.touched.color && formik.errors.color ? (
-              <div>{formik.errors.color}</div>
+            {formik.touched.reproductiveStatus && formik.errors.reproductiveStatus ? (
+              <div>{formik.errors.reproductiveStatus}</div>
+            ) : null}
+          </div>
+          <CustomInput
+            type='date'
+            name='alteredDate'
+            label='Altered Date'
+            id='altered-date'
+            onChange={formik.handleChange('alteredDate')}
+            onBlur={formik.handleBlur('alteredDate')}
+            value={formik.values.alteredDate}
+          />
+          <div className='error '>
+            {formik.touched.alteredDate && formik.errors.alteredDate ? (
+              <div>{formik.errors.alteredDate}</div>
             ) : null}
           </div>
           <CustomInput
             type='text'
-            name='eyeColor'
-            label='Pet Eye Color'
+            name='tattooID'
+            label='Tattoo ID'
+            id='tattoo-id'
+            onChange={formik.handleChange('tattooID')}
+            onBlur={formik.handleBlur('tattooID')}
+            value={formik.values.tattooID}
+          />
+          <div className='error '>
+            {formik.touched.tattooID && formik.errors.tattooID ? (
+              <div>{formik.errors.tattooID}</div>
+            ) : null}
+          </div>
+          <CustomInput
+            type='text'
+            name='microchipID'
+            label='Microchip ID'
+            id='microchip-id'
+            onChange={formik.handleChange('microchipID')}
+            onBlur={formik.handleBlur('microchipID')}
+            value={formik.values.microchipID}
+          />
+          <div className='error '>
+            {formik.touched.microchipID && formik.errors.microchipID ? (
+              <div>{formik.errors.microchipID}</div>
+            ) : null}
+          </div>
+          <select
+            style={{ fontSize: '14px', height: '58px' }}
+            className='  mt-3 form-select text-dark'
+            name='size'
+            onChange={formik.handleChange('size')}
+            onBlur={formik.handleBlur('size')}
+            value={formik.values.size}>
+            <option value=''>Select Size *</option>
+            <option value='small'>Small</option>
+            <option value='medium'>Medium</option>
+            <option value='large'>Large</option>
+            <option value='extraLarge'>Extra Large</option>
+          </select>
+          <div className='error '>
+            {formik.touched.size && formik.errors.size ? (
+              <div>{formik.errors.size}</div>
+            ) : null}
+          </div>
+          <select
+            style={{ fontSize: '14px', height: '58px' }}
+            className='  mt-3 form-select text-dark'
+            name='energy-level'
+            onChange={formik.handleChange('energyLevel')}
+            onBlur={formik.handleBlur('energyLevel')}
+            value={formik.values.energyLevel}>
+            <option value=''>Select Energy Level</option>
+            <option value='low'>Low</option>
+            <option value='medium'>Medium</option>
+            <option value='high'>High</option>
+          </select>
+          <div className='error '>
+            {formik.touched.energyLevel && formik.errors.energyLevel ? (
+              <div>{formik.errors.energyLevel}</div>
+            ) : null}
+          </div>
+          <select
+            style={{ fontSize: '14px', height: '58px' }}
+            className='  mt-3 form-select text-dark'
+            name='hair-length'
+            onChange={formik.handleChange('hairLength')}
+            onBlur={formik.handleBlur('hairLength')}
+            value={formik.values.hairLength}>
+            <option value=''>Select Hair Length</option>
+            <option value='short'>Short</option>
+            <option value='medium'>Medium</option>
+            <option value='long'>Long</option>
+          </select>
+          <div className='error '>
+            {formik.touched.hairLength && formik.errors.hairLength ? (
+              <div>{formik.errors.hairLength}</div>
+            ) : null}
+          </div>
+          <CustomInput
+            type='text'
+            name='hairColor'
+            label='Hair Color'
+            id='hair-color'
+            onChange={formik.handleChange('hairColor')}
+            onBlur={formik.handleBlur('hairColor')}
+            value={formik.values.hairColor}
+          />
+          <div className='error '>
+            {formik.touched.hairColor && formik.errors.hairColor ? (
+              <div>{formik.errors.hairColor}</div>
+            ) : null}
+          </div>
+          <CustomInput
+            type='text'
+            name='eye-color'
+            label='Eye Color'
             id='eyeColor'
             onChange={formik.handleChange('eyeColor')}
             onBlur={formik.handleBlur('eyeColor')}
@@ -251,51 +481,39 @@ const PetPublish = () => {
               <div>{formik.errors.eyeColor}</div>
             ) : null}
           </div>
+          <input
+            type='checkbox'
+            name='allergy-friendly'
+            id='allergy-friendly'
+            onChange={formik.handleChange('allergyFriendly')}
+            onBlur={formik.handleBlur('allergyFriendly')}
+            value={formik.values.allergyFriendly}
+          />
+          <label style={{ fontSize: '13px' }} htmlFor='allergyFriendly'>
+          &nbsp;Allergy Friendly?
+          </label>
+          <div className='error '>
+            {formik.touched.allergyFriendly && formik.errors.allergyFriendly ? (
+              <div>{formik.errors.allergyFriendly}</div>
+            ) : null}
+          </div>
           <select
             style={{ fontSize: '14px', height: '58px' }}
             className='  mt-3 form-select text-dark'
-            name='size'
-            onChange={formik.handleChange('size')}
-            onBlur={formik.handleBlur('size')}
-            value={formik.values.size}>
-            <option value=''>Select Size</option>
-            <option value='small'>S</option>
-            <option value='medium'>M</option>
-            <option value='large'>L</option>
-            <option value='extraLarge'>XL</option>
+            name='socialized-with'
+            multiple
+            onChange={formik.handleChange('socializedWith')}
+            onBlur={formik.handleBlur('socializedWith')}
+            value={formik.values.socializedWith}>
+            <option value=''>Select Socialized With</option>
+            <option value='kids'>Kids</option>
+            <option value='cats'>Cats</option>
+            <option value='dogs'>Dogs</option>
+            <option value='otherPets'>Other Pets</option>
           </select>
-
           <div className='error '>
-            {formik.touched.size && formik.errors.size ? (
-              <div>{formik.errors.size}</div>
-            ) : null}
-          </div>
-          <CustomInput
-            type='text'
-            name='weight'
-            label='Pet Weight'
-            id='weight'
-            onChange={formik.handleChange('weight')}
-            onBlur={formik.handleBlur('weight')}
-            value={formik.values.weight}
-          />
-          <div className='error '>
-            {formik.touched.weight && formik.errors.weight ? (
-              <div>{formik.errors.weight}</div>
-            ) : null}
-          </div>
-          <CustomInput
-            type='text'
-            name='price'
-            label='Pet Price'
-            id='price'
-            onChange={formik.handleChange('price')}
-            onBlur={formik.handleBlur('price')}
-            value={formik.values.price}
-          />
-          <div className='error '>
-            {formik.touched.price && formik.errors.price ? (
-              <div>{formik.errors.price}</div>
+            {formik.touched.socializedWith && formik.errors.socializedWith ? (
+              <div>{formik.errors.socializedWith}</div>
             ) : null}
           </div>
           <div className='mt-3'>
@@ -353,18 +571,6 @@ const PetPublish = () => {
                 </div>
               </div>
             ))}
-          </div>
-          <textarea
-            style={{ fontSize: '14px' }}
-            className='mt-0 form-control text-dark'
-            placeholder='Enter Description'
-            onChange={formik.handleChange('description')}
-            value={formik.values.description}></textarea>
-
-          <div className='error '>
-            {formik.touched.description && formik.errors.description ? (
-              <div>{formik.errors.description}</div>
-            ) : null}
           </div>
         </div>
         <div className='d-flex flex-wrap post-button gap-3'>
