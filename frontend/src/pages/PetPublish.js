@@ -19,7 +19,7 @@ let schema = Yup.object().shape({
   species: Yup.string().required('* Species is required'),
   breed: Yup.string().required('* Breed is required'),
   dateOfBirth: Yup.string().required('* Date of Birth is required'),
-  sex: Yup.string().required('* Sex is required'),
+  // sex: Yup.string().required('* Sex is required'),
   size: Yup.string().required('* Pet size is required'),
 });
 const PetPublish = () => {
@@ -31,6 +31,7 @@ const PetPublish = () => {
   }, []);
 
   const API_URL = '/api/img/';
+  const supplierState = useSelector((state) => state.supplier.supplier);
   const speciesState = useSelector((state) => state.species.species);
   const newPet = useSelector((state) => state.pet);
   const { isError, isSuccess, isLoading, createdPet, message } = newPet;
@@ -88,21 +89,36 @@ const PetPublish = () => {
   const formik = useFormik({
     initialValues: {
       name: '',
+      postalCodeLocation: '',
       species: '',
       breed: '',
-      age: '',
+      price: '',
+      dateOfBirth: '',
+      adoptionDate: '',
+      dateOfDeath: '',
+      active: '',
+      searchable: '',
+      about: '',
+      sex: '',
+      reproductiveStatus: '',
+      alteredDate: '',
+      tattooID: '',
+      microchipID: '',
+      size: '',
+      energyLevel: '',
+      hairLength: '',
       hairColor: '',
       eyeColor: '',
-      size: '',
-      weight: '',
-      price: '',
+      allergyFriendly: '',
+      socializedWith: '',
       images: [],
-      description: '',
     },
     validationSchema: schema,
     onSubmit: async (values) => {
       let imagesNames = [];
       let promises = [];
+
+      console.log("Submitting form...");
 
       try {
         selectedFiles.forEach((file, index) => {
@@ -142,13 +158,15 @@ const PetPublish = () => {
       <p className=' mb-0'>Please fill all information to process!</p>
 
       <form
-        onSubmit={formik.handleSubmit}
+        // onSubmit={formik.handleSubmit}
+        onSubmit={(event) => {event.preventDefault(); console.log("Submit clicked!"); return formik.handleSubmit()}}
+        // onSubmit={(event) => {event.preventDefault(); console.log("Submit clicked!");}}
         className='d-flex flex-column gap-10'>
         <div className='my-2 w-100 rounded-3 mx-auto '>
           <input
             type='hidden'
             name='owner'
-            id='owner'
+            id={supplierState._id}
             value='Supplier'
           />
 
@@ -157,9 +175,7 @@ const PetPublish = () => {
             name='name'
             label='Pet Name *'
             i_id='pet-name'
-            onChange={formik.handleChange('name')}
-            value={formik.values.name}
-            onBlur={formik.handleChange('name')}
+            {...formik.getFieldProps('name')}
           />
           <div className='error '>
             {formik.touched.name && formik.errors.name ? (
@@ -172,9 +188,7 @@ const PetPublish = () => {
             name='postalCodeLocation'
             label='Postal Code *'
             i_id='postal-code'
-            onChange={formik.handleChange('postalCodeLocation')}
-            value={formik.values.postalCodeLocation}
-            onBlur={formik.handleChange('postalCodeLocation')}
+            {...formik.getFieldProps('postalCodeLocation')}
           />
           <div className='error '>
             {formik.touched.postalCodeLocation && formik.errors.postalCodeLocation ? (
@@ -186,9 +200,7 @@ const PetPublish = () => {
             style={{ fontSize: '14px', height: '58px' }}
             className='  mt-3 form-select text-dark'
             name='species'
-            onChange={formik.handleChange('species')}
-            onBlur={formik.handleBlur('species')}
-            value={formik.values.species}>
+            {...formik.getFieldProps('species')}>
             <option value=''>Select Species *</option>
 
             {speciesState.map((i, j) => {
@@ -208,9 +220,7 @@ const PetPublish = () => {
             style={{ fontSize: '14px', height: '58px' }}
             className='  mt-3 form-select text-dark'
             name='breed'
-            onChange={formik.handleChange('breed')}
-            onBlur={formik.handleBlur('breed')}
-            value={formik.values.breed}>
+            {...formik.getFieldProps('breed')}>
             <option value=''>Select Breed *</option>
 
             {speciesState.map((i, j) => {
@@ -232,9 +242,7 @@ const PetPublish = () => {
             name='price'
             label='Price'
             i_id='price'
-            onChange={formik.handleChange('price')}
-            value={formik.values.price}
-            onBlur={formik.handleChange('price')}
+            {...formik.getFieldProps('price')}
           />
           <div className='error '>
             {formik.touched.price && formik.errors.price ? (
@@ -247,9 +255,7 @@ const PetPublish = () => {
             name='dateOfBirth'
             label='Date Of Birth *'
             id='date-of-birth'
-            onChange={formik.handleChange('dateOfBirth')}
-            onBlur={formik.handleBlur('dateOfBirth')}
-            value={formik.values.dateOfBirth}
+            {...formik.getFieldProps('dateOfBirth')}
           />
           <div className='error '>
             {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (
@@ -261,9 +267,7 @@ const PetPublish = () => {
             name='adoptionDate'
             label='Adoption Date'
             id='adoption-date'
-            onChange={formik.handleChange('adoptionDate')}
-            onBlur={formik.handleBlur('adoptionDate')}
-            value={formik.values.adoptionDate}
+            {...formik.getFieldProps('adoptionDate')}
           />
           <div className='error '>
             {formik.touched.adoptionDate && formik.errors.adoptionDate ? (
@@ -275,9 +279,7 @@ const PetPublish = () => {
             name='dateOfDeath'
             label='Date Of Death'
             id='date-of-death'
-            onChange={formik.handleChange('dateOfDeath')}
-            onBlur={formik.handleBlur('dateOfDeath')}
-            value={formik.values.dateOfDeath}
+            {...formik.getFieldProps('dateOfDeath')}
           />
           <div className='error '>
             {formik.touched.dateOfDeath && formik.errors.dateOfDeath ? (
@@ -288,9 +290,7 @@ const PetPublish = () => {
             type='checkbox'
             name='active'
             id='active'
-            onChange={formik.handleChange('active')}
-            onBlur={formik.handleBlur('active')}
-            value={formik.values.active}
+            {...formik.getFieldProps('active')}
           />
           <label style={{ fontSize: '13px' }} htmlFor='active'>
           &nbsp;Active?
@@ -304,9 +304,7 @@ const PetPublish = () => {
             type='checkbox'
             name='searchable'
             id='searchable'
-            onChange={formik.handleChange('searchable')}
-            onBlur={formik.handleBlur('searchable')}
-            value={formik.values.searchable}
+            {...formik.getFieldProps('searchable')}
           />
           <label style={{ fontSize: '13px' }} htmlFor='searchable'>
           &nbsp;Searchable?
@@ -319,17 +317,13 @@ const PetPublish = () => {
           <textarea
             style={{ fontSize: '14px' }}
             className='mt-0 form-control text-dark'
-            placeholder='Enter Description'
-            onChange={formik.handleChange('about')}
-            value={formik.values.about}>
+            placeholder='Enter Description'>
           </textarea>
           <select
             style={{ fontSize: '14px', height: '58px' }}
             className='  mt-3 form-select text-dark'
             name='sex'
-            onChange={formik.handleChange('energyLevel')}
-            onBlur={formik.handleBlur('energyLevel')}
-            value={formik.values.energyLevel}>
+            {...formik.getFieldProps('energyLevel')}>
             <option value=''>Select Sex *</option>
             <option value='male'>Male</option>
             <option value='female'>Female</option>
@@ -350,9 +344,7 @@ const PetPublish = () => {
             label='Reproductive Status'
             id='reproductive-status'
             name='color'
-            onChange={formik.handleChange('reproductiveStatus')}
-            onBlur={formik.handleBlur('reproductiveStatus')}
-            value={formik.values.reproductiveStatus}
+            {...formik.getFieldProps('reproductiveStatus')}
           />
           <div className='error '>
             {formik.touched.reproductiveStatus && formik.errors.reproductiveStatus ? (
@@ -364,9 +356,7 @@ const PetPublish = () => {
             name='alteredDate'
             label='Altered Date'
             id='altered-date'
-            onChange={formik.handleChange('alteredDate')}
-            onBlur={formik.handleBlur('alteredDate')}
-            value={formik.values.alteredDate}
+            {...formik.getFieldProps('alteredDate')}
           />
           <div className='error '>
             {formik.touched.alteredDate && formik.errors.alteredDate ? (
@@ -378,9 +368,7 @@ const PetPublish = () => {
             name='tattooID'
             label='Tattoo ID'
             id='tattoo-id'
-            onChange={formik.handleChange('tattooID')}
-            onBlur={formik.handleBlur('tattooID')}
-            value={formik.values.tattooID}
+            {...formik.getFieldProps('tattooID')}
           />
           <div className='error '>
             {formik.touched.tattooID && formik.errors.tattooID ? (
@@ -392,9 +380,7 @@ const PetPublish = () => {
             name='microchipID'
             label='Microchip ID'
             id='microchip-id'
-            onChange={formik.handleChange('microchipID')}
-            onBlur={formik.handleBlur('microchipID')}
-            value={formik.values.microchipID}
+            {...formik.getFieldProps('microchipID')}
           />
           <div className='error '>
             {formik.touched.microchipID && formik.errors.microchipID ? (
@@ -405,9 +391,7 @@ const PetPublish = () => {
             style={{ fontSize: '14px', height: '58px' }}
             className='  mt-3 form-select text-dark'
             name='size'
-            onChange={formik.handleChange('size')}
-            onBlur={formik.handleBlur('size')}
-            value={formik.values.size}>
+            {...formik.getFieldProps('size')}>
             <option value=''>Select Size *</option>
             <option value='small'>Small</option>
             <option value='medium'>Medium</option>
@@ -423,9 +407,7 @@ const PetPublish = () => {
             style={{ fontSize: '14px', height: '58px' }}
             className='  mt-3 form-select text-dark'
             name='energy-level'
-            onChange={formik.handleChange('energyLevel')}
-            onBlur={formik.handleBlur('energyLevel')}
-            value={formik.values.energyLevel}>
+            {...formik.getFieldProps('energyLevel')}>
             <option value=''>Select Energy Level</option>
             <option value='low'>Low</option>
             <option value='medium'>Medium</option>
@@ -440,9 +422,7 @@ const PetPublish = () => {
             style={{ fontSize: '14px', height: '58px' }}
             className='  mt-3 form-select text-dark'
             name='hair-length'
-            onChange={formik.handleChange('hairLength')}
-            onBlur={formik.handleBlur('hairLength')}
-            value={formik.values.hairLength}>
+            {...formik.getFieldProps('hairLength')}>
             <option value=''>Select Hair Length</option>
             <option value='short'>Short</option>
             <option value='medium'>Medium</option>
@@ -458,9 +438,7 @@ const PetPublish = () => {
             name='hairColor'
             label='Hair Color'
             id='hair-color'
-            onChange={formik.handleChange('hairColor')}
-            onBlur={formik.handleBlur('hairColor')}
-            value={formik.values.hairColor}
+            {...formik.getFieldProps('hairColor')}
           />
           <div className='error '>
             {formik.touched.hairColor && formik.errors.hairColor ? (
@@ -472,9 +450,7 @@ const PetPublish = () => {
             name='eye-color'
             label='Eye Color'
             id='eyeColor'
-            onChange={formik.handleChange('eyeColor')}
-            onBlur={formik.handleBlur('eyeColor')}
-            value={formik.values.eyeColor}
+            {...formik.getFieldProps('eyeColor')}
           />
           <div className='error '>
             {formik.touched.eyeColor && formik.errors.eyeColor ? (
@@ -485,9 +461,7 @@ const PetPublish = () => {
             type='checkbox'
             name='allergy-friendly'
             id='allergy-friendly'
-            onChange={formik.handleChange('allergyFriendly')}
-            onBlur={formik.handleBlur('allergyFriendly')}
-            value={formik.values.allergyFriendly}
+            {...formik.getFieldProps('allergyFriendly')}
           />
           <label style={{ fontSize: '13px' }} htmlFor='allergyFriendly'>
           &nbsp;Allergy Friendly?
@@ -502,9 +476,7 @@ const PetPublish = () => {
             className='  mt-3 form-select text-dark'
             name='socialized-with'
             multiple
-            onChange={formik.handleChange('socializedWith')}
-            onBlur={formik.handleBlur('socializedWith')}
-            value={formik.values.socializedWith}>
+            {...formik.getFieldProps('socializedWith')}>
             <option value=''>Select Socialized With</option>
             <option value='kids'>Kids</option>
             <option value='cats'>Cats</option>
