@@ -19,7 +19,7 @@ let schema = Yup.object().shape({
   species: Yup.string().required('* Species is required'),
   breed: Yup.string().required('* Breed is required'),
   dateOfBirth: Yup.string().required('* Date of Birth is required'),
-  // sex: Yup.string().required('* Sex is required'),
+  sex: Yup.string().required('* Sex is required'),
   size: Yup.string().required('* Pet size is required'),
 });
 const PetPublish = () => {
@@ -88,6 +88,8 @@ const PetPublish = () => {
 
   const formik = useFormik({
     initialValues: {
+      cardType: 'Supplier',
+      owner: supplierState._id,
       name: '',
       postalCodeLocation: '',
       species: '',
@@ -111,6 +113,7 @@ const PetPublish = () => {
       eyeColor: '',
       allergyFriendly: '',
       socializedWith: '',
+      specialNeeds: '',
       images: [],
     },
     validationSchema: schema,
@@ -145,7 +148,7 @@ const PetPublish = () => {
         setTimeout(() => {
           navigate('/supplier/all-pets');
         }, 1000);
-        alert(JSON.stringify(values, null, 2));
+        // alert(JSON.stringify(values, null, 2));
       } catch (error) {
         console.log(error);
       }
@@ -159,15 +162,20 @@ const PetPublish = () => {
 
       <form
         // onSubmit={formik.handleSubmit}
-        onSubmit={(event) => {event.preventDefault(); console.log("Submit clicked!"); return formik.handleSubmit()}}
-        // onSubmit={(event) => {event.preventDefault(); console.log("Submit clicked!");}}
+        onSubmit={(event) => {event.preventDefault(); return formik.handleSubmit();}}
         className='d-flex flex-column gap-10'>
         <div className='my-2 w-100 rounded-3 mx-auto '>
           <input
             type='hidden'
-            name='owner'
-            id={supplierState._id}
+            name='cardType'
+            id='carde-type'
             value='Supplier'
+          />
+          <input
+            type='hidden'
+            name='owner'
+            id='owner'
+            value={supplierState._id}
           />
 
           <CustomInput
@@ -317,17 +325,19 @@ const PetPublish = () => {
           <textarea
             style={{ fontSize: '14px' }}
             className='mt-0 form-control text-dark'
-            placeholder='Enter Description'>
+            placeholder='Enter Description'
+            {...formik.getFieldProps('about')}
+            value={formik.values.about}>
           </textarea>
           <select
             style={{ fontSize: '14px', height: '58px' }}
             className='  mt-3 form-select text-dark'
             name='sex'
-            {...formik.getFieldProps('energyLevel')}>
+            {...formik.getFieldProps('sex')}>
             <option value=''>Select Sex *</option>
-            <option value='male'>Male</option>
-            <option value='female'>Female</option>
-            <option value='unknown'>Unknown</option>
+            <option value='Male'>Male</option>
+            <option value='Female'>Female</option>
+            <option value='Unknown'>Unknown</option>
           </select>
           <div className='error '>
             {formik.touched.sex && formik.errors.sex ? (
@@ -393,10 +403,10 @@ const PetPublish = () => {
             name='size'
             {...formik.getFieldProps('size')}>
             <option value=''>Select Size *</option>
-            <option value='small'>Small</option>
-            <option value='medium'>Medium</option>
-            <option value='large'>Large</option>
-            <option value='extraLarge'>Extra Large</option>
+            <option value='Small'>Small</option>
+            <option value='Medium'>Medium</option>
+            <option value='Large'>Large</option>
+            <option value='Extra Large'>Extra Large</option>
           </select>
           <div className='error '>
             {formik.touched.size && formik.errors.size ? (
@@ -409,9 +419,9 @@ const PetPublish = () => {
             name='energy-level'
             {...formik.getFieldProps('energyLevel')}>
             <option value=''>Select Energy Level</option>
-            <option value='low'>Low</option>
-            <option value='medium'>Medium</option>
-            <option value='high'>High</option>
+            <option value='Low'>Low</option>
+            <option value='Medium'>Medium</option>
+            <option value='High'>High</option>
           </select>
           <div className='error '>
             {formik.touched.energyLevel && formik.errors.energyLevel ? (
@@ -424,9 +434,9 @@ const PetPublish = () => {
             name='hair-length'
             {...formik.getFieldProps('hairLength')}>
             <option value=''>Select Hair Length</option>
-            <option value='short'>Short</option>
-            <option value='medium'>Medium</option>
-            <option value='long'>Long</option>
+            <option value='Short'>Short</option>
+            <option value='Medium'>Medium</option>
+            <option value='Long'>Long</option>
           </select>
           <div className='error '>
             {formik.touched.hairLength && formik.errors.hairLength ? (
@@ -478,14 +488,26 @@ const PetPublish = () => {
             multiple
             {...formik.getFieldProps('socializedWith')}>
             <option value=''>Select Socialized With</option>
-            <option value='kids'>Kids</option>
-            <option value='cats'>Cats</option>
-            <option value='dogs'>Dogs</option>
-            <option value='otherPets'>Other Pets</option>
+            <option value='Kids'>Kids</option>
+            <option value='Cats'>Cats</option>
+            <option value='Dogs'>Dogs</option>
+            <option value='Other Pets'>Other Pets</option>
           </select>
           <div className='error '>
             {formik.touched.socializedWith && formik.errors.socializedWith ? (
               <div>{formik.errors.socializedWith}</div>
+            ) : null}
+          </div>
+          <CustomInput
+            type='text'
+            name='special-needs'
+            label='Special Needs'
+            id='eyeColor'
+            {...formik.getFieldProps('specialNeeds')}
+          />
+          <div className='error '>
+            {formik.touched.specialNeeds && formik.errors.specialNeeds ? (
+              <div>{formik.errors.specialNeeds}</div>
             ) : null}
           </div>
           <div className='mt-3'>

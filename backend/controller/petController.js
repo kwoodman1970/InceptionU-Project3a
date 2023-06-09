@@ -13,26 +13,42 @@ const createPet = asyncHandler(async (req, res) => {
   const { _id } = req.supplier;
 
   const {
-    // token,
+    cardType,
+    owner,
     name,
+    postalCodeLocation,
     species,
     breed,
-    age,
-    color,
-    eyeColor,
-    size,
-    weight,
-    description,
-    images,
     price,
-  } = req.body;
+    dateOfBirth,
+    adoptionDate,
+    dateOfDeath,
+    active,
+    searchable,
+    pictures,
+    about,
+    sex,
+    reproductiveStatus,
+    alteredDate,
+    tattooID,
+    microchipID,
+    size,
+    energyLevel,
+    hairLength,
+    hairColor,
+    eyeColor,
+    allergyFriendly,
+    socializedWith,
+    specialNeeds,
+    images,
+} = req.body;
 
   //input validation
   if (!name || !species || !breed) {
     res.status(400);
     throw new Error('Please fill out all required fields');
   }
-  const supplier = await Supplier.findOne({ _id });
+  const supplier = await Supplier.findById(owner);
   if (!supplier) {
     res.status(400);
     throw new Error('Invalid Supplier User');
@@ -44,19 +60,34 @@ const createPet = asyncHandler(async (req, res) => {
     );
   }
   const pet = await Pet.create({
-    owner: supplier,
+    cardType,
+    owner,
     name,
+    postalCodeLocation,
     species,
     breed,
-    age,
-    color,
-    eyeColor,
+    price,
+    dateOfBirth,
+    adoptionDate,
+    dateOfDeath,
+    active,
+    searchable,
+    pictures,
+    about,
+    sex,
+    reproductiveStatus,
+    alteredDate,
+    tattooID,
+    microchipID,
     size,
-    weight,
-    price,
-    description,
+    energyLevel,
+    hairLength,
+    hairColor,
+    eyeColor,
+    allergyFriendly,
+    socializedWith,
+    specialNeeds,
     images,
-    price,
   });
   if (pet) {
     res.status(200).json({

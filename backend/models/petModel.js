@@ -76,12 +76,15 @@ var petSchema = new mongoose.Schema(
     size: {
       type: String,
       required: true,
+      enum: ["Small", "Medium", "Large", "Extra Large"],
     },
     energyLevel: {
       type: String,
+      enum: ["Low", "Medium", "High"],
     },
     hairLength: {
       type: String,
+      enum: ["Short", "Medium", "Long"],
     },
     hairColor: {
       type: String,
@@ -99,11 +102,11 @@ var petSchema = new mongoose.Schema(
       type: [String],
     },
 
-    status: {
-      type: String,
-      default: 'Available',
-      enum: ['Available', 'Pending', 'Not Available'],
-    },
+    // status: {
+    //   type: String,
+    //   default: 'Available',
+    //   enum: ['Available', 'Pending', 'Not Available'],
+    // },
   },
   {
     timestamps: true,
