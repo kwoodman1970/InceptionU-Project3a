@@ -57,8 +57,8 @@ var petSchema = new mongoose.Schema(
     },
     sex: {
       type: String,
-      default: "Unknown",
-      enum: ["Unknown", "Male", "Female"],
+      default: 'Unknown',
+      enum: ['Unknown', 'Male', 'Female'],
       required: true,
     },
     reproductiveStatus: {
@@ -76,15 +76,15 @@ var petSchema = new mongoose.Schema(
     size: {
       type: String,
       required: true,
-      enum: ["Small", "Medium", "Large", "Extra Large"],
+      enum: ['Small', 'Medium', 'Large', 'Extra Large'],
     },
     energyLevel: {
       type: String,
-      enum: ["Low", "Medium", "High"],
+      enum: ['', 'Low', 'Medium', 'High'],
     },
     hairLength: {
       type: String,
-      enum: ["Short", "Medium", "Long"],
+      enum: ['', 'Short', 'Medium', 'Long'],
     },
     hairColor: {
       type: String,
@@ -101,12 +101,6 @@ var petSchema = new mongoose.Schema(
     specialNeeds: {
       type: [String],
     },
-
-    // status: {
-    //   type: String,
-    //   default: 'Available',
-    //   enum: ['Available', 'Pending', 'Not Available'],
-    // },
   },
   {
     timestamps: true,
