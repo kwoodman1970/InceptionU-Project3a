@@ -1,9 +1,9 @@
 import React from 'react';
 
 const CustomInput = (props) => {
-  const { type, label, i_id, name, i_class, onBlur, onChange, value } = props;
+  const { type, label, i_id, name, i_class, d_class, onBlur, onChange, value } = props;
   return (
-    <div className='form-floating  mt-3'>
+    <div className={`form-floating  mt-3 ${d_class}`}>
       <input
         type={type}
         placeholder={label}
@@ -11,8 +11,9 @@ const CustomInput = (props) => {
         value={value}
         name={name}
         className={`form-control ${i_class} align-items-center m-auto`}
+        // className={i_class}
         onChange={onChange}
-        onBlur={onChange}
+        onBlur={onBlur}
       />
       <label style={{ fontSize: '13px' }} htmlFor={label}>
         {label}
