@@ -8,10 +8,8 @@ var petSchema = new mongoose.Schema(
       default: 'Supplier',
       enum: ['Supplier', 'Adopter'],
     },
-    owner: {
-      type: mongoose.Schema.Types.ObjectId,
-      refPath: 'cardType',
-      required: true,
+    mainPicture: {
+      type: String,
     },
     name: {
       type: String,
@@ -47,6 +45,11 @@ var petSchema = new mongoose.Schema(
     },
     searchable: {
       type: Boolean,
+      required: true,
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      refPath: 'cardType',
       required: true,
     },
     pictures: {

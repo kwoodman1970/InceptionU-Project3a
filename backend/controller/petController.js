@@ -14,7 +14,7 @@ const createPet = asyncHandler(async (req, res) => {
 
   const {
     cardType,
-    owner,
+    mainPicture,
     name,
     postalCodeLocation,
     species,
@@ -25,6 +25,7 @@ const createPet = asyncHandler(async (req, res) => {
     dateOfDeath,
     active,
     searchable,
+    owner,
     pictures,
     about,
     sex,
@@ -61,7 +62,7 @@ const createPet = asyncHandler(async (req, res) => {
   }
   const pet = await Pet.create({
     cardType,
-    owner,
+    mainPicture,
     name,
     postalCodeLocation,
     species,
@@ -72,6 +73,7 @@ const createPet = asyncHandler(async (req, res) => {
     dateOfDeath,
     active,
     searchable,
+    owner,
     pictures,
     about,
     sex,
