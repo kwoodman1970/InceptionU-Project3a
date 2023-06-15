@@ -8,9 +8,6 @@ var petSchema = new mongoose.Schema(
       default: 'Supplier',
       enum: ['Supplier', 'Adopter'],
     },
-    mainPicture: {
-      type: String,
-    },
     name: {
       type: String,
       required: true,
