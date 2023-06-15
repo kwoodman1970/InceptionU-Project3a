@@ -47,9 +47,10 @@ import PaymentError from './pages/PaymentError';
 import PaySubscriptions from './pages/PaySubscriptions';
 import SupplierSignupSuccess from './pages/SupplierSignupSuccess';
 import SupplierProfile from './pages/SupplierProfile';
-import TestSettings from './pages/TestSetting';
+// import TestSettings from './pages/TestSetting';
 import UserSetting from './pages/UserSetting';
 import SupplierAvatar from './pages/SupplierAvatar';
+// import PetContacts from './components/PetContacts';
 
 function App() {
   return (
@@ -90,6 +91,8 @@ function App() {
             />
             <Route path='/add-pet' element={<Addpet />} />
             <Route path='/find-pet' element={<SearchPets />} />
+            {/* <Route path='/petcontacts' element={<PetContacts />} /> */}
+
             <Route path='/find-supplier' element={<SearchSupplier />} />
             <Route path='/wishlist/' element={<Wishlist />} />
             <Route path='/writereview/:supplierId' element={<WriteReview />} />

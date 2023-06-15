@@ -12,6 +12,8 @@ import axios from 'axios';
 import { BiArrowBack } from 'react-icons/bi';
 import { MdOutlineArrowForward } from 'react-icons/md';
 import { AiOutlineClose } from 'react-icons/ai';
+import PetContacts from '../components/PetContacts';
+
 
 let schema = Yup.object().shape({
   name: Yup.string().required('* Name is required'),
@@ -573,6 +575,7 @@ const PetPublish = () => {
             ))}
           </div>
         </div>
+        <PetContacts />
         <div className='d-flex flex-wrap post-button gap-3'>
           <button type='submit' className='button border-0'>
             Post Pet
