@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/ToggleSwitch.css';
 
-const ToggleSwitch = ({ isActive, onToggleChange }) => {
+const ToggleSwitch = ({ id, isActive, onToggleChange }) => {
   const handleChange = () => {
     onToggleChange(!isActive);
   };
@@ -10,11 +10,11 @@ const ToggleSwitch = ({ isActive, onToggleChange }) => {
     <div className="toggle-switch">
       <input
         type="checkbox"
-        id="switch"
+        id={id}
         checked={isActive}
         onChange={handleChange}
       />
-      <label htmlFor="switch" className="toggle-label">
+      <label for={id} className="toggle-label">
         <span className="toggle-text">{isActive ? 'Yes' : 'No'}</span>
         <span className="toggle-handle"></span>
       </label>
@@ -23,9 +23,3 @@ const ToggleSwitch = ({ isActive, onToggleChange }) => {
 };
 
 export default ToggleSwitch;
-
-
-
-
-
-
