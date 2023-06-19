@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import CustomInput from '../components/CustomInput';
+import ToggleSwitch from '../components/ToggleSwitch';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
@@ -38,6 +39,9 @@ const PetPublish = () => {
   const newPet = useSelector((state) => state.pet);
   const { isError, isSuccess, isLoading, createdPet, message } = newPet;
 
+  const [isActive, setIsActive] = useState(true);
+  const [isSearchable, setIsSearchable] = useState(true);
+  const [isAllergyFriendly, setIsAllergeyFriendly] = useState(true);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
 
@@ -53,13 +57,27 @@ const PetPublish = () => {
     }
   }, [isSuccess, isError, isLoading, createdPet, dispatch, message]);
 
+  function updateMainPicture(newSource) {
+    const imageElement = document.getElementById('MainPicture');
+
+    if (imageElement != null) {
+      console.log('Setting Main Picture source to ', newSource);
+      imageElement.setAttribute('src', newSource);
+    }
+    else {
+      console.log('Could not find image element.');
+    }
+}
+
   const onDrop = async (acceptedFiles) => {
-    const files = acceptedFiles;
-    setSelectedFiles([...selectedFiles, ...files]);
-    setPreviewImages([
+    const newSelectedFiles = [...selectedFiles, ...acceptedFiles];
+    const newPreviewImages = [
       ...previewImages,
-      ...Array.from(files).map((file) => URL.createObjectURL(file)),
-    ]);
+      ...Array.from(acceptedFiles).map((file) => URL.createObjectURL(file)),];
+    setSelectedFiles(newSelectedFiles);
+    setPreviewImages(newPreviewImages);
+    console.log('Files dropped -- about to update Main Picture')
+    updateMainPicture(newPreviewImages.length > 0 ? newPreviewImages[0] : '');
   };
 
   const handleRemoveImage = (index) => {
@@ -69,6 +87,7 @@ const PetPublish = () => {
     newPreviewImages.splice(index, 1);
     setSelectedFiles(newSelectedFiles);
     setPreviewImages(newPreviewImages);
+    updateMainPicture(newPreviewImages.length > 0 ? newPreviewImages[0] : '');
   };
 
   const handleImageOrderChange = (oldIndex, newIndex) => {
@@ -86,12 +105,12 @@ const PetPublish = () => {
     );
     setSelectedFiles(newSelectedFiles);
     setPreviewImages(newPreviewImages);
+    updateMainPicture(newPreviewImages.length > 0 ? newPreviewImages[0] : '');
   };
 
   const formik = useFormik({
     initialValues: {
       cardType: 'Supplier',
-      owner: supplierState._id,
       name: '',
       postalCodeLocation: '',
       species: '',
@@ -102,6 +121,7 @@ const PetPublish = () => {
       dateOfDeath: '',
       active: false,
       searchable: false,
+      owner: supplierState._id,
       about: '',
       sex: '',
       reproductiveStatus: '',
@@ -138,12 +158,16 @@ const PetPublish = () => {
               })
               .then((res) => {
                 imagesNames[index] = res.data.name;
+                console.log(`Uploaded ${imagesNames[index]}`)
               }),
           );
         });
 
         await Promise.all(promises);
-        values.images = imagesNames;
+        values.active = document.getElementById('active').checked;
+        values.searchable = document.getElementById('searchable').checked;
+        values.pictures = imagesNames;
+        values.allergyFriendly = document.getElementById('allergyFriendly').checked;
         dispatch(createPet(values));
         formik.resetForm();
         dispatch(resetState());
@@ -163,7 +187,6 @@ const PetPublish = () => {
       <p className=' mb-0'>Please fill all information to process!</p>
 
       <form
-        // onSubmit={formik.handleSubmit}
         onSubmit={(event) => {event.preventDefault(); return formik.handleSubmit();}}
         className='d-flex flex-column gap-10'>
         <div name='Grid' className='my-2 w-100 rounded-3 mx-auto '>
@@ -180,28 +203,34 @@ const PetPublish = () => {
             value={supplierState._id}
           />
 
-          <div name="PetPicture" class='span4rows'>Drop picture here</div>
-
-          <div class='span2columns'>
-            <div>Owner:<br />{supplierState._id}</div>
-            <input
-              type='checkbox'
-              name='active'
-              id='active'
-              {...formik.getFieldProps('active')}
+          <div class='span4rows'>
+            <img
+              className='pet-img rounded-2'
+              id='MainPicture'
+              src=''
+              alt=''
+              height='300px'
             />
-            <label style={{ fontSize: '13px' }} htmlFor='active'>
-              &nbsp;Active?
-            </label>
-            <div className='error '>
-              {formik.touched.active && formik.errors.active ? (
-                <div>{formik.errors.active}</div>
-              ) : null}
+          </div>
+          <div class='span2columns' style={{display: 'flex'}}>
+            <div style={{flex: 1}}>
+              <div>Owner:<br />{supplierState._id}</div>
+            </div>
+            <div>
+              <label style={{ fontSize: '13px' }} for='active'>
+                Active?
+              </label><br />
+              <ToggleSwitch id='active' isActive={isActive} onToggleChange={setIsActive} />
+              <div className='error '>
+                {formik.touched.active && formik.errors.active ? (
+                  <div>{formik.errors.active}</div>
+                ) : null}
+              </div>
             </div>
           </div>
 
-          <div class='span2columns'>
-            <div>
+          <div class='span2columns' style={{display: 'flex'}}>
+            <div style={{flex: 1}}>
               <CustomInput
                 type='text'
                 name='name'
@@ -216,15 +245,19 @@ const PetPublish = () => {
               </div>
             </div>
             <div>
-              <input
+              {/* <input
                 type='checkbox'
                 name='searchable'
                 id='searchable'
                 {...formik.getFieldProps('searchable')}
               />
-              <label style={{ fontSize: '13px' }} htmlFor='searchable'>
+              <label style={{ fontSize: '13px' }} for='searchable'>
                 &nbsp;Searchable?
-              </label>
+              </label> */}
+              <label style={{ fontSize: '13px' }} for='searchable'>
+                Searchable?
+              </label><br />
+              <ToggleSwitch id='searchable' isActive={isSearchable} onToggleChange={setIsSearchable} />
               <div className='error '>
                 {formik.touched.searchable && formik.errors.searchable ? (
                   <div>{formik.errors.searchable}</div>
@@ -351,7 +384,7 @@ const PetPublish = () => {
             </div>
           </div>
 
-          <div className='mt-3'class='span3columns'>
+          <div className='mt-3'>
             <Dropzone onDrop={onDrop}>
               {({ getRootProps, getInputProps }) => (
                 <section>
@@ -366,46 +399,48 @@ const PetPublish = () => {
               )}
             </Dropzone>
           </div>
-          <div className='d-flex flex-wrap py-3 gap-3 bg-light'>
-            {previewImages.map((image, index) => (
-              <div className='position-relative  p-3 rounded-3' key={index}>
-                <img
-                  className='pet-img rounded-2'
-                  height='200px'
-                  src={image}
-                  key={index}
-                  alt={`Preview ${index}`}
-                />
-                <div className='pet-img-close position-absolute'>
-                  <button
-                    className='pet-img-close-button border-0'
-                    type='button'
-                    onClick={() => handleRemoveImage(index)}>
-                    <AiOutlineClose className='fs-6' />
-                  </button>
-                </div>
-                <div className='pet-img-back position-absolute'>
-                  {index !== 0 && (
+          <div className='mt-3' class='span2columns'>
+            <div className='d-flex flex-wrap py-3 gap-3 bg-light'>
+              {previewImages.map((image, index) => (
+                <div className='position-relative  p-3 rounded-3' key={index}>
+                  <img
+                    className='pet-img rounded-2'
+                    height='200px'
+                    src={image}
+                    key={index}
+                    alt={`Preview ${index}`}
+                  />
+                  <div className='pet-img-close position-absolute'>
                     <button
-                      className='pet-img-back-button border-0'
+                      className='pet-img-close-button border-0'
                       type='button'
-                      onClick={() => handleImageOrderChange(index, index - 1)}>
-                      <BiArrowBack className='fs-6' />
+                      onClick={() => handleRemoveImage(index)}>
+                      <AiOutlineClose className='fs-6' />
                     </button>
-                  )}
+                  </div>
+                  <div className='pet-img-back position-absolute'>
+                    {index !== 0 && (
+                      <button
+                        className='pet-img-back-button border-0'
+                        type='button'
+                        onClick={() => handleImageOrderChange(index, index - 1)}>
+                        <BiArrowBack className='fs-6' />
+                      </button>
+                    )}
+                  </div>
+                  <div className='pet-img-forward position-absolute'>
+                    {index !== previewImages.length - 1 && (
+                      <button
+                        className='pet-img-forward-button border-0'
+                        type='button'
+                        onClick={() => handleImageOrderChange(index, index + 1)}>
+                        <MdOutlineArrowForward className='fs-6' />
+                      </button>
+                    )}
+                  </div>
                 </div>
-                <div className='pet-img-forward position-absolute'>
-                  {index !== previewImages.length - 1 && (
-                    <button
-                      className='pet-img-forward-button border-0'
-                      type='button'
-                      onClick={() => handleImageOrderChange(index, index + 1)}>
-                      <MdOutlineArrowForward className='fs-6' />
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           <textarea
@@ -613,20 +648,24 @@ const PetPublish = () => {
           </div>
 
           <div>
-            <div className='error '>
-              {formik.touched.allergyFriendly && formik.errors.allergyFriendly ? (
-                <div>{formik.errors.allergyFriendly}</div>
-              ) : null}
-            </div>
-            <input
+            {/* <input
               type='checkbox'
               name='allergy-friendly'
               id='allergy-friendly'
               {...formik.getFieldProps('allergyFriendly')}
             />
-            <label style={{ fontSize: '13px' }} htmlFor='allergyFriendly'>
+            <label style={{ fontSize: '13px' }} for='allergyFriendly'>
             &nbsp;Allergy Friendly?
-            </label>
+            </label> */}
+            <label style={{ fontSize: '13px' }} for='allergyFriendly'>
+              Allergy Friendly?
+            </label><br />
+            <ToggleSwitch id='allergyFriendly' isActive={isActive} onToggleChange={setIsActive} />
+            <div className='error '>
+              {formik.touched.allergyFriendly && formik.errors.allergyFriendly ? (
+                <div>{formik.errors.allergyFriendly}</div>
+              ) : null}
+            </div>
           </div>
         </div>
         <div className='d-flex flex-wrap post-button gap-3'>

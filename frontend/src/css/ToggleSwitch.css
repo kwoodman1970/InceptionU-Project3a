@@ -1,0 +1,57 @@
+.toggle-switch {
+  display: inline-block;
+  position: relative;
+  width: 60px;
+  height: 30px;
+}
+
+.toggle-switch input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 6px;
+  background-color: #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-text {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10px;
+  font-size: 12px;
+  color: white;
+}
+
+.toggle-handle {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background-color: white;
+  transition: transform 0.3s ease;
+}
+
+/* #switch:checked + .toggle-label { */
+div.toggle-switch > input:checked + label.toggle-label {
+  background-color: #50D9A3;
+}
+
+/* #switch:checked + .toggle-label .toggle-text { */
+  /* div.toggle-switch > input:checked + label.toggle-label > span.toggle-text {
+    transform: translateX(-30px);
+  } */
+
+  /* #switch:checked + .toggle-label .toggle-handle { */
+div.toggle-switch > input:checked + label.toggle-label > span.toggle-handle {
+    transform: translateX(30px);
+}
