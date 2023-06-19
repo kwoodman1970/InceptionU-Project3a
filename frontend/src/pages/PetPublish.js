@@ -15,6 +15,8 @@ import { MdOutlineArrowForward } from 'react-icons/md';
 import { AiOutlineClose } from 'react-icons/ai';
 import '../css/Petcard.css';
 
+const imagePlaceholder = '/images/pictureframe.svg';
+
 let schema = Yup.object().shape({
   name: Yup.string().required('* Name is required'),
   postalCodeLocation: Yup.string().required('* Postal Code Location is required'),
@@ -87,7 +89,7 @@ const PetPublish = () => {
     newPreviewImages.splice(index, 1);
     setSelectedFiles(newSelectedFiles);
     setPreviewImages(newPreviewImages);
-    updateMainPicture(newPreviewImages.length > 0 ? newPreviewImages[0] : '');
+    updateMainPicture(newPreviewImages.length > 0 ? newPreviewImages[0] : imagePlaceholder);
   };
 
   const handleImageOrderChange = (oldIndex, newIndex) => {
@@ -189,7 +191,7 @@ const PetPublish = () => {
       <form
         onSubmit={(event) => {event.preventDefault(); return formik.handleSubmit();}}
         className='d-flex flex-column gap-10'>
-        <div name='Grid' className='my-2 w-100 rounded-3 mx-auto '>
+        <div className='my-2 w-100 rounded-3 mx-auto evenColumns3'>
           <input
             type='hidden'
             name='cardType'
@@ -203,22 +205,22 @@ const PetPublish = () => {
             value={supplierState._id}
           />
 
-          <div class='span4rows'>
+          <div className='span4rows'>
             <img
               className='pet-img rounded-2'
               id='MainPicture'
-              src=''
+              src={imagePlaceholder}
               alt=''
-              height='300px'
+              height='320'
             />
           </div>
-          <div class='span2columns' style={{display: 'flex'}}>
+          <div className='span2columns' style={{display: 'flex'}}>
             <div style={{flex: 1}}>
               <div>Owner:<br />{supplierState._id}</div>
             </div>
             <div>
               <label style={{ fontSize: '13px' }} for='active'>
-                Active?
+                Active
               </label><br />
               <ToggleSwitch id='active' isActive={isActive} onToggleChange={setIsActive} />
               <div className='error '>
@@ -255,7 +257,7 @@ const PetPublish = () => {
                 &nbsp;Searchable?
               </label> */}
               <label style={{ fontSize: '13px' }} for='searchable'>
-                Searchable?
+                Searchable
               </label><br />
               <ToggleSwitch id='searchable' isActive={isSearchable} onToggleChange={setIsSearchable} />
               <div className='error '>
@@ -340,7 +342,9 @@ const PetPublish = () => {
               ) : null}
             </div>
           </div>
+        </div>
 
+        <div className='my-2 w-100 rounded-3 mx-auto evenColumns3'>
           <div>
             <CustomInput
               type='date'
@@ -383,66 +387,66 @@ const PetPublish = () => {
               ) : null}
             </div>
           </div>
+        </div>
 
-          <div className='mt-3'>
-            <Dropzone onDrop={onDrop}>
-              {({ getRootProps, getInputProps }) => (
-                <section>
-                  <div className='dropzone' {...getRootProps()}>
-                    <input {...getInputProps()} />
-                    <p>
-                      Drag and drop some files here, or click to select files to
-                      upload your pet images
-                    </p>
-                  </div>
-                </section>
-              )}
-            </Dropzone>
-          </div>
-          <div className='mt-3' class='span2columns'>
-            <div className='d-flex flex-wrap py-3 gap-3 bg-light'>
-              {previewImages.map((image, index) => (
-                <div className='position-relative  p-3 rounded-3' key={index}>
-                  <img
-                    className='pet-img rounded-2'
-                    height='200px'
-                    src={image}
-                    key={index}
-                    alt={`Preview ${index}`}
-                  />
-                  <div className='pet-img-close position-absolute'>
-                    <button
-                      className='pet-img-close-button border-0'
-                      type='button'
-                      onClick={() => handleRemoveImage(index)}>
-                      <AiOutlineClose className='fs-6' />
-                    </button>
-                  </div>
-                  <div className='pet-img-back position-absolute'>
-                    {index !== 0 && (
-                      <button
-                        className='pet-img-back-button border-0'
-                        type='button'
-                        onClick={() => handleImageOrderChange(index, index - 1)}>
-                        <BiArrowBack className='fs-6' />
-                      </button>
-                    )}
-                  </div>
-                  <div className='pet-img-forward position-absolute'>
-                    {index !== previewImages.length - 1 && (
-                      <button
-                        className='pet-img-forward-button border-0'
-                        type='button'
-                        onClick={() => handleImageOrderChange(index, index + 1)}>
-                        <MdOutlineArrowForward className='fs-6' />
-                      </button>
-                    )}
-                  </div>
+        <div id='AddPictures' className='my-2 w-100 rounded-3 mx-auto'>
+          <Dropzone onDrop={onDrop}>
+            {({ getRootProps, getInputProps }) => (
+              <section>
+                <div className='dropzone' {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <p>
+                    Drag and drop some files here, or click to select files to
+                    upload your pet images
+                  </p>
                 </div>
-              ))}
-            </div>
+              </section>
+            )}
+          </Dropzone>
+          <div className='d-flex flex-wrap py-3 gap-3 bg-light' style={{display: 'inline'}}>
+            {previewImages.map((image, index) => (
+              <div className='position-relative  p-3 rounded-3' key={index}>
+                <img
+                  className='pet-img rounded-2'
+                  height='200px'
+                  src={image}
+                  key={index}
+                  alt={`Preview ${index}`}
+                />
+                <div className='pet-img-close position-absolute'>
+                  <button
+                    className='pet-img-close-button border-0'
+                    type='button'
+                    onClick={() => handleRemoveImage(index)}>
+                    <AiOutlineClose className='fs-6' />
+                  </button>
+                </div>
+                <div className='pet-img-back position-absolute'>
+                  {index !== 0 && (
+                    <button
+                      className='pet-img-back-button border-0'
+                      type='button'
+                      onClick={() => handleImageOrderChange(index, index - 1)}>
+                      <BiArrowBack className='fs-6' />
+                    </button>
+                  )}
+                </div>
+                <div className='pet-img-forward position-absolute'>
+                  {index !== previewImages.length - 1 && (
+                    <button
+                      className='pet-img-forward-button border-0'
+                      type='button'
+                      onClick={() => handleImageOrderChange(index, index + 1)}>
+                      <MdOutlineArrowForward className='fs-6' />
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
 
+        <div className='my-2 w-100 rounded-3 mx-auto evenColumns3'>
           <textarea
             style={{ fontSize: '14px' }}
             className='mt-0 form-control text-dark'
@@ -658,7 +662,7 @@ const PetPublish = () => {
             &nbsp;Allergy Friendly?
             </label> */}
             <label style={{ fontSize: '13px' }} for='allergyFriendly'>
-              Allergy Friendly?
+              Allergy Friendly
             </label><br />
             <ToggleSwitch id='allergyFriendly' isActive={isActive} onToggleChange={setIsActive} />
             <div className='error '>
