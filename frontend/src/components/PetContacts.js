@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../css/PetContacts.css";
 import AddContactButton from "./AddContactButton";
 import ToggleSwitch from "./ToggleSwitch";
+import axios from "axios";
 
 function PetContacts() {
   const [serviceCompanyName, setServiceCompanyName] = useState("");
@@ -19,8 +20,7 @@ function PetContacts() {
   const [isActive, setIsActive] = useState(false);
   const [savedData, setSavedData] = useState([]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const newData = {
       serviceCompanyName,
       serviceLocationName,
@@ -37,7 +37,18 @@ function PetContacts() {
       isActive
       // Add more fields here as needed
     };
+
+     // Make a POST request to the backend API to save the data
+     axios.post("/api/pets", newData)
+     .then(response => {
+       console.log("New pet contact saved successfully");
+     })
+     .catch(error => {
+       console.error("Error saving pet contact:", error);
+     });
     setSavedData([...savedData, newData]);
+    // console.log('need to write a feth to post the new client')
+    // fetch|('/client', {method: 'post', body: newData})
     setIsActive(false);
     clearFields();
   };
@@ -70,7 +81,7 @@ function PetContacts() {
   };
 
   return (
-    <div main-container style={{ backgroundColor: "#edf3f0", margin: "0 70px" }}>
+    <div style={{ backgroundColor: "#edf3f0", margin: "0 70px" }}>
       <div className="petcontainer">
         <AddContactButton onAddContact={handleAddContact} />
         <h3 style={{ paddingLeft: "50px", paddingRight: "50px" }}>Contacts</h3>
@@ -84,7 +95,6 @@ function PetContacts() {
       </div>
 
       <div>
-        <form onSubmit={handleSubmit} style={{}}>
           <div
             className="service-type"
             style={{
@@ -232,9 +242,8 @@ function PetContacts() {
             className="save-button"
             style={{ marginLeft: "50px", marginTop: "20px" }}
           >
-            <button type="submit">Save</button>
+            <button onClick={handleSubmit}>Save</button>
           </div>
-        </form>
       </div>
 
       {savedData.length > 0 && (

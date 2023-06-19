@@ -32,7 +32,7 @@ const SupplierLayout = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const { supplier } = useSelector((state) => state.supplier);
-
+  
   const onLogout = () => {
     dispatch(logoutSupplier());
     dispatch(reset());
@@ -145,13 +145,17 @@ const SupplierLayout = () => {
               </div>
               <div className='d-flex flex-wrap gap-3 align-items-center dropdown '>
                 <div>
-                  {supplierData && supplier.profile ? <img
-                    className='rounded-circle'
-                    src={`/public/images/avatar/${supplierData.profile[0]}`}
-                    alt='profile'
-                    height={50}
-                    width={50}
-                  /> : <img
+                  {
+                    console.log('fix default image?') ||
+                  // supplierData && supplier.profile ? <img
+                  //   className='rounded-circle'
+                  //   src={`/public/images/avatar/${supplierData.profile[0]}`}
+                  //   alt='profile'
+                  //   height={50}
+                  //   width={50}
+                  // /> : 
+                  <
+                    img
                     className='rounded-circle'
                     src={`https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png`}
                     alt='profile'
