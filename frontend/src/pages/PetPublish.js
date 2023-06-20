@@ -13,7 +13,7 @@ import axios from 'axios';
 import { BiArrowBack } from 'react-icons/bi';
 import { MdOutlineArrowForward } from 'react-icons/md';
 import { AiOutlineClose } from 'react-icons/ai';
-import '../css/Petcard.css';
+import '../css/PetPublish.css';
 
 const imagePlaceholder = '/images/pictureframe.svg';
 
