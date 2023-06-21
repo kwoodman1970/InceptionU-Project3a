@@ -112,7 +112,7 @@ const PetPublish = () => {
     );
     setSelectedFiles(newSelectedFiles);
     setPreviewImages(newPreviewImages);
-    updateMainPicture(newPreviewImages.length > 0 ? newPreviewImages[0] : '');
+    updateMainPicture(newPreviewImages.length > 0 ? newPreviewImages[0] : imagePlaceholder);
   };
 
   const formik = useFormik({
@@ -192,8 +192,6 @@ const PetPublish = () => {
       }
     },
   });
-
-  console.log(supplierState);
 
   return (
     <div>
@@ -802,10 +800,10 @@ const PetPublish = () => {
         </div>
         <div className='d-flex flex-wrap post-button gap-3'>
           <button type='submit' className='button border-0'>
-            Post Pet
+            Save
           </button>
           <Link className='button  border-0 ' to='/supplier'>
-            Go Back
+            Delete
           </Link>
         </div>
       </form>
