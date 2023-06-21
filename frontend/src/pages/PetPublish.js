@@ -13,7 +13,6 @@ import axios from 'axios';
 import { BiArrowBack } from 'react-icons/bi';
 import { MdOutlineArrowForward } from 'react-icons/md';
 import { AiOutlineClose } from 'react-icons/ai';
-import '../css/PetPublish.css';
 
 const imagePlaceholder = '/images/pictureframe.svg';
 
@@ -169,6 +168,21 @@ const PetPublish = () => {
         values.active = document.getElementById('active').checked;
         values.searchable = document.getElementById('searchable').checked;
         values.pictures = imagesNames;
+
+        values.socializedWith = [];
+
+        if (document.getElementById('socialized-with-kids').checked)
+          values.socializedWith.push('Kids');
+
+        if (document.getElementById('socialized-with-cats').checked)
+          values.socializedWith.push('Cats');
+
+        if (document.getElementById('socialized-with-dogs').checked)
+          values.socializedWith.push('Dogs');
+
+        if (document.getElementById('socialized-with-other-pets').checked)
+          values.socializedWith.push('Other Pets');
+
         values.allergyFriendly = document.getElementById('allergyFriendly').checked;
         dispatch(createPet(values));
         formik.resetForm();
@@ -191,7 +205,7 @@ const PetPublish = () => {
       <form
         onSubmit={(event) => {event.preventDefault(); return formik.handleSubmit();}}
         className='d-flex flex-column gap-10'>
-        <div className='my-2 w-100 rounded-3 mx-auto evenColumns3'>
+        <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
           <input
             type='hidden'
             name='cardType'
@@ -205,16 +219,17 @@ const PetPublish = () => {
             value={supplierState._id}
           />
 
-          <div className='span4rows'>
+          <div style={{gridRowEnd: 'span 4'}}>
             <img
               className='pet-img rounded-2'
+              style={{border: 'blue'}}
               id='MainPicture'
               src={imagePlaceholder}
               alt=''
               height='320'
             />
           </div>
-          <div className='span2columns' style={{display: 'flex'}}>
+          <div style={{display: 'flex', gridColumnEnd: 'span 2'}}>
             <div style={{flex: 1}}>
               <div>Owner:<br />{supplierState._id}</div>
             </div>
@@ -231,7 +246,7 @@ const PetPublish = () => {
             </div>
           </div>
 
-          <div class='span2columns' style={{display: 'flex'}}>
+          <div style={{display: 'flex', gridColumnEnd: 'span 2'}}>
             <div style={{flex: 1}}>
               <CustomInput
                 type='text'
@@ -319,7 +334,6 @@ const PetPublish = () => {
               name='postalCodeLocation'
               label='Postal Code *'
               i_id='postal-code'
-              d_class='span2columns'
               {...formik.getFieldProps('postalCodeLocation')}
             />
             <div className='error '>
@@ -344,7 +358,7 @@ const PetPublish = () => {
           </div>
         </div>
 
-        <div className='my-2 w-100 rounded-3 mx-auto evenColumns3'>
+        <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
           <div>
             <CustomInput
               type='date'
@@ -389,7 +403,7 @@ const PetPublish = () => {
           </div>
         </div>
 
-        <div id='AddPictures' className='my-2 w-100 rounded-3 mx-auto'>
+        <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '200px auto'}}>
           <Dropzone onDrop={onDrop}>
             {({ getRootProps, getInputProps }) => (
               <section>
@@ -446,16 +460,15 @@ const PetPublish = () => {
           </div>
         </div>
 
-        <div className='my-2 w-100 rounded-3 mx-auto evenColumns3'>
+        <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
           <textarea
-            style={{ fontSize: '14px' }}
+            style={{ fontSize: '14px', gridColumnEnd: 'span 3' }}
             className='mt-0 form-control text-dark'
-            class='span3columns'
             placeholder='Enter Description'
             {...formik.getFieldProps('about')}
             value={formik.values.about}>
           </textarea>
-          <div className='error ' class='span3columns'>
+          <div className='error' style={{gridColumnEnd: 'span 3'}}>
             {formik.touched.about && formik.errors.about ? (
               <div>{formik.errors.about}</div>
             ) : null}
@@ -631,8 +644,8 @@ const PetPublish = () => {
               ) : null}
             </div>
           </div>
-          <div>
-            <select
+          <div style={{gridRowEnd: 'span 2', paddingLeft: '1rem'}}>
+            {/* <select
               style={{ fontSize: '14px', height: '58px' }}
               className='  mt-3 form-select text-dark'
               name='socialized-with'
@@ -648,7 +661,38 @@ const PetPublish = () => {
               {formik.touched.socializedWith && formik.errors.socializedWith ? (
                 <div>{formik.errors.socializedWith}</div>
               ) : null}
-            </div>
+            </div> */}
+            <label style={{ fontSize: '13px' }}>
+              Socialized With:
+            </label><br />
+            <input
+              type='checkbox'
+              id='socialized-with-kids'
+            />
+            <label style={{ fontSize: '13px' }} for='socialized-with-kids'>
+              &nbsp;Kids
+            </label><br />
+            <input
+              type='checkbox'
+              id='socialized-with-cats'
+            />
+            <label style={{ fontSize: '13px' }} for='socialized-with-cats'>
+              &nbsp;Cats
+            </label><br />
+            <input
+              type='checkbox'
+              id='socialized-with-dogs'
+            />
+            <label style={{ fontSize: '13px' }} for='socialized-with-dogs'>
+              &nbsp;Dogs
+            </label><br />
+            <input
+              type='checkbox'
+              id='socialized-with-other-pets'
+            />
+            <label style={{ fontSize: '13px' }} for='socialized-with-other-pets'>
+              &nbsp;Other Pets
+            </label>
           </div>
 
           <div>
@@ -664,7 +708,7 @@ const PetPublish = () => {
             <label style={{ fontSize: '13px' }} for='allergyFriendly'>
               Allergy Friendly
             </label><br />
-            <ToggleSwitch id='allergyFriendly' isActive={isActive} onToggleChange={setIsActive} />
+            <ToggleSwitch id='allergyFriendly' isActive={isAllergyFriendly} onToggleChange={setIsAllergeyFriendly} />
             <div className='error '>
               {formik.touched.allergyFriendly && formik.errors.allergyFriendly ? (
                 <div>{formik.errors.allergyFriendly}</div>
