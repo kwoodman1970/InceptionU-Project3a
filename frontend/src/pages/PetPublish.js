@@ -234,7 +234,7 @@ const PetPublish = () => {
               <div>Owner:<br />{supplierState._id}</div>
             </div>
             <div>
-              <label style={{ fontSize: '13px' }} for='active'>
+              <label style={{ fontSize: '13px' }} htmlFor='active'>
                 Active
               </label><br />
               <ToggleSwitch id='active' isActive={isActive} onToggleChange={setIsActive} />
@@ -268,10 +268,10 @@ const PetPublish = () => {
                 id='searchable'
                 {...formik.getFieldProps('searchable')}
               />
-              <label style={{ fontSize: '13px' }} for='searchable'>
+              <label style={{ fontSize: '13px' }} htmlFor='searchable'>
                 &nbsp;Searchable?
               </label> */}
-              <label style={{ fontSize: '13px' }} for='searchable'>
+              <label style={{ fontSize: '13px' }} htmlFor='searchable'>
                 Searchable
               </label><br />
               <ToggleSwitch id='searchable' isActive={isSearchable} onToggleChange={setIsSearchable} />
@@ -669,28 +669,28 @@ const PetPublish = () => {
               type='checkbox'
               id='socialized-with-kids'
             />
-            <label style={{ fontSize: '13px' }} for='socialized-with-kids'>
+            <label style={{ fontSize: '13px' }} htmlFor='socialized-with-kids'>
               &nbsp;Kids
             </label><br />
             <input
               type='checkbox'
               id='socialized-with-cats'
             />
-            <label style={{ fontSize: '13px' }} for='socialized-with-cats'>
+            <label style={{ fontSize: '13px' }} htmlFor='socialized-with-cats'>
               &nbsp;Cats
             </label><br />
             <input
               type='checkbox'
               id='socialized-with-dogs'
             />
-            <label style={{ fontSize: '13px' }} for='socialized-with-dogs'>
+            <label style={{ fontSize: '13px' }} htmlFor='socialized-with-dogs'>
               &nbsp;Dogs
             </label><br />
             <input
               type='checkbox'
               id='socialized-with-other-pets'
             />
-            <label style={{ fontSize: '13px' }} for='socialized-with-other-pets'>
+            <label style={{ fontSize: '13px' }} htmlFor='socialized-with-other-pets'>
               &nbsp;Other Pets
             </label>
           </div>
@@ -702,10 +702,10 @@ const PetPublish = () => {
               id='allergy-friendly'
               {...formik.getFieldProps('allergyFriendly')}
             />
-            <label style={{ fontSize: '13px' }} for='allergyFriendly'>
+            <label style={{ fontSize: '13px' }} htmlFor='allergyFriendly'>
             &nbsp;Allergy Friendly?
             </label> */}
-            <label style={{ fontSize: '13px' }} for='allergyFriendly'>
+            <label style={{ fontSize: '13px' }} htmlFor='allergyFriendly'>
               Allergy Friendly
             </label><br />
             <ToggleSwitch id='allergyFriendly' isActive={isAllergyFriendly} onToggleChange={setIsAllergeyFriendly} />
