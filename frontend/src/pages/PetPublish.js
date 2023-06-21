@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import Dropzone from 'react-dropzone';
-import CustomInput from '../components/CustomInput';
-import ToggleSwitch from '../components/ToggleSwitch';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSpecies } from '../features/species/speicesSlice';
-import { createPet, reset, resetState } from '../features/pet/petSlice';
 import axios from 'axios';
 import { BiArrowBack } from 'react-icons/bi';
 import { MdOutlineArrowForward } from 'react-icons/md';
 import { AiOutlineClose } from 'react-icons/ai';
+import CustomInput from '../components/CustomInput';
+import ToggleSwitch from '../components/ToggleSwitch';
+import { getSpecies } from '../features/species/speicesSlice';
+import { createPet, reset, resetState } from '../features/pet/petSlice';
 
 const imagePlaceholder = '/images/pictureframe.svg';
 
@@ -26,6 +26,7 @@ let schema = Yup.object().shape({
   sex: Yup.string().required('* Sex is required'),
   size: Yup.string().required('* Pet size is required'),
 });
+
 const PetPublish = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,14 +62,20 @@ const PetPublish = () => {
   function updateMainPicture(newSource) {
     const imageElement = document.getElementById('MainPicture');
 
-    if (imageElement != null) {
-      console.log('Setting Main Picture source to ', newSource);
-      imageElement.setAttribute('src', newSource);
-    }
-    else {
-      console.log('Could not find image element.');
-    }
-}
+    imageElement?.setAttribute('src', newSource);
+  }
+
+  function buildStringsArrayFromCheckboxes(elementIds) {
+    const result = [];
+
+    elementIds.forEach(elementId => {
+      const element = document.getElementById(elementId);
+
+      if (element && element.checked) result.push(element.value);
+    });
+
+    return result;
+  }
 
   const onDrop = async (acceptedFiles) => {
     const newSelectedFiles = [...selectedFiles, ...acceptedFiles];
@@ -77,7 +84,6 @@ const PetPublish = () => {
       ...Array.from(acceptedFiles).map((file) => URL.createObjectURL(file)),];
     setSelectedFiles(newSelectedFiles);
     setPreviewImages(newPreviewImages);
-    console.log('Files dropped -- about to update Main Picture')
     updateMainPicture(newPreviewImages.length > 0 ? newPreviewImages[0] : '');
   };
 
@@ -136,15 +142,13 @@ const PetPublish = () => {
       eyeColor: '',
       allergyFriendly: false,
       socializedWith: [],
-      specialNeeds: '',
+      specialNeeds: [],
       images: [],
     },
     validationSchema: schema,
     onSubmit: async (values) => {
       let imagesNames = [];
       let promises = [];
-
-      console.log("Submitting form...");
 
       try {
         selectedFiles.forEach((file, index) => {
@@ -159,43 +163,37 @@ const PetPublish = () => {
               })
               .then((res) => {
                 imagesNames[index] = res.data.name;
-                console.log(`Uploaded ${imagesNames[index]}`)
               }),
           );
         });
 
         await Promise.all(promises);
-        values.active = document.getElementById('active').checked;
-        values.searchable = document.getElementById('searchable').checked;
+        values.active = document.getElementById('active')?.checked;
+        values.searchable = document.getElementById('searchable')?.checked;
         values.pictures = imagesNames;
 
-        values.socializedWith = [];
+        values.specialNeeds = buildStringsArrayFromCheckboxes(
+          ['special-needs-physical-disability', 'special-needs-chronic-medical-condition',
+           'special-needs-behavioural-issue']);
 
-        if (document.getElementById('socialized-with-kids').checked)
-          values.socializedWith.push('Kids');
+        values.socializedWith = buildStringsArrayFromCheckboxes(
+          ['socialized-with-kids', 'socialized-with-cats', 'socialized-with-dogs',
+            'socialized-with-other-pets']);
 
-        if (document.getElementById('socialized-with-cats').checked)
-          values.socializedWith.push('Cats');
-
-        if (document.getElementById('socialized-with-dogs').checked)
-          values.socializedWith.push('Dogs');
-
-        if (document.getElementById('socialized-with-other-pets').checked)
-          values.socializedWith.push('Other Pets');
-
-        values.allergyFriendly = document.getElementById('allergyFriendly').checked;
+        values.allergyFriendly = document.getElementById('allergy-friendly')?.checked;
         dispatch(createPet(values));
         formik.resetForm();
         dispatch(resetState());
         setTimeout(() => {
           navigate('/supplier/all-pets');
         }, 1000);
-        // alert(JSON.stringify(values, null, 2));
       } catch (error) {
         console.log(error);
       }
     },
   });
+
+  console.log(supplierState);
 
   return (
     <div>
@@ -231,7 +229,7 @@ const PetPublish = () => {
           </div>
           <div style={{display: 'flex', gridColumnEnd: 'span 2'}}>
             <div style={{flex: 1}}>
-              <div>Owner:<br />{supplierState._id}</div>
+              <div>Owner:<br />{supplierState.name}</div>
             </div>
             <div>
               <label style={{ fontSize: '13px' }} htmlFor='active'>
@@ -262,15 +260,6 @@ const PetPublish = () => {
               </div>
             </div>
             <div>
-              {/* <input
-                type='checkbox'
-                name='searchable'
-                id='searchable'
-                {...formik.getFieldProps('searchable')}
-              />
-              <label style={{ fontSize: '13px' }} htmlFor='searchable'>
-                &nbsp;Searchable?
-              </label> */}
               <label style={{ fontSize: '13px' }} htmlFor='searchable'>
                 Searchable
               </label><br />
@@ -481,9 +470,10 @@ const PetPublish = () => {
               name='sex'
               {...formik.getFieldProps('sex')}>
               <option value=''>Select Sex *</option>
-              <option value='Male'>Male</option>
-              <option value='Female'>Female</option>
+              <option value='No Preference'>No Preference</option>
               <option value='Unknown'>Unknown</option>
+              <option value='Female'>Female</option>
+              <option value='Male'>Male</option>
             </select>
             <div className='error '>
               {formik.touched.sex && formik.errors.sex ? (
@@ -492,13 +482,17 @@ const PetPublish = () => {
             </div>
           </div>
           <div>
-            <CustomInput
-              type='reproductiveStatus'
-              label='Reproductive Status'
-              id='reproductive-status'
-              name='color'
-              {...formik.getFieldProps('reproductiveStatus')}
-            />
+            <select
+              style={{ fontSize: '14px', height: '58px' }}
+              className='  mt-3 form-select text-dark'
+              name='reproductiveStatus'
+              {...formik.getFieldProps('reproductiveStatus')}>
+              <option value=''>Select Reproductive Status *</option>
+              <option value='No Preference'>No Preference</option>
+              <option value='Unknown'>Unknown</option>
+              <option value='Fixed/Altered'>Fixed/Altered</option>
+              <option value='Breeding'>Breeding</option>
+            </select>
             <div className='error '>
               {formik.touched.reproductiveStatus && formik.errors.reproductiveStatus ? (
                 <div>{formik.errors.reproductiveStatus}</div>
@@ -555,10 +549,17 @@ const PetPublish = () => {
               name='size'
               {...formik.getFieldProps('size')}>
               <option value=''>Select Size *</option>
+              <option value='No Preference'>No Preference</option>
+              <option value='Not Applicable'>Not Applicable</option>
+              <option value='Miniture'>Miniture</option>
+              <option value='X-Small'>X-Small</option>
               <option value='Small'>Small</option>
+              <option value='Small-Medium'>Small-Medium</option>
               <option value='Medium'>Medium</option>
+              <option value='Medium-Large'>Medium-Large</option>
               <option value='Large'>Large</option>
-              <option value='Extra Large'>Extra Large</option>
+              <option value='X-Large'>X-Large</option>
+              <option value='Giant'>Giant</option>
             </select>
             <div className='error '>
               {formik.touched.size && formik.errors.size ? (
@@ -571,12 +572,16 @@ const PetPublish = () => {
             <select
               style={{ fontSize: '14px', height: '58px' }}
               className='  mt-3 form-select text-dark'
-              name='energy-level'
+              name='energyLevel'
               {...formik.getFieldProps('energyLevel')}>
               <option value=''>Select Energy Level</option>
+              <option value='No Preference'>No Preference</option>
+              <option value='Unknown'>Unknown</option>
+              <option value='Docile'>Docile</option>
               <option value='Low'>Low</option>
               <option value='Medium'>Medium</option>
               <option value='High'>High</option>
+              <option value='Aggressive'>Aggressive</option>
             </select>
             <div className='error '>
               {formik.touched.energyLevel && formik.errors.energyLevel ? (
@@ -588,11 +593,16 @@ const PetPublish = () => {
             <select
               style={{ fontSize: '14px', height: '58px' }}
               className='  mt-3 form-select text-dark'
-              name='hair-length'
+              name='hairLength'
               {...formik.getFieldProps('hairLength')}>
               <option value=''>Select Hair Length</option>
+              <option value='No Preference'>No Preference</option>
+              <option value='Not Applicable'>Not Applicable</option>
+              <option value='Hairless'>Hairless</option>
               <option value='Short'>Short</option>
+              <option value='Short-Medium'>Short-Medium</option>
               <option value='Medium'>Medium</option>
+              <option value='Medium-Long'>Medium-Long</option>
               <option value='Long'>Long</option>
             </select>
             <div className='error '>
@@ -602,13 +612,26 @@ const PetPublish = () => {
             </div>
           </div>
           <div>
-            <CustomInput
-              type='text'
-              name='eye-color'
-              label='Eye Color'
-              id='eyeColor'
-              {...formik.getFieldProps('eyeColor')}
-            />
+            <select
+              style={{ fontSize: '14px', height: '58px' }}
+              className='  mt-3 form-select text-dark'
+              name='eyeColor'
+              {...formik.getFieldProps('eyeColor')}>
+              <option value=''>Select Eye Color</option>
+              <option value='No Preference'>No Preference</option>
+              <option value='Not Applicable'>Not Applicable</option>
+              <option value='Brown'>Brown</option>
+              <option value='Amber'>Amber</option>
+              <option value='Orange/Copper'>Orange/Copper</option>
+              <option value='Hazel'>Hazel</option>
+              <option value='Yellow'>Yellow</option>
+              <option value='Green'>Green</option>
+              <option value='Blue'>Blue</option>
+              <option value='Heterochromia'>Heterochromia</option>
+              <option value='Dichroic'>Dichroic</option>
+              <option value='Blue-Green'>Blue-Green</option>
+              <option value='Red'>Red</option>
+            </select>
             <div className='error '>
               {formik.touched.eyeColor && formik.errors.eyeColor ? (
                 <div>{formik.errors.eyeColor}</div>
@@ -617,27 +640,110 @@ const PetPublish = () => {
           </div>
 
           <div>
-            <CustomInput
-              type='text'
+            <select
+              style={{ fontSize: '14px', height: '58px' }}
+              className='  mt-3 form-select text-dark'
               name='hairColor'
-              label='Hair Color'
-              id='hair-color'
-              {...formik.getFieldProps('hairColor')}
-            />
+              {...formik.getFieldProps('hairColor')}>
+              <option value=''>Select Hair Color</option>
+              <option value='No Preference'>No Preference</option>
+              <option value='Not Applicable'>Not Applicable</option>
+              <option value='Agouti'>Agouti</option>
+              <option value='Albino'>Albino</option>
+              <option value='Apricot Point'>Apricot Point</option>
+              <option value='Black'>Black</option>
+              <option value='Black Otter'>Black Otter</option>
+              <option value='Blue'>Blue</option>
+              <option value='Blue Cream'>Blue Cream</option>
+              <option value='Blue Point'>Blue Point</option>
+              <option value='Broken'>Broken</option>
+              <option value='Brown'>Brown</option>
+              <option value='Calico'>Calico</option>
+              <option value='Caramel Point'>Caramel Point</option>
+              <option value='Castor'>Castor</option>
+              <option value='Chinchilla Grey'>Chinchilla Grey</option>
+              <option value='Chocolate'>Chocolate</option>
+              <option value='Chocolate Point'>Chocolate Point</option>
+              <option value='Cinnamon'>Cinnamon</option>
+              <option value='Cinnamon Point'>Cinnamon Point</option>
+              <option value='Cream'>Cream</option>
+              <option value='Cream Point'>Cream Point</option>
+              <option value='Fawn'>Fawn</option>
+              <option value='Fawn Point'>Fawn Point</option>
+              <option value='Frosted Pearl'>Frosted Pearl</option>
+              <option value='Gold'>Gold</option>
+              <option value='Golden'>Golden</option>
+              <option value='Grey'>Grey</option>
+              <option value='Lavender'>Lavender</option>
+              <option value='Lavender Cream'>Lavender Cream</option>
+              <option value='Lilac'>Lilac</option>
+              <option value='Lilac Point'>Lilac Point</option>
+              <option value='Liver'>Liver</option>
+              <option value='Lynx Point'>Lynx Point</option>
+              <option value='Morph'>Morph</option>
+              <option value='Opal'>Opal</option>
+              <option value='Orange'>Orange</option>
+              <option value='Pearl'>Pearl</option>
+              <option value='Piebalds'>Piebalds</option>
+              <option value='Red'>Red</option>
+              <option value='Red Point'>Red Point</option>
+              <option value='Rust'>Rust</option>
+              <option value='Sable'>Sable</option>
+              <option value='Sable'>Sable</option>
+              <option value='Sandy'>Sandy</option>
+              <option value='Seal Point'>Seal Point</option>
+              <option value='Self'>Self</option>
+              <option value='Shaded'>Shaded</option>
+              <option value='Silver'>Silver</option>
+              <option value='Standard'>Standard</option>
+              <option value='Steel'>Steel</option>
+              <option value='Tabby'>Tabby</option>
+              <option value='Tabby Point'>Tabby Point</option>
+              <option value='Tan Pattern'>Tan Pattern</option>
+              <option value='Ticked'>Ticked</option>
+              <option value='Tortie Point'>Tortie Point</option>
+              <option value='Tortoise'>Tortoise</option>
+              <option value='Tortoiseshell'>Tortoiseshell</option>
+              <option value='Tri-colored'>Tri-colored</option>
+              <option value='Tuxedo'>Tuxedo</option>
+              <option value='White'>White</option>
+              <option value='Wideband'>Wideband</option>
+              <option value='Yellow'>Yellow</option>
+            </select>
             <div className='error '>
               {formik.touched.hairColor && formik.errors.hairColor ? (
                 <div>{formik.errors.hairColor}</div>
               ) : null}
             </div>
           </div>
-          <div>
-            <CustomInput
-              type='text'
-              name='special-needs'
-              label='Special Needs'
-              id='eyeColor'
-              {...formik.getFieldProps('specialNeeds')}
+          <div style={{gridRowEnd: 'span 2', paddingLeft: '1rem'}}>
+            <label style={{ fontSize: '13px' }}>
+              Special Needs:
+            </label><br />
+            <input
+              type='checkbox'
+              id='special-needs-physical-disability'
+              value='Physical Disability'
             />
+            <label style={{ fontSize: '13px' }} htmlFor='special-needs-physical-disability'>
+              &nbsp;Physical Disability
+            </label><br />
+            <input
+              type='checkbox'
+              id='special-needs-chronic-medical-condition'
+              value='Chronic Medical Condition'
+            />
+            <label style={{ fontSize: '13px' }} htmlFor='special-needs-chronic-medical-condition'>
+              &nbsp;Chronic Medical Condition
+            </label><br />
+            <input
+              type='checkbox'
+              id='special-needs-behavioural-issue'
+              value='Behavioural Issue'
+            />
+            <label style={{ fontSize: '13px' }} htmlFor='special-needs-behavioural-issue'>
+              &nbsp;Behavioural Issue
+            </label><br />
             <div className='error '>
               {formik.touched.specialNeeds && formik.errors.specialNeeds ? (
                 <div>{formik.errors.specialNeeds}</div>
@@ -645,29 +751,13 @@ const PetPublish = () => {
             </div>
           </div>
           <div style={{gridRowEnd: 'span 2', paddingLeft: '1rem'}}>
-            {/* <select
-              style={{ fontSize: '14px', height: '58px' }}
-              className='  mt-3 form-select text-dark'
-              name='socialized-with'
-              multiple
-              {...formik.getFieldProps('socializedWith')}>
-              <option value=''>Select Socialized With</option>
-              <option value='Kids'>Kids</option>
-              <option value='Cats'>Cats</option>
-              <option value='Dogs'>Dogs</option>
-              <option value='Other Pets'>Other Pets</option>
-            </select>
-            <div className='error '>
-              {formik.touched.socializedWith && formik.errors.socializedWith ? (
-                <div>{formik.errors.socializedWith}</div>
-              ) : null}
-            </div> */}
             <label style={{ fontSize: '13px' }}>
               Socialized With:
             </label><br />
             <input
               type='checkbox'
               id='socialized-with-kids'
+              value='Kids'
             />
             <label style={{ fontSize: '13px' }} htmlFor='socialized-with-kids'>
               &nbsp;Kids
@@ -675,6 +765,7 @@ const PetPublish = () => {
             <input
               type='checkbox'
               id='socialized-with-cats'
+              value='Cats'
             />
             <label style={{ fontSize: '13px' }} htmlFor='socialized-with-cats'>
               &nbsp;Cats
@@ -682,6 +773,7 @@ const PetPublish = () => {
             <input
               type='checkbox'
               id='socialized-with-dogs'
+              value='Dogs'
             />
             <label style={{ fontSize: '13px' }} htmlFor='socialized-with-dogs'>
               &nbsp;Dogs
@@ -689,6 +781,7 @@ const PetPublish = () => {
             <input
               type='checkbox'
               id='socialized-with-other-pets'
+              value='Other Pets'
             />
             <label style={{ fontSize: '13px' }} htmlFor='socialized-with-other-pets'>
               &nbsp;Other Pets
@@ -696,19 +789,10 @@ const PetPublish = () => {
           </div>
 
           <div>
-            {/* <input
-              type='checkbox'
-              name='allergy-friendly'
-              id='allergy-friendly'
-              {...formik.getFieldProps('allergyFriendly')}
-            />
-            <label style={{ fontSize: '13px' }} htmlFor='allergyFriendly'>
-            &nbsp;Allergy Friendly?
-            </label> */}
             <label style={{ fontSize: '13px' }} htmlFor='allergyFriendly'>
               Allergy Friendly
             </label><br />
-            <ToggleSwitch id='allergyFriendly' isActive={isAllergyFriendly} onToggleChange={setIsAllergeyFriendly} />
+            <ToggleSwitch id='allergy-friendly' isActive={isAllergyFriendly} onToggleChange={setIsAllergeyFriendly} />
             <div className='error '>
               {formik.touched.allergyFriendly && formik.errors.allergyFriendly ? (
                 <div>{formik.errors.allergyFriendly}</div>
