@@ -28,6 +28,7 @@ let schema = Yup.object().shape({
 });
 
 const PetGeneral = (props) => {
+  const setCurrentTab = props.setCurrentTab;
   const cardType = props.cardType;
   const setPetObjectId = props.setPetObjectId;
 
@@ -184,7 +185,10 @@ const PetGeneral = (props) => {
             'socialized-with-other-pets']);
 
         const createdPet = dispatch(createPet(values));
-        createdPet.then((response) => {console.log(response); setPetObjectId(response.payload._id);});
+        createdPet.then((response) => {
+          setCurrentTab((currentTab) => currentTab + 1);
+          setPetObjectId(response.payload._id);
+        });
         // console.log(createdPet);
 
         // formik.resetForm();
