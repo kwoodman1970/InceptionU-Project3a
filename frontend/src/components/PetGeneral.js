@@ -143,7 +143,7 @@ const PetGeneral = (props) => {
       hairLength: '',
       hairColor: '',
       eyeColor: '',
-      allergyFriendly: false,
+      allergyFriendly: '',
       socializedWith: [],
       specialNeeds: [],
       images: [],
@@ -183,8 +183,6 @@ const PetGeneral = (props) => {
           ['socialized-with-kids', 'socialized-with-cats', 'socialized-with-dogs',
             'socialized-with-other-pets']);
 
-        values.allergyFriendly = document.getElementById('allergy-friendly')?.checked;
-
         const createdPet = dispatch(createPet(values));
         createdPet.then((response) => {console.log(response); setPetObjectId(response.payload._id);});
         // console.log(createdPet);
@@ -202,616 +200,634 @@ const PetGeneral = (props) => {
 
   return (
     <div>
-      <h5>general information</h5>
-
       <form
         onSubmit={(event) => {event.preventDefault(); return formik.handleSubmit();}}
         className='d-flex flex-column gap-10'>
-        <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
-          <input
-            type='hidden'
-            name='cardType'
-            id='carde-type'
-            value='Supplier'
-          />
-          <input
-            type='hidden'
-            name='owner'
-            id='owner'
-            value={supplierState._id}
-          />
+        <section>
+          <h5>general information</h5>
 
-          <div style={{gridRowEnd: 'span 4'}}>
-            <img
-              className='pet-img rounded-2'
-              style={{border: 'blue'}}
-              id='MainPicture'
-              src={imagePlaceholder}
-              alt=''
-              height='320'
+          <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
+            <input
+              type='hidden'
+              name='cardType'
+              id='carde-type'
+              value='Supplier'
             />
-          </div>
-          <div style={{display: 'flex', gridColumnEnd: 'span 2'}}>
-            <div style={{flex: 1}}>
-              <div>Owner:<br />{supplierState.name}</div>
-            </div>
-            <div>
-              <label style={{ fontSize: '13px' }} htmlFor='active'>
-                Active
-              </label><br />
-              <ToggleSwitch id='active' isActive={isActive} onToggleChange={setIsActive} />
-              <div className='error '>
-                {formik.touched.active && formik.errors.active ? (
-                  <div>{formik.errors.active}</div>
-                ) : null}
-              </div>
-            </div>
-          </div>
-
-          <div style={{display: 'flex', gridColumnEnd: 'span 2'}}>
-            <div style={{flex: 1}}>
-              <CustomInput
-                type='text'
-                name='name'
-                label='Pet Name *'
-                i_id='pet-name'
-                {...formik.getFieldProps('name')}
-              />
-              <div className='error '>
-                {formik.touched.name && formik.errors.name ? (
-                  <div>{formik.errors.name}</div>
-                ) : null}
-              </div>
-            </div>
-            <div>
-              <label style={{ fontSize: '13px' }} htmlFor='searchable'>
-                Searchable
-              </label><br />
-              <ToggleSwitch id='searchable' isActive={isSearchable} onToggleChange={setIsSearchable} />
-              <div className='error '>
-                {formik.touched.searchable && formik.errors.searchable ? (
-                  <div>{formik.errors.searchable}</div>
-                ) : null}
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <select
-              style={{ fontSize: '14px', height: '58px' }}
-              className='  mt-3 form-select text-dark'
-              name='species'
-              {...formik.getFieldProps('species')}>
-              <option value=''>Select Species *</option>
-
-              {speciesState.map((i, j) => {
-                return (
-                  <option key={j} value={i.species}>
-                    {i.species}
-                  </option>
-                );
-              })}
-            </select>
-            <div className='error '>
-              {formik.touched.species && formik.errors.species ? (
-                <div>{formik.errors.species}</div>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <select
-              style={{ fontSize: '14px', height: '58px' }}
-              className='  mt-3 form-select text-dark'
-              name='breed'
-              {...formik.getFieldProps('breed')}>
-              <option value=''>Select Breed *</option>
-
-              {speciesState.map((i, j) => {
-                return (
-                  <option key={j} value={i.breed}>
-                    {i.breed}
-                  </option>
-                );
-              })}
-            </select>
-            <div className='error '>
-              {formik.touched.breed && formik.errors.breed ? (
-                <div>{formik.errors.breed}</div>
-              ) : null}
-            </div>
-          </div>
-
-          <div>
-            <CustomInput
-              type='text'
-              name='postalCodeLocation'
-              label='Postal Code *'
-              i_id='postal-code'
-              {...formik.getFieldProps('postalCodeLocation')}
+            <input
+              type='hidden'
+              name='owner'
+              id='owner'
+              value={supplierState._id}
             />
-            <div className='error '>
-              {formik.touched.postalCodeLocation && formik.errors.postalCodeLocation ? (
-                <div>{formik.errors.postalCodeLocation}</div>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <CustomInput
-              type='number'
-              name='price'
-              label='Price'
-              i_id='price'
-              {...formik.getFieldProps('price')}
-            />
-            <div className='error '>
-              {formik.touched.price && formik.errors.price ? (
-                <div>{formik.errors.price}</div>
-              ) : null}
-            </div>
-          </div>
-        </div>
 
-        <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
-          <div>
-            <CustomInput
-              type='date'
-              name='dateOfBirth'
-              label='Date Of Birth *'
-              id='date-of-birth'
-              {...formik.getFieldProps('dateOfBirth')}
-            />
-            <div className='error '>
-              {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (
-                <div>{formik.errors.dateOfBirth}</div>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <CustomInput
-              type='date'
-              name='adoptionDate'
-              label='Adoption Date'
-              id='adoption-date'
-              {...formik.getFieldProps('adoptionDate')}
-            />
-            <div className='error '>
-              {formik.touched.adoptionDate && formik.errors.adoptionDate ? (
-                <div>{formik.errors.adoptionDate}</div>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <CustomInput
-              type='date'
-              name='dateOfDeath'
-              label='Date Of Death'
-              id='date-of-death'
-              {...formik.getFieldProps('dateOfDeath')}
-            />
-            <div className='error '>
-              {formik.touched.dateOfDeath && formik.errors.dateOfDeath ? (
-                <div>{formik.errors.dateOfDeath}</div>
-              ) : null}
-            </div>
-          </div>
-        </div>
-
-        <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '200px auto'}}>
-          <Dropzone onDrop={onDrop}>
-            {({ getRootProps, getInputProps }) => (
-              <section>
-                <div className='dropzone' {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  <p>
-                    Drag and drop some files here, or click to select files to
-                    upload your pet images
-                  </p>
-                </div>
-              </section>
-            )}
-          </Dropzone>
-          <div className='d-flex flex-wrap py-3 gap-3 bg-light' style={{display: 'inline'}}>
-            {previewImages.map((image, index) => (
-              <div className='position-relative  p-3 rounded-3' key={index}>
+              <div style={{gridRowEnd: 'span 4'}}>
                 <img
                   className='pet-img rounded-2'
-                  height='200px'
-                  src={image}
-                  key={index}
-                  alt={`Preview ${index}`}
+                  style={{border: 'blue'}}
+                  id='MainPicture'
+                  src={imagePlaceholder}
+                  alt=''
+                  height='320'
                 />
-                <div className='pet-img-close position-absolute'>
-                  <button
-                    className='pet-img-close-button border-0'
-                    type='button'
-                    onClick={() => handleRemoveImage(index)}>
-                    <AiOutlineClose className='fs-6' />
-                  </button>
+              </div>
+              <div style={{display: 'flex', gridColumnEnd: 'span 2'}}>
+                <div style={{flex: 1}}>
+                  <div>Owner:<br />{supplierState.name}</div>
                 </div>
-                <div className='pet-img-back position-absolute'>
-                  {index !== 0 && (
-                    <button
-                      className='pet-img-back-button border-0'
-                      type='button'
-                      onClick={() => handleImageOrderChange(index, index - 1)}>
-                      <BiArrowBack className='fs-6' />
-                    </button>
-                  )}
-                </div>
-                <div className='pet-img-forward position-absolute'>
-                  {index !== previewImages.length - 1 && (
-                    <button
-                      className='pet-img-forward-button border-0'
-                      type='button'
-                      onClick={() => handleImageOrderChange(index, index + 1)}>
-                      <MdOutlineArrowForward className='fs-6' />
-                    </button>
-                  )}
+                <div>
+                  <label style={{ fontSize: '13px' }} htmlFor='active'>
+                    Active
+                  </label><br />
+                  <ToggleSwitch id='active' isActive={isActive} onToggleChange={setIsActive} />
+                  <div className='error '>
+                    {formik.touched.active && formik.errors.active ? (
+                      <div>{formik.errors.active}</div>
+                    ) : null}
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
 
-        <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
-          <textarea
-            style={{ fontSize: '14px', gridColumnEnd: 'span 3' }}
-            className='mt-0 form-control text-dark'
-            placeholder='Enter Description'
-            {...formik.getFieldProps('about')}
-            value={formik.values.about}>
-          </textarea>
-          <div className='error' style={{gridColumnEnd: 'span 3'}}>
-            {formik.touched.about && formik.errors.about ? (
-              <div>{formik.errors.about}</div>
-            ) : null}
-          </div>
+              <div style={{display: 'flex', gridColumnEnd: 'span 2'}}>
+                <div style={{flex: 1}}>
+                  <CustomInput
+                    type='text'
+                    name='name'
+                    label='Pet Name *'
+                    i_id='pet-name'
+                    {...formik.getFieldProps('name')}
+                  />
+                  <div className='error '>
+                    {formik.touched.name && formik.errors.name ? (
+                      <div>{formik.errors.name}</div>
+                    ) : null}
+                  </div>
+                </div>
+                <div>
+                  <label style={{ fontSize: '13px' }} htmlFor='searchable'>
+                    Searchable
+                  </label><br />
+                  <ToggleSwitch id='searchable' isActive={isSearchable} onToggleChange={setIsSearchable} />
+                  <div className='error '>
+                    {formik.touched.searchable && formik.errors.searchable ? (
+                      <div>{formik.errors.searchable}</div>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
 
-          <div>
-            <select
-              style={{ fontSize: '14px', height: '58px' }}
-              className='  mt-3 form-select text-dark'
-              name='sex'
-              {...formik.getFieldProps('sex')}>
-              <option value=''>Select Sex *</option>
-              <option value='No Preference'>No Preference</option>
-              <option value='Unknown'>Unknown</option>
-              <option value='Female'>Female</option>
-              <option value='Male'>Male</option>
-            </select>
-            <div className='error '>
-              {formik.touched.sex && formik.errors.sex ? (
-                <div>{formik.errors.sex}</div>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <select
-              style={{ fontSize: '14px', height: '58px' }}
-              className='  mt-3 form-select text-dark'
-              name='reproductiveStatus'
-              {...formik.getFieldProps('reproductiveStatus')}>
-              <option value=''>Select Reproductive Status *</option>
-              <option value='No Preference'>No Preference</option>
-              <option value='Unknown'>Unknown</option>
-              <option value='Fixed/Altered'>Fixed/Altered</option>
-              <option value='Breeding'>Breeding</option>
-            </select>
-            <div className='error '>
-              {formik.touched.reproductiveStatus && formik.errors.reproductiveStatus ? (
-                <div>{formik.errors.reproductiveStatus}</div>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <CustomInput
-              type='date'
-              name='alteredDate'
-              label='Altered Date'
-              id='altered-date'
-              {...formik.getFieldProps('alteredDate')}
-            />
-            <div className='error '>
-              {formik.touched.alteredDate && formik.errors.alteredDate ? (
-                <div>{formik.errors.alteredDate}</div>
-              ) : null}
-            </div>
-          </div>
+              <div>
+                <select
+                  style={{ fontSize: '14px', height: '58px' }}
+                  className='  mt-3 form-select text-dark'
+                  name='species'
+                  {...formik.getFieldProps('species')}>
+                  <option value=''>Select Species *</option>
 
-          <div>
-            <CustomInput
-              type='text'
-              name='tattooID'
-              label='Tattoo ID'
-              id='tattoo-id'
-              {...formik.getFieldProps('tattooID')}
-            />
-            <div className='error '>
-              {formik.touched.tattooID && formik.errors.tattooID ? (
-                <div>{formik.errors.tattooID}</div>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <CustomInput
-              type='text'
-              name='microchipID'
-              label='Microchip ID'
-              id='microchip-id'
-              {...formik.getFieldProps('microchipID')}
-            />
-            <div className='error '>
-              {formik.touched.microchipID && formik.errors.microchipID ? (
-                <div>{formik.errors.microchipID}</div>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <select
-              style={{ fontSize: '14px', height: '58px' }}
-              className='  mt-3 form-select text-dark'
-              name='size'
-              {...formik.getFieldProps('size')}>
-              <option value=''>Select Size *</option>
-              <option value='No Preference'>No Preference</option>
-              <option value='Not Applicable'>Not Applicable</option>
-              <option value='Miniture'>Miniture</option>
-              <option value='X-Small'>X-Small</option>
-              <option value='Small'>Small</option>
-              <option value='Small-Medium'>Small-Medium</option>
-              <option value='Medium'>Medium</option>
-              <option value='Medium-Large'>Medium-Large</option>
-              <option value='Large'>Large</option>
-              <option value='X-Large'>X-Large</option>
-              <option value='Giant'>Giant</option>
-            </select>
-            <div className='error '>
-              {formik.touched.size && formik.errors.size ? (
-                <div>{formik.errors.size}</div>
-              ) : null}
-            </div>
-          </div>
+                  {speciesState.map((i, j) => {
+                    return (
+                      <option key={j} value={i.species}>
+                        {i.species}
+                      </option>
+                    );
+                  })}
+                </select>
+                <div className='error '>
+                  {formik.touched.species && formik.errors.species ? (
+                    <div>{formik.errors.species}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <select
+                  style={{ fontSize: '14px', height: '58px' }}
+                  className='  mt-3 form-select text-dark'
+                  name='breed'
+                  {...formik.getFieldProps('breed')}>
+                  <option value=''>Select Breed *</option>
 
-          <div>
-            <select
-              style={{ fontSize: '14px', height: '58px' }}
-              className='  mt-3 form-select text-dark'
-              name='energyLevel'
-              {...formik.getFieldProps('energyLevel')}>
-              <option value=''>Select Energy Level</option>
-              <option value='No Preference'>No Preference</option>
-              <option value='Unknown'>Unknown</option>
-              <option value='Docile'>Docile</option>
-              <option value='Low'>Low</option>
-              <option value='Medium'>Medium</option>
-              <option value='High'>High</option>
-              <option value='Aggressive'>Aggressive</option>
-            </select>
-            <div className='error '>
-              {formik.touched.energyLevel && formik.errors.energyLevel ? (
-                <div>{formik.errors.energyLevel}</div>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <select
-              style={{ fontSize: '14px', height: '58px' }}
-              className='  mt-3 form-select text-dark'
-              name='hairLength'
-              {...formik.getFieldProps('hairLength')}>
-              <option value=''>Select Hair Length</option>
-              <option value='No Preference'>No Preference</option>
-              <option value='Not Applicable'>Not Applicable</option>
-              <option value='Hairless'>Hairless</option>
-              <option value='Short'>Short</option>
-              <option value='Short-Medium'>Short-Medium</option>
-              <option value='Medium'>Medium</option>
-              <option value='Medium-Long'>Medium-Long</option>
-              <option value='Long'>Long</option>
-            </select>
-            <div className='error '>
-              {formik.touched.hairLength && formik.errors.hairLength ? (
-                <div>{formik.errors.hairLength}</div>
-              ) : null}
-            </div>
-          </div>
-          <div>
-            <select
-              style={{ fontSize: '14px', height: '58px' }}
-              className='  mt-3 form-select text-dark'
-              name='eyeColor'
-              {...formik.getFieldProps('eyeColor')}>
-              <option value=''>Select Eye Color</option>
-              <option value='No Preference'>No Preference</option>
-              <option value='Not Applicable'>Not Applicable</option>
-              <option value='Brown'>Brown</option>
-              <option value='Amber'>Amber</option>
-              <option value='Orange/Copper'>Orange/Copper</option>
-              <option value='Hazel'>Hazel</option>
-              <option value='Yellow'>Yellow</option>
-              <option value='Green'>Green</option>
-              <option value='Blue'>Blue</option>
-              <option value='Heterochromia'>Heterochromia</option>
-              <option value='Dichroic'>Dichroic</option>
-              <option value='Blue-Green'>Blue-Green</option>
-              <option value='Red'>Red</option>
-            </select>
-            <div className='error '>
-              {formik.touched.eyeColor && formik.errors.eyeColor ? (
-                <div>{formik.errors.eyeColor}</div>
-              ) : null}
-            </div>
-          </div>
+                  {speciesState.map((i, j) => {
+                    return (
+                      <option key={j} value={i.breed}>
+                        {i.breed}
+                      </option>
+                    );
+                  })}
+                </select>
+                <div className='error '>
+                  {formik.touched.breed && formik.errors.breed ? (
+                    <div>{formik.errors.breed}</div>
+                  ) : null}
+                </div>
+              </div>
 
-          <div>
-            <select
-              style={{ fontSize: '14px', height: '58px' }}
-              className='  mt-3 form-select text-dark'
-              name='hairColor'
-              {...formik.getFieldProps('hairColor')}>
-              <option value=''>Select Hair Color</option>
-              <option value='No Preference'>No Preference</option>
-              <option value='Not Applicable'>Not Applicable</option>
-              <option value='Agouti'>Agouti</option>
-              <option value='Albino'>Albino</option>
-              <option value='Apricot Point'>Apricot Point</option>
-              <option value='Black'>Black</option>
-              <option value='Black Otter'>Black Otter</option>
-              <option value='Blue'>Blue</option>
-              <option value='Blue Cream'>Blue Cream</option>
-              <option value='Blue Point'>Blue Point</option>
-              <option value='Broken'>Broken</option>
-              <option value='Brown'>Brown</option>
-              <option value='Calico'>Calico</option>
-              <option value='Caramel Point'>Caramel Point</option>
-              <option value='Castor'>Castor</option>
-              <option value='Chinchilla Grey'>Chinchilla Grey</option>
-              <option value='Chocolate'>Chocolate</option>
-              <option value='Chocolate Point'>Chocolate Point</option>
-              <option value='Cinnamon'>Cinnamon</option>
-              <option value='Cinnamon Point'>Cinnamon Point</option>
-              <option value='Cream'>Cream</option>
-              <option value='Cream Point'>Cream Point</option>
-              <option value='Fawn'>Fawn</option>
-              <option value='Fawn Point'>Fawn Point</option>
-              <option value='Frosted Pearl'>Frosted Pearl</option>
-              <option value='Gold'>Gold</option>
-              <option value='Golden'>Golden</option>
-              <option value='Grey'>Grey</option>
-              <option value='Lavender'>Lavender</option>
-              <option value='Lavender Cream'>Lavender Cream</option>
-              <option value='Lilac'>Lilac</option>
-              <option value='Lilac Point'>Lilac Point</option>
-              <option value='Liver'>Liver</option>
-              <option value='Lynx Point'>Lynx Point</option>
-              <option value='Morph'>Morph</option>
-              <option value='Opal'>Opal</option>
-              <option value='Orange'>Orange</option>
-              <option value='Pearl'>Pearl</option>
-              <option value='Piebalds'>Piebalds</option>
-              <option value='Red'>Red</option>
-              <option value='Red Point'>Red Point</option>
-              <option value='Rust'>Rust</option>
-              <option value='Sable'>Sable</option>
-              <option value='Sable'>Sable</option>
-              <option value='Sandy'>Sandy</option>
-              <option value='Seal Point'>Seal Point</option>
-              <option value='Self'>Self</option>
-              <option value='Shaded'>Shaded</option>
-              <option value='Silver'>Silver</option>
-              <option value='Standard'>Standard</option>
-              <option value='Steel'>Steel</option>
-              <option value='Tabby'>Tabby</option>
-              <option value='Tabby Point'>Tabby Point</option>
-              <option value='Tan Pattern'>Tan Pattern</option>
-              <option value='Ticked'>Ticked</option>
-              <option value='Tortie Point'>Tortie Point</option>
-              <option value='Tortoise'>Tortoise</option>
-              <option value='Tortoiseshell'>Tortoiseshell</option>
-              <option value='Tri-colored'>Tri-colored</option>
-              <option value='Tuxedo'>Tuxedo</option>
-              <option value='White'>White</option>
-              <option value='Wideband'>Wideband</option>
-              <option value='Yellow'>Yellow</option>
-            </select>
-            <div className='error '>
-              {formik.touched.hairColor && formik.errors.hairColor ? (
-                <div>{formik.errors.hairColor}</div>
-              ) : null}
+              <div>
+                <CustomInput
+                  type='text'
+                  name='postalCodeLocation'
+                  label='Postal Code *'
+                  i_id='postal-code'
+                  {...formik.getFieldProps('postalCodeLocation')}
+                />
+                <div className='error '>
+                  {formik.touched.postalCodeLocation && formik.errors.postalCodeLocation ? (
+                    <div>{formik.errors.postalCodeLocation}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <CustomInput
+                  type='number'
+                  name='price'
+                  label='Price'
+                  i_id='price'
+                  {...formik.getFieldProps('price')}
+                />
+                <div className='error '>
+                  {formik.touched.price && formik.errors.price ? (
+                    <div>{formik.errors.price}</div>
+                  ) : null}
+                </div>
+              </div>
             </div>
-          </div>
-          <div style={{gridRowEnd: 'span 2', paddingLeft: '1rem'}}>
-            <label style={{ fontSize: '13px' }}>
-              Special Needs:
-            </label><br />
-            <input
-              type='checkbox'
-              id='special-needs-physical-disability'
-              value='Physical Disability'
-            />
-            <label style={{ fontSize: '13px' }} htmlFor='special-needs-physical-disability'>
-              &nbsp;Physical Disability
-            </label><br />
-            <input
-              type='checkbox'
-              id='special-needs-chronic-medical-condition'
-              value='Chronic Medical Condition'
-            />
-            <label style={{ fontSize: '13px' }} htmlFor='special-needs-chronic-medical-condition'>
-              &nbsp;Chronic Medical Condition
-            </label><br />
-            <input
-              type='checkbox'
-              id='special-needs-behavioural-issue'
-              value='Behavioural Issue'
-            />
-            <label style={{ fontSize: '13px' }} htmlFor='special-needs-behavioural-issue'>
-              &nbsp;Behavioural Issue
-            </label><br />
-            <div className='error '>
-              {formik.touched.specialNeeds && formik.errors.specialNeeds ? (
-                <div>{formik.errors.specialNeeds}</div>
-              ) : null}
-            </div>
-          </div>
-          <div style={{gridRowEnd: 'span 2', paddingLeft: '1rem'}}>
-            <label style={{ fontSize: '13px' }}>
-              Socialized With:
-            </label><br />
-            <input
-              type='checkbox'
-              id='socialized-with-kids'
-              value='Kids'
-            />
-            <label style={{ fontSize: '13px' }} htmlFor='socialized-with-kids'>
-              &nbsp;Kids
-            </label><br />
-            <input
-              type='checkbox'
-              id='socialized-with-cats'
-              value='Cats'
-            />
-            <label style={{ fontSize: '13px' }} htmlFor='socialized-with-cats'>
-              &nbsp;Cats
-            </label><br />
-            <input
-              type='checkbox'
-              id='socialized-with-dogs'
-              value='Dogs'
-            />
-            <label style={{ fontSize: '13px' }} htmlFor='socialized-with-dogs'>
-              &nbsp;Dogs
-            </label><br />
-            <input
-              type='checkbox'
-              id='socialized-with-other-pets'
-              value='Other Pets'
-            />
-            <label style={{ fontSize: '13px' }} htmlFor='socialized-with-other-pets'>
-              &nbsp;Other Pets
-            </label>
-          </div>
 
-          <div>
-            <label style={{ fontSize: '13px' }} htmlFor='allergyFriendly'>
-              Allergy Friendly
-            </label><br />
-            <ToggleSwitch id='allergy-friendly' isActive={isAllergyFriendly} onToggleChange={setIsAllergeyFriendly} />
-            <div className='error '>
-              {formik.touched.allergyFriendly && formik.errors.allergyFriendly ? (
-                <div>{formik.errors.allergyFriendly}</div>
-              ) : null}
+            <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
+              <div>
+                <CustomInput
+                  type='date'
+                  name='dateOfBirth'
+                  label='Date Of Birth *'
+                  id='date-of-birth'
+                  {...formik.getFieldProps('dateOfBirth')}
+                />
+                <div className='error '>
+                  {formik.touched.dateOfBirth && formik.errors.dateOfBirth ? (
+                    <div>{formik.errors.dateOfBirth}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <CustomInput
+                  type='date'
+                  name='adoptionDate'
+                  label='Adoption Date'
+                  id='adoption-date'
+                  {...formik.getFieldProps('adoptionDate')}
+                />
+                <div className='error '>
+                  {formik.touched.adoptionDate && formik.errors.adoptionDate ? (
+                    <div>{formik.errors.adoptionDate}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <CustomInput
+                  type='date'
+                  name='dateOfDeath'
+                  label='Date Of Death'
+                  id='date-of-death'
+                  {...formik.getFieldProps('dateOfDeath')}
+                />
+                <div className='error '>
+                  {formik.touched.dateOfDeath && formik.errors.dateOfDeath ? (
+                    <div>{formik.errors.dateOfDeath}</div>
+                  ) : null}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div className='d-flex flex-wrap post-button gap-3'>
-          <button type='submit' className='button border-0'>
-            Save
-          </button>
-          <Link className='button  border-0 ' to='/supplier'>
-            Delete
-          </Link>
-        </div>
+
+            <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '200px auto'}}>
+              <Dropzone onDrop={onDrop}>
+                {({ getRootProps, getInputProps }) => (
+                  <section>
+                    <div className='dropzone' {...getRootProps()}>
+                      <input {...getInputProps()} />
+                      <p>
+                        Drag and drop some files here, or click to select files to
+                        upload your pet images
+                      </p>
+                    </div>
+                  </section>
+                )}
+              </Dropzone>
+              <div className='d-flex flex-wrap py-3 gap-3 bg-light' style={{display: 'inline'}}>
+                {previewImages.map((image, index) => (
+                  <div className='position-relative  p-3 rounded-3' key={index}>
+                    <img
+                      className='pet-img rounded-2'
+                      height='200px'
+                      src={image}
+                      key={index}
+                      alt={`Preview ${index}`}
+                    />
+                    <div className='pet-img-close position-absolute'>
+                      <button
+                        className='pet-img-close-button border-0'
+                        type='button'
+                        onClick={() => handleRemoveImage(index)}>
+                        <AiOutlineClose className='fs-6' />
+                      </button>
+                    </div>
+                    <div className='pet-img-back position-absolute'>
+                      {index !== 0 && (
+                        <button
+                          className='pet-img-back-button border-0'
+                          type='button'
+                          onClick={() => handleImageOrderChange(index, index - 1)}>
+                          <BiArrowBack className='fs-6' />
+                        </button>
+                      )}
+                    </div>
+                    <div className='pet-img-forward position-absolute'>
+                      {index !== previewImages.length - 1 && (
+                        <button
+                          className='pet-img-forward-button border-0'
+                          type='button'
+                          onClick={() => handleImageOrderChange(index, index + 1)}>
+                          <MdOutlineArrowForward className='fs-6' />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
+              <textarea
+                style={{ fontSize: '14px', gridColumnEnd: 'span 3' }}
+                className='mt-0 form-control text-dark'
+                placeholder='Enter Description'
+                {...formik.getFieldProps('about')}
+                value={formik.values.about}>
+              </textarea>
+              <div className='error' style={{gridColumnEnd: 'span 3'}}>
+                {formik.touched.about && formik.errors.about ? (
+                  <div>{formik.errors.about}</div>
+                ) : null}
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h5>pet attributes</h5>
+
+            <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
+              <div>
+                <select
+                  style={{ fontSize: '14px', height: '58px' }}
+                  className='  mt-3 form-select text-dark'
+                  name='sex'
+                  {...formik.getFieldProps('sex')}>
+                  <option value=''>Select Sex *</option>
+                  <option value='No Preference'>No Preference</option>
+                  <option value='Unknown'>Unknown</option>
+                  <option value='Female'>Female</option>
+                  <option value='Male'>Male</option>
+                </select>
+                <div className='error '>
+                  {formik.touched.sex && formik.errors.sex ? (
+                    <div>{formik.errors.sex}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <select
+                  style={{ fontSize: '14px', height: '58px' }}
+                  className='  mt-3 form-select text-dark'
+                  name='reproductiveStatus'
+                  {...formik.getFieldProps('reproductiveStatus')}>
+                  <option value=''>Select Reproductive Status *</option>
+                  <option value='No Preference'>No Preference</option>
+                  <option value='Unknown'>Unknown</option>
+                  <option value='Fixed/Altered'>Fixed/Altered</option>
+                  <option value='Breeding'>Breeding</option>
+                </select>
+                <div className='error '>
+                  {formik.touched.reproductiveStatus && formik.errors.reproductiveStatus ? (
+                    <div>{formik.errors.reproductiveStatus}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <CustomInput
+                  type='date'
+                  name='alteredDate'
+                  label='Altered Date'
+                  id='altered-date'
+                  {...formik.getFieldProps('alteredDate')}
+                />
+                <div className='error '>
+                  {formik.touched.alteredDate && formik.errors.alteredDate ? (
+                    <div>{formik.errors.alteredDate}</div>
+                  ) : null}
+                </div>
+              </div>
+
+              <div>
+                <CustomInput
+                  type='text'
+                  name='tattooID'
+                  label='Tattoo ID'
+                  id='tattoo-id'
+                  {...formik.getFieldProps('tattooID')}
+                />
+                <div className='error '>
+                  {formik.touched.tattooID && formik.errors.tattooID ? (
+                    <div>{formik.errors.tattooID}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <CustomInput
+                  type='text'
+                  name='microchipID'
+                  label='Microchip ID'
+                  id='microchip-id'
+                  {...formik.getFieldProps('microchipID')}
+                />
+                <div className='error '>
+                  {formik.touched.microchipID && formik.errors.microchipID ? (
+                    <div>{formik.errors.microchipID}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <select
+                  style={{ fontSize: '14px', height: '58px' }}
+                  className='  mt-3 form-select text-dark'
+                  name='size'
+                  {...formik.getFieldProps('size')}>
+                  <option value=''>Select Size *</option>
+                  <option value='No Preference'>No Preference</option>
+                  <option value='Not Applicable'>Not Applicable</option>
+                  <option value='Miniture'>Miniture</option>
+                  <option value='X-Small'>X-Small</option>
+                  <option value='Small'>Small</option>
+                  <option value='Small-Medium'>Small-Medium</option>
+                  <option value='Medium'>Medium</option>
+                  <option value='Medium-Large'>Medium-Large</option>
+                  <option value='Large'>Large</option>
+                  <option value='X-Large'>X-Large</option>
+                  <option value='Giant'>Giant</option>
+                </select>
+                <div className='error '>
+                  {formik.touched.size && formik.errors.size ? (
+                    <div>{formik.errors.size}</div>
+                  ) : null}
+                </div>
+              </div>
+
+              <div>
+                <select
+                  style={{ fontSize: '14px', height: '58px' }}
+                  className='  mt-3 form-select text-dark'
+                  name='energyLevel'
+                  {...formik.getFieldProps('energyLevel')}>
+                  <option value=''>Select Energy Level</option>
+                  <option value='No Preference'>No Preference</option>
+                  <option value='Unknown'>Unknown</option>
+                  <option value='Docile'>Docile</option>
+                  <option value='Low'>Low</option>
+                  <option value='Medium'>Medium</option>
+                  <option value='High'>High</option>
+                  <option value='Aggressive'>Aggressive</option>
+                </select>
+                <div className='error '>
+                  {formik.touched.energyLevel && formik.errors.energyLevel ? (
+                    <div>{formik.errors.energyLevel}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <select
+                  style={{ fontSize: '14px', height: '58px' }}
+                  className='  mt-3 form-select text-dark'
+                  name='hairLength'
+                  {...formik.getFieldProps('hairLength')}>
+                  <option value=''>Select Hair Length</option>
+                  <option value='No Preference'>No Preference</option>
+                  <option value='Not Applicable'>Not Applicable</option>
+                  <option value='Hairless'>Hairless</option>
+                  <option value='Short'>Short</option>
+                  <option value='Short-Medium'>Short-Medium</option>
+                  <option value='Medium'>Medium</option>
+                  <option value='Medium-Long'>Medium-Long</option>
+                  <option value='Long'>Long</option>
+                </select>
+                <div className='error '>
+                  {formik.touched.hairLength && formik.errors.hairLength ? (
+                    <div>{formik.errors.hairLength}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <select
+                  style={{ fontSize: '14px', height: '58px' }}
+                  className='  mt-3 form-select text-dark'
+                  name='eyeColor'
+                  {...formik.getFieldProps('eyeColor')}>
+                  <option value=''>Select Eye Color</option>
+                  <option value='No Preference'>No Preference</option>
+                  <option value='Not Applicable'>Not Applicable</option>
+                  <option value='Brown'>Brown</option>
+                  <option value='Amber'>Amber</option>
+                  <option value='Orange/Copper'>Orange/Copper</option>
+                  <option value='Hazel'>Hazel</option>
+                  <option value='Yellow'>Yellow</option>
+                  <option value='Green'>Green</option>
+                  <option value='Blue'>Blue</option>
+                  <option value='Heterochromia'>Heterochromia</option>
+                  <option value='Dichroic'>Dichroic</option>
+                  <option value='Blue-Green'>Blue-Green</option>
+                  <option value='Red'>Red</option>
+                </select>
+                <div className='error '>
+                  {formik.touched.eyeColor && formik.errors.eyeColor ? (
+                    <div>{formik.errors.eyeColor}</div>
+                  ) : null}
+                </div>
+              </div>
+
+              <div>
+                <select
+                  style={{ fontSize: '14px', height: '58px' }}
+                  className='  mt-3 form-select text-dark'
+                  name='hairColor'
+                  {...formik.getFieldProps('hairColor')}>
+                  <option value=''>Select Hair Color</option>
+                  <option value='No Preference'>No Preference</option>
+                  <option value='Not Applicable'>Not Applicable</option>
+                  <option value='Agouti'>Agouti</option>
+                  <option value='Albino'>Albino</option>
+                  <option value='Apricot Point'>Apricot Point</option>
+                  <option value='Black'>Black</option>
+                  <option value='Black Otter'>Black Otter</option>
+                  <option value='Blue'>Blue</option>
+                  <option value='Blue Cream'>Blue Cream</option>
+                  <option value='Blue Point'>Blue Point</option>
+                  <option value='Broken'>Broken</option>
+                  <option value='Brown'>Brown</option>
+                  <option value='Calico'>Calico</option>
+                  <option value='Caramel Point'>Caramel Point</option>
+                  <option value='Castor'>Castor</option>
+                  <option value='Chinchilla Grey'>Chinchilla Grey</option>
+                  <option value='Chocolate'>Chocolate</option>
+                  <option value='Chocolate Point'>Chocolate Point</option>
+                  <option value='Cinnamon'>Cinnamon</option>
+                  <option value='Cinnamon Point'>Cinnamon Point</option>
+                  <option value='Cream'>Cream</option>
+                  <option value='Cream Point'>Cream Point</option>
+                  <option value='Fawn'>Fawn</option>
+                  <option value='Fawn Point'>Fawn Point</option>
+                  <option value='Frosted Pearl'>Frosted Pearl</option>
+                  <option value='Gold'>Gold</option>
+                  <option value='Golden'>Golden</option>
+                  <option value='Grey'>Grey</option>
+                  <option value='Lavender'>Lavender</option>
+                  <option value='Lavender Cream'>Lavender Cream</option>
+                  <option value='Lilac'>Lilac</option>
+                  <option value='Lilac Point'>Lilac Point</option>
+                  <option value='Liver'>Liver</option>
+                  <option value='Lynx Point'>Lynx Point</option>
+                  <option value='Morph'>Morph</option>
+                  <option value='Opal'>Opal</option>
+                  <option value='Orange'>Orange</option>
+                  <option value='Pearl'>Pearl</option>
+                  <option value='Piebalds'>Piebalds</option>
+                  <option value='Red'>Red</option>
+                  <option value='Red Point'>Red Point</option>
+                  <option value='Rust'>Rust</option>
+                  <option value='Sable'>Sable</option>
+                  <option value='Sable'>Sable</option>
+                  <option value='Sandy'>Sandy</option>
+                  <option value='Seal Point'>Seal Point</option>
+                  <option value='Self'>Self</option>
+                  <option value='Shaded'>Shaded</option>
+                  <option value='Silver'>Silver</option>
+                  <option value='Standard'>Standard</option>
+                  <option value='Steel'>Steel</option>
+                  <option value='Tabby'>Tabby</option>
+                  <option value='Tabby Point'>Tabby Point</option>
+                  <option value='Tan Pattern'>Tan Pattern</option>
+                  <option value='Ticked'>Ticked</option>
+                  <option value='Tortie Point'>Tortie Point</option>
+                  <option value='Tortoise'>Tortoise</option>
+                  <option value='Tortoiseshell'>Tortoiseshell</option>
+                  <option value='Tri-colored'>Tri-colored</option>
+                  <option value='Tuxedo'>Tuxedo</option>
+                  <option value='White'>White</option>
+                  <option value='Wideband'>Wideband</option>
+                  <option value='Yellow'>Yellow</option>
+                </select>
+                <div className='error '>
+                  {formik.touched.hairColor && formik.errors.hairColor ? (
+                    <div>{formik.errors.hairColor}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div style={{gridRowEnd: 'span 2', paddingLeft: '1rem'}}>
+                <label style={{ fontSize: '13px' }}>
+                  Special Needs:
+                </label><br />
+                <input
+                  type='checkbox'
+                  id='special-needs-physical-disability'
+                  value='Physical Disability'
+                />
+                <label style={{ fontSize: '13px' }} htmlFor='special-needs-physical-disability'>
+                  &nbsp;Physical Disability
+                </label><br />
+                <input
+                  type='checkbox'
+                  id='special-needs-chronic-medical-condition'
+                  value='Chronic Medical Condition'
+                />
+                <label style={{ fontSize: '13px' }} htmlFor='special-needs-chronic-medical-condition'>
+                  &nbsp;Chronic Medical Condition
+                </label><br />
+                <input
+                  type='checkbox'
+                  id='special-needs-behavioural-issue'
+                  value='Behavioural Issue'
+                />
+                <label style={{ fontSize: '13px' }} htmlFor='special-needs-behavioural-issue'>
+                  &nbsp;Behavioural Issue
+                </label><br />
+                <div className='error '>
+                  {formik.touched.specialNeeds && formik.errors.specialNeeds ? (
+                    <div>{formik.errors.specialNeeds}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div style={{gridRowEnd: 'span 2', paddingLeft: '1rem'}}>
+                <label style={{ fontSize: '13px' }}>
+                  Socialized With:
+                </label><br />
+                <input
+                  type='checkbox'
+                  id='socialized-with-kids'
+                  value='Kids'
+                />
+                <label style={{ fontSize: '13px' }} htmlFor='socialized-with-kids'>
+                  &nbsp;Kids
+                </label><br />
+                <input
+                  type='checkbox'
+                  id='socialized-with-cats'
+                  value='Cats'
+                />
+                <label style={{ fontSize: '13px' }} htmlFor='socialized-with-cats'>
+                  &nbsp;Cats
+                </label><br />
+                <input
+                  type='checkbox'
+                  id='socialized-with-dogs'
+                  value='Dogs'
+                />
+                <label style={{ fontSize: '13px' }} htmlFor='socialized-with-dogs'>
+                  &nbsp;Dogs
+                </label><br />
+                <input
+                  type='checkbox'
+                  id='socialized-with-other-pets'
+                  value='Other Pets'
+                />
+                <label style={{ fontSize: '13px' }} htmlFor='socialized-with-other-pets'>
+                  &nbsp;Other Pets
+                </label>
+              </div>
+
+              <div>
+                <select
+                  style={{ fontSize: '14px', height: '58px' }}
+                  className='  mt-3 form-select text-dark'
+                  name='allergyFriendly'
+                  {...formik.getFieldProps('allergyFriendly')}>
+                  <option value=''>Select Allergy Friendly</option>
+                  <option value='No Preference'>No Preference</option>
+                  <option value='Yes'>Yes</option>
+                  <option value='No'>No</option>
+                </select>
+                {/* <label style={{ fontSize: '13px' }} htmlFor='allergyFriendly'>
+                  Allergy Friendly
+                </label><br /> */}
+                {/* <ToggleSwitch id='allergy-friendly' isActive={isAllergyFriendly} onToggleChange={setIsAllergeyFriendly} /> */}
+                <div className='error '>
+                  {formik.touched.allergyFriendly && formik.errors.allergyFriendly ? (
+                    <div>{formik.errors.allergyFriendly}</div>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+            <div className='d-flex flex-wrap post-button gap-3'>
+              <button type='submit' className='button border-0'>
+                Save
+              </button>
+              <Link className='button  border-0 ' to='/supplier'>
+                Delete
+              </Link>
+            </div>
+          </section>
       </form>
     </div>
   );

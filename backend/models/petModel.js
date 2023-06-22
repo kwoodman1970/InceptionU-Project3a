@@ -207,7 +207,8 @@ var petSchema = new mongoose.Schema(
       ],
     },
     allergyFriendly: {
-      type: Boolean,
+      type: String,
+      enum: ['', 'No Preference', 'Yes', 'No'],
     },
     socializedWith: {
       type: [String],
