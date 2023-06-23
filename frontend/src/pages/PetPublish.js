@@ -19,9 +19,9 @@ const PetPublish = () => {
       </div>
       <div style={{border: '1px solid black', padding: '4px'}}>
         {currentTab === 0 && <PetGeneral setCurrentTab={setCurrentTab} cardType='Supplier' setPetObjectId={setPetObjectId} />}
-        {currentTab === 2 && <p>Pet object is {petObjectId ? petObjectId : 'unknown'}</p>}
-        {currentTab === 3 && <p>Pet object is {petObjectId ? petObjectId : 'unknown'}</p>}
-        {currentTab === 4 && <p>Pet object is {petObjectId ? petObjectId : 'unknown'}</p>}
+        {currentTab === -1 && <p>Records component goes here (Pet object ID is {petObjectId ? petObjectId : 'unknown'})</p>}
+        {currentTab === 1 && <p>Contacts component goes here (Pet object ID is {petObjectId ? petObjectId : 'unknown'})</p>}
+        {currentTab === 2 && <p>Pedigree component goes here (Pet object ID is {petObjectId ? petObjectId : 'unknown'})</p>}
       </div>
     </>);
 }

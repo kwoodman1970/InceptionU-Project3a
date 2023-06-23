@@ -186,8 +186,11 @@ const PetGeneral = (props) => {
 
         const createdPet = dispatch(createPet(values));
         createdPet.then((response) => {
-          setCurrentTab((currentTab) => currentTab + 1);
-          setPetObjectId(response.payload._id);
+          console.log(response);
+          if (response.meta.requestStatus === 'fulfilled') {
+            setCurrentTab((currentTab) => currentTab + 1);
+            setPetObjectId(response.payload._id);
+          }
         });
         // console.log(createdPet);
 
@@ -500,7 +503,7 @@ const PetGeneral = (props) => {
                   className='  mt-3 form-select text-dark'
                   name='reproductiveStatus'
                   {...formik.getFieldProps('reproductiveStatus')}>
-                  <option value=''>Select Reproductive Status *</option>
+                  <option value=''>Select Reproductive Status</option>
                   <option value='No Preference'>No Preference</option>
                   <option value='Unknown'>Unknown</option>
                   <option value='Fixed/Altered'>Fixed/Altered</option>
