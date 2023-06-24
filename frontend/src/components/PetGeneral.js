@@ -33,7 +33,6 @@ const PetGeneral = (props) => {
   const setPetObjectId = props.setPetObjectId;
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   useEffect(() => {
     dispatch(getSpecies());
     dispatch(reset());
@@ -47,7 +46,6 @@ const PetGeneral = (props) => {
 
   const [isActive, setIsActive] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
-  const [isAllergyFriendly, setIsAllergeyFriendly] = useState(true);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
 
@@ -172,6 +170,8 @@ const PetGeneral = (props) => {
         });
 
         await Promise.all(promises);
+        values.cardType = cardType;
+        values.owner = supplierState._id;
         values.active = document.getElementById('active')?.checked;
         values.searchable = document.getElementById('searchable')?.checked;
         values.pictures = imagesNames;
@@ -184,9 +184,11 @@ const PetGeneral = (props) => {
           ['socialized-with-kids', 'socialized-with-cats', 'socialized-with-dogs',
             'socialized-with-other-pets']);
 
+        values.contacts = [];
+        values.records = [];
+
         const createdPet = dispatch(createPet(values));
         createdPet.then((response) => {
-          console.log(response);
           if (response.meta.requestStatus === 'fulfilled') {
             setCurrentTab((currentTab) => currentTab + 1);
             setPetObjectId(response.payload._id);
@@ -214,28 +216,15 @@ const PetGeneral = (props) => {
           <h5>general information</h5>
 
           <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
-            <input
-              type='hidden'
-              name='cardType'
-              id='carde-type'
-              value='Supplier'
-            />
-            <input
-              type='hidden'
-              name='owner'
-              id='owner'
-              value={supplierState._id}
-            />
-
-              <div style={{gridRowEnd: 'span 4'}}>
-                <img
-                  className='pet-img rounded-2'
-                  style={{border: 'blue'}}
-                  id='MainPicture'
-                  src={imagePlaceholder}
-                  alt=''
-                  height='320'
-                />
+            <div style={{gridRowEnd: 'span 4'}}>
+              <img
+                className='pet-img rounded-2'
+                style={{border: 'blue'}}
+                id='MainPicture'
+                src={imagePlaceholder}
+                alt=''
+                height='320'
+              />
               </div>
               <div style={{display: 'flex', gridColumnEnd: 'span 2'}}>
                 <div style={{flex: 1}}>
@@ -815,10 +804,6 @@ const PetGeneral = (props) => {
                   <option value='Yes'>Yes</option>
                   <option value='No'>No</option>
                 </select>
-                {/* <label style={{ fontSize: '13px' }} htmlFor='allergyFriendly'>
-                  Allergy Friendly
-                </label><br /> */}
-                {/* <ToggleSwitch id='allergy-friendly' isActive={isAllergyFriendly} onToggleChange={setIsAllergeyFriendly} /> */}
                 <div className='error '>
                   {formik.touched.allergyFriendly && formik.errors.allergyFriendly ? (
                     <div>{formik.errors.allergyFriendly}</div>

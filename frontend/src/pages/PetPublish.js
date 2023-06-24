@@ -13,7 +13,7 @@ const PetPublish = () => {
 
       <div className='tabsRow'>
         <div name={`${currentTab === 0}`}>General</div>
-        <div name={false}>Records</div>
+        <div name={`${false}`}>Records</div>
         <div name={`${currentTab === 1}`}>Contacts</div>
         <div name={`${currentTab === 2}`}>Pedigree</div>
       </div>
