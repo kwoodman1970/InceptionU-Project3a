@@ -41,10 +41,26 @@ const createPet = asyncHandler(async (req, res) => {
     socializedWith,
     specialNeeds,
     images,
+    
 } = req.body;
 
+const {serviceCompanyName,
+  serviceLocationName,
+  serviceWebsite,
+  serviceAddress,
+  serviceCity,
+  serviceProvince,
+  servicePostalCode,
+  serviceEmail,
+  servicePhoneNumber,
+  serviceContactFirstName,
+  serviceContactLastName,
+  accountNumber,
+  activateDeactivate,}
+  = req.body;
+
   //input validation
-  if (!name || !species || !breed) {
+  if (!name || !species || !breed || !serviceCompanyName || !serviceWebsite || !servicePostalCode) {
     res.status(400);
     throw new Error('Please fill out all required fields');
   }
@@ -88,6 +104,23 @@ const createPet = asyncHandler(async (req, res) => {
     socializedWith,
     specialNeeds,
     images,
+    contacts: [
+      {
+        serviceCompanyName,
+        serviceLocationName,
+        serviceWebsite,
+        serviceAddress,
+        serviceCity,
+        serviceProvince,
+        servicePostalCode,
+        serviceEmail,
+        servicePhoneNumber,
+        serviceContactFirstName,
+        serviceContactLastName,
+        accountNumber,
+        activateDeactivate,
+      },
+    ]
   });
   if (pet) {
     res.status(200).json({
@@ -188,14 +221,16 @@ const getPetsByOwnerId = asyncHandler(async (req, res) => {
     res.json(getedPets);
   } catch (error) {
     throw new Error(error);
+
   }
 });
 
-const updatePet = asyncHandler(async (req, res) => {
+const updatePet= asyncHandler(async (req, res) => {
+  const { petId } = req.params;
   const {
-    token,
-    name,
-    species,
+    //token,
+    //name,
+    //species,
     // breed,
     // age,
     // color,
@@ -204,7 +239,77 @@ const updatePet = asyncHandler(async (req, res) => {
     // price,
     // image_1,
     // location,
+    serviceCompanyName,
+    serviceLocationName,
+    serviceWebsite,
+    serviceAddress,
+    serviceCity,
+    serviceProvince,
+    servicePostalCode,
+    serviceEmail,
+    servicePhoneNumber,
+    serviceContactFirstName,
+    serviceContactLastName,
+    accountNumber,
+    activateDeactivate,
   } = req.body;
+
+try {
+    const pet = await Pet.findById(petId);
+console.log("pet : ",pet)
+    if (!pet) {
+      res.status(404);
+      throw new Error('Pet not found');
+    }
+
+
+   // Construct the new contact object
+   const newContact = {
+    serviceCompanyName,
+    serviceLocationName,
+    serviceWebsite,
+    serviceAddress,
+    serviceCity,
+    serviceProvince,
+    servicePostalCode,
+    serviceEmail,
+    servicePhoneNumber,
+    serviceContactFirstName,
+    serviceContactLastName,
+    accountNumber,
+    activateDeactivate,
+  };
+
+  // Update the contacts array in the pet document
+    pet.contacts.push({
+    serviceCompanyName:serviceCompanyName,
+      serviceLocationName:serviceLocationName,
+      serviceWebsite:serviceWebsite,
+      serviceAddress:serviceAddress,
+      serviceCity:serviceCity,
+      serviceProvince:serviceProvince,
+      servicePostalCode:servicePostalCode,
+      serviceEmail:serviceEmail,
+      servicePhoneNumber:servicePhoneNumber,
+      serviceContactFirstName:serviceContactFirstName,
+      serviceContactLastName:serviceContactLastName,
+      accountNumber:accountNumber,
+      activateDeactivate:activateDeactivate,
+    });
+
+
+    // Save the updated pet document
+    const updatedPet = await pet.updateOne({contacts:pet.contacts});
+
+    res.json(updatedPet);
+  } catch (error) {
+    res.status(400);
+    throw new Error(error);
+  }
+});
+
+const updatePetContacts = async (req, res) => {
+  try {
   const user = await Supplier.findOne({ refreshToken: req.body.token });
   if (!user) {
     res.status(400);
@@ -234,7 +339,10 @@ const updatePet = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error('Pet not found or not owned by user');
   }
-});
+} catch (error) {
+  res.status(500).json({ error: error.message });
+}
+};
 
 const deletePet = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -377,6 +485,15 @@ const countPets = asyncHandler(async (req, res) => {
     res.status(401);
     throw new Error(error);
   }
+
+
+
+});
+
+// Fetch saved pet contacts
+const getSavedPetContacts = asyncHandler(async (req, res) => {
+  const savedData = await Pet.find({});
+  res.json(savedData);
 });
 
 //export
@@ -389,7 +506,9 @@ module.exports = {
   getAllPets,
   getPetBySearch,
   getPetsByOwnerId,
+  getSavedPetContacts,
   updatePet,
+   updatePetContacts,
   deletePet,
   updatePetStatus,
   toWishList,

@@ -15,11 +15,13 @@ const {
   getPetByOwner,
   getPetBySearch,
   updatePet,
+  updatePetContacts,
   deletePet,
   getPetsByOwnerId,
   updatePetStatus,
   toWishList,
   countPets,
+  getSavedPetContacts,
 } = require('../controller/petController');
 
 const router = express.Router();
@@ -48,6 +50,15 @@ router.get('/search/:query', getPetBySearch);
 
 router.put('/:id', protectSupplier, updatePetStatus);
 
+ router.put('/:petId/contacts', protectSupplier, updatePetContacts);
+
+// router.post('/addcontacts', addPetContact);
+
 router.delete('/:id', protectSupplier, supplier, deletePet);
+
+router.put('/addcontacts/:petId', updatePet);
+
+// Get saved pet contacts
+router.get('/addcontacts', getSavedPetContacts);
 
 module.exports = router;

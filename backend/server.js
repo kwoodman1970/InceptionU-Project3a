@@ -20,6 +20,7 @@ const session = require('express-session');
 const path = require('path');
 // const bodyParser = require('')
 const cors = require('cors');
+const petController = require('./controller/petController');
 
 // connect to MongoDB
 connectDB();
@@ -53,13 +54,21 @@ app.use('/api/review', reviewRoute);
 
 // set route for pet
 app.use('/api/pets', petRoute);
+// app.put('/api/pets/:petId/contacts', petController.updatePetContacts);
+//app.put('/api/pets',(req,res) =>{
+  // mongo.update(req.body.petId,'petcontacts', req.body)
+  // console.log('/api/pets'. req.body.petid)
+  // console.log(JSON.stringify(req.body))
+  // res.send("ok")
+//})
+
 
 // set route for supplier
 app.use('/api/supplier', supplierRoute);
 
 // img route
 app.use('/api/img', imgRoute);
-app.use('/api/avatar', avatarRoute);
+app.use('/api/avatar', avatarRoute); 
 app.use('/api/upload', uploadRoute);
 
 // enquiry route
