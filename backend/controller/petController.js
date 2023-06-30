@@ -193,7 +193,6 @@ const getPetsByOwnerId = asyncHandler(async (req, res) => {
 
 const updatePet = asyncHandler(async (req, res) => {
   const {
-    token,
     name,
     species,
     // breed,
@@ -210,20 +209,9 @@ const updatePet = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Invalid token');
   }
-  const pet = await Pet.findById(req.params.id);
+  const pet = await Pet.findByIdAndUpdate(req.params.id, req.body);
 
-  if (pet && pet.owner.equals(user._id)) {
-    pet.name = name || pet.name;
-    pet.species = species || pet.species;
-    // pet.breed = breed || pet.breed;
-    // pet.age = age || pet.age;
-    // pet.color = color || pet.color;
-    // pet.eye_color = eye_color || pet.eye_color;
-    // pet.size = size || pet.size;
-    // pet.price = price || pet.price;
-    // pet.image_1 = image_1 || pet.image_1;
-    // pet.location = location || pet.location;
-    const updatedPet = await pet.save();
+  if (pet?.owner.equals(user._id)) {
     res.json({
       _id: updatedPet._id,
       owner_id: updatedPet.owner_id,

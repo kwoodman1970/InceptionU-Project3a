@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PetGeneral from '../components/PetGeneral';
+import PetRecords from '../components/PetRecords';
 // import '../css/TabsRow.css';
 
 const PetPublish = () => {
@@ -8,6 +9,8 @@ const PetPublish = () => {
 
   return (
     <>
+      <PetRecords petObjectId='64907d5cf089b3a0e8ea61a3' setCurrentTab={setCurrentTab} setPetObjectId={setPetObjectId} />
+
       <h4 className=' mt-0'>Post Your Pet</h4>
       <p className=' mb-0'>Please fill all information to process!</p>
 
@@ -18,7 +21,7 @@ const PetPublish = () => {
         <div name={`${currentTab === 2}`}>Pedigree</div>
       </div>
       <div style={{border: '1px solid black', padding: '4px'}}>
-        {currentTab === 0 && <PetGeneral setCurrentTab={setCurrentTab} cardType='Supplier' setPetObjectId={setPetObjectId} />}
+        {currentTab === 0 && <PetGeneral cardType='Supplier' setCurrentTab={setCurrentTab} setPetObjectId={setPetObjectId} />}
         {currentTab === -1 && <p>Records component goes here (Pet object ID is {petObjectId ? petObjectId : 'unknown'})</p>}
         {currentTab === 1 && <p>Contacts component goes here (Pet object ID is {petObjectId ? petObjectId : 'unknown'})</p>}
         {currentTab === 2 && <p>Pedigree component goes here (Pet object ID is {petObjectId ? petObjectId : 'unknown'})</p>}

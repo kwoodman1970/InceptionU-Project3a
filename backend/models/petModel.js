@@ -39,9 +39,6 @@ var petRecordSchema = new mongoose.Schema(
     note: {
       type: String,
     },
-    currentMedication: {
-      type: String,
-    }
   }
 )
 
