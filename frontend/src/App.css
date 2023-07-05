@@ -132,6 +132,33 @@ a {
 
 /* Register Button CSS  end here*/
 
+/* CSS for tabs row */
+
+.tabsRow {
+  padding: 20px 0px 12px 0px;
+}
+
+.tabsRow > * {
+  display: inline;
+  background-color: black;
+  margin: 0px 2px 0px 2px;
+  padding: 13px 33px;
+  font-size: 14px;
+  border-radius: 12px 12px 0px 0px;
+  background-color: var(--color-232f3e);
+  color: var(--color-56d97b);
+  border: 1px solid var(--color-232f3e);
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.tabsRow > *[name='true'] {
+  background-color: var(--color-56d97b);
+  color: white;
+}
+
+/* Tabs row CSS end here */
+
 /* CSS for header */
 .header-top-strip {
 

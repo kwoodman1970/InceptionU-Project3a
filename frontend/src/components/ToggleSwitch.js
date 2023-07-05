@@ -14,7 +14,7 @@ const ToggleSwitch = ({ id, isActive, onToggleChange }) => {
         checked={isActive}
         onChange={handleChange}
       />
-      <label for={id} className="toggle-label">
+      <label htmlFor={id} className="toggle-label">
         <span className="toggle-text">{isActive ? 'Yes' : 'No'}</span>
         <span className="toggle-handle"></span>
       </label>

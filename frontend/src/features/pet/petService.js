@@ -9,9 +9,7 @@ const createPet = async (data, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  console.log(data);
   const response = await axios.post(`${API_URL_PET}/create-pet`, data, config);
-  // const response = await axios.post(`${API_URL_PET}/create-pet`, {planet: "Earth"}, config);
 
   return response.data;
 };

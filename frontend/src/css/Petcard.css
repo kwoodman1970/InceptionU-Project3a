@@ -7,35 +7,3 @@
     border-style: solid;
     border-color: aquamarine;
 }
-
-div.evenColumns3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-div#AddPictures {
-  display: grid;
-  grid-template-columns: 200px auto;
-}
-
-#MainPicture {
-  display: block;
-  border: blue;
-  /* grid-row-end: span 3; */
-}
-
-.span4rows {
-  grid-row-end:  span 4;
-}
-
-.span2columns {
-  grid-column-end:  span 2;
-}
-
-.span3columns {
-  grid-column-end:  span 3;
-}
-
-.dropzone {
-  width:  200px;
-}
