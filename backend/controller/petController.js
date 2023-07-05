@@ -204,14 +204,11 @@ const updatePet = asyncHandler(async (req, res) => {
     // image_1,
     // location,
   } = req.body;
-  const user = await Supplier.findOne({ refreshToken: req.body.token });
-  if (!user) {
-    res.status(400);
-    throw new Error('Invalid token');
-  }
-  const pet = await Pet.findByIdAndUpdate(req.params.id, req.body);
 
-  if (pet?.owner.equals(user._id)) {
+  const updatedPet = await Pet.findByIdAndUpdate(req.params.id, req.body);
+
+  if (updatedPet) {
+  // if (false) {
     res.json({
       _id: updatedPet._id,
       owner_id: updatedPet.owner_id,
@@ -220,7 +217,7 @@ const updatePet = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('Pet not found or not owned by user');
+    throw new Error('Pet not updated');
   }
 });
 
@@ -379,6 +376,7 @@ module.exports = {
   getPetsByOwnerId,
   updatePet,
   deletePet,
+  updatePet,
   updatePetStatus,
   toWishList,
   countPets,

@@ -101,7 +101,7 @@ export const updatePet = createAsyncThunk(
     try {
       // get token from supplier login
       const token = thunkAPI.getState().supplier.supplier.token;
-      return await petService.updatePetStatus(data, token);
+      return await petService.updatePet(token, data);
     } catch (error) {
       const message =
         (error.response &&

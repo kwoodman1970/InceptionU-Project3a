@@ -20,10 +20,10 @@ const PetRecord = (props) => {
   const [addingRecord, setAddingRecord] = useState(false);
   const [records, setRecords] = useState([]);
 
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(reset());
-  // }, []);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(reset());
+  }, []);
 
   const API_URL = '/api/img/';
   const supplierState = useSelector((state) => state.supplier.supplier);
@@ -52,34 +52,38 @@ const PetRecord = (props) => {
       note: '',
     },
     validationSchema: schema,
-    onSubmit: async (values) => {
-      try {
-        console.log('Adding record...');
-        console.log(values);
+    onSubmit: (values) => {
+        values.alert = document.getElementById('alert').checked;
+
         const newRecords = [...records, values];
+
         setRecords(newRecords);
-        // setRecords((currentRecords) => {currentRecords.push(values); console.log(currentRecords); return currentRecords;});
         // setAddingRecord(false);
-
-        // const updatedPet = dispatch(updatePet(values));
-        // updatedPet.then((response) => {
-        //   if (response.meta.requestStatus === 'fulfilled') {
-        //     setCurrentTab((currentTab) => currentTab + 1);
-        //     petObjectId(response.payload._id);
-        //   }
-        // });
-        // console.log(createdPet);
-
-        // formik.resetForm();
-        // dispatch(resetState());
-        // setTimeout(() => {
-        //   navigate('/supplier/all-pets');
-        // }, 1000);
-      } catch (error) {
-        console.log(error);
-      }
     },
   });
+
+  const submitRecords = async () => {
+    try {
+      const updatedPet = dispatch(updatePet({petObjectId, data: {records}}));
+      updatedPet.then((response) => {
+        console.log(response);
+        if (response.error) {
+          toast.error(response.payload);
+        } else {
+          setCurrentTab((currentTab) => currentTab + 1);
+          toast.success('Successfull added records');
+        }
+      });
+
+      // formik.resetForm();
+      // dispatch(resetState());
+      // setTimeout(() => {
+      //   navigate('/supplier/all-pets');
+      // }, 1000);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -88,14 +92,13 @@ const PetRecord = (props) => {
           <p>alerts</p>
           <table>
             <tbody>
-              {records?.map(record => (
-                <tr>
+              {records?.map((record, index) => (
+                (record.alert &&
+                <tr key={index}>
                   <td>{record.dueDate}</td>
                   <td>{record.treatment}</td>
                 </tr>
-              ))}
-              {/* records.find((element) => element?.alert)
-              .forEach((element) => <tr><td>{element.dueDate}</td><td>{element.treatment}</td></tr>) */}
+              )))}
             </tbody>
           </table>
         </section>
@@ -103,13 +106,11 @@ const PetRecord = (props) => {
           <p>current medications</p>
           <table>
             <tbody>
-              {records?.map(record => (
-                record.medication && <tr>
+              {records?.map((record, index) => (
+                record.medication && <tr key={index}>
                   <td>{record.medication}</td>
                 </tr>
               ))}
-              {/* records.find((element) => element?.medication !== '')
-              .forEach((element) => <tr><td>{element.medication}</td></tr>) */}
             </tbody>
           </table>
         </section>
@@ -204,6 +205,7 @@ const PetRecord = (props) => {
                 <input
                   type='checkbox'
                   id='alert'
+                  name='alert'
                   defaultChecked={false}
                 />
                 <label style={{ fontSize: '13px' }} htmlFor='alert'>
@@ -240,7 +242,6 @@ const PetRecord = (props) => {
       <div>
         <section>
           <p>medical records</p>
-          {/* <Table headers=(<th>Date</th><th>Treatment Type</th><th>Medication</th><th>Weight</th><th>Due Date</th><th>Notes</th>) /> */}
           <table>
             <thead>
               <tr>
@@ -253,9 +254,9 @@ const PetRecord = (props) => {
               </tr>
             </thead>
             <tbody>
-            {records?.map(record => (
-              <tr>
-                <td>{record.date}</td>
+            {records?.map((record, index) => (
+              <tr key={index}>
+                <td>{index} &ndash; {record.date}</td>
                 <td>{record.treatment}</td>
                 <td>{record.medication}</td>
                 <td>{record.weight}</td>
@@ -267,7 +268,7 @@ const PetRecord = (props) => {
           </table>
         </section>
         <div className='d-flex flex-wrap post-button gap-3'>
-          <button type='submit' className='button border-0' onClick={() => window.alert('Clicked Save!')}>
+          <button type='submit' className='button border-0' onClick={submitRecords}>
             Save
           </button>
           <Link className='button  border-0 ' to='/supplier'>

@@ -46,6 +46,8 @@ router.get('/owner/:id', getPetByOwner);
 
 router.get('/search/:query', getPetBySearch);
 
+router.patch('/:id', protectSupplier, updatePet);
+
 router.put('/:id', protectSupplier, updatePetStatus);
 
 router.delete('/:id', protectSupplier, supplier, deletePet);

@@ -43,12 +43,9 @@ const updatePet = async (token, data) => {
     },
   };
 
-  const response = await axios.put(
-    API_URL_PET + `/${data.id}`,
-    {
-      species: data.inputData.species,
-      description: data.inputData.description,
-    },
+  const response = await axios.patch(
+    API_URL_PET + `/${data.petObjectId}`,
+    data.data,
     config,
   );
 

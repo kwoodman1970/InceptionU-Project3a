@@ -189,7 +189,7 @@ const PetGeneral = (props) => {
 
         const createdPet = dispatch(createPet(values));
         createdPet.then((response) => {
-          if (response.meta.requestStatus === 'fulfilled') {
+          if (!response.error) {
             setCurrentTab((currentTab) => currentTab + 1);
             setPetObjectId(response.payload._id);
           }
