@@ -4,6 +4,8 @@ const User = require('../models/userModel');
 const Supplier = require('../models/supplierModel');
 const validateMongiDbId = require('../utils/validateMongoDB');
 const fs = require('fs');
+// const { getSavedPetContacts } = require('./petController');
+
 
 // @desc    Create new pet
 // @router POST/api/pets
@@ -491,10 +493,14 @@ const countPets = asyncHandler(async (req, res) => {
 });
 
 // Fetch saved pet contacts
-const getSavedPetContacts = asyncHandler(async (req, res) => {
-  const savedData = await Pet.find({});
-  res.json(savedData);
+ const getSavedPetContacts = asyncHandler(async (req, res) => {
+  const savedData = await Pet.findById(req.params.petId);
+  res.json(savedData.contacts);
 });
+
+
+
+
 
 //export
 module.exports = {

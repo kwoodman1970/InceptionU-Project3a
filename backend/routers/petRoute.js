@@ -21,7 +21,7 @@ const {
   updatePetStatus,
   toWishList,
   countPets,
-  getSavedPetContacts,
+ getSavedPetContacts,
 } = require('../controller/petController');
 
 const router = express.Router();
@@ -59,6 +59,9 @@ router.delete('/:id', protectSupplier, supplier, deletePet);
 router.put('/addcontacts/:petId', updatePet);
 
 // Get saved pet contacts
-router.get('/addcontacts', getSavedPetContacts);
+// router.get('/contacts', getSavedPetContacts);
+router.get('/:petId/contacts', getSavedPetContacts);
+
+
 
 module.exports = router;
