@@ -17,8 +17,8 @@ const PetRecord = (props) => {
   const setCurrentTab = props.setCurrentTab;
   const petObjectId = props.petObjectId;
 
-  const [addingRecord, setAddingRecord] = useState(false);
   const [records, setRecords] = useState([]);
+  const [addingRecord, setAddingRecord] = useState(false);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -53,12 +53,12 @@ const PetRecord = (props) => {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-        values.alert = document.getElementById('alert').checked;
+        // values.alert = document.getElementById('alert').checked;
 
         const newRecords = [...records, values];
 
         setRecords(newRecords);
-        // setAddingRecord(false);
+        setAddingRecord(false);
     },
   });
 
@@ -66,7 +66,6 @@ const PetRecord = (props) => {
     try {
       const updatedPet = dispatch(updatePet({petObjectId, data: {records}}));
       updatedPet.then((response) => {
-        console.log(response);
         if (response.error) {
           toast.error(response.payload);
         } else {
@@ -88,7 +87,9 @@ const PetRecord = (props) => {
   return (
     <>
       <h2>record keeping</h2>
-      <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr'}}>
+      {/* The following commented-out sections are to be implemented more fully later */}
+
+      {/* <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr'}}>
         <table className='list-data'>
           <caption style={{backgroundColor: 'red'}}>alerts</caption>
           <tbody>
@@ -111,127 +112,139 @@ const PetRecord = (props) => {
             ))}
           </tbody>
         </table>
-      </div>
-      <form
-        onSubmit={(event) => {event.preventDefault(); return formik.handleSubmit();}}
-        className='d-flex flex-column gap-10'>
-        <section>
-          <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr'}}>
-            <div>
-              <CustomInput
-                type='date'
-                name='date'
-                label='Date *'
-                id='date'
-                {...formik.getFieldProps('date')}
-              />
-              <div className='error '>
-                {formik.touched.date && formik.errors.date ? (
-                  <div>{formik.errors.date}</div>
-                ) : null}
-              </div>
-            </div>
-            <div>
-              <select
-                style={{ fontSize: '14px', height: '58px' }}
-                className='  mt-3 form-select text-dark'
-                name='treatment'
-                {...formik.getFieldProps('treatment')}>
-                <option value=''>Select Treatment Type *</option>
-                <option value='Wellness Exam'>Wellness Exam</option>
-                <option value='Vaccination'>Vaccination</option>
-                <option value='Parasite Control'>Parasite Control</option>
-                <option value='Flea/Tick Control'>Flea/Tick Control</option>
-                <option value='Fecal Exams/Deworming'>Fecal Exams/Deworming</option>
-                <option value='Nutrition & Weight'>Nutrition & Weight</option>
-                <option value='Laboratory Tests'>Laboratory Tests</option>
-                <option value='Annual Checkup'>Annual Checkup</option>
-              </select>
-              <div className='error '>
-                {formik.touched.treatment && formik.errors.treatment ? (
-                  <div>{formik.errors.treatment}</div>
-                ) : null}
-              </div>
-            </div>
-            <div>
-              <CustomInput
-                type='string'
-                name='medication'
-                label='Medication'
-                id='medication'
-                {...formik.getFieldProps('medication')}
-              />
-              <div className='error '>
-                {formik.touched.medication && formik.errors.medication ? (
-                  <div>{formik.errors.medication}</div>
-                ) : null}
-              </div>
-            </div>
-            <div>
-              <CustomInput
-                type='number'
-                name='weight'
-                label='Weight (kg)'
-                id='weight'
-                {...formik.getFieldProps('weight')}
-              />
-              <div className='error '>
-                {formik.touched.weight && formik.errors.weight ? (
-                  <div>{formik.errors.weight}</div>
-                ) : null}
-              </div>
-            </div>
-            <div>
-              <CustomInput
-                type='date'
-                name='dueDate'
-                label='Due Date'
-                id='date'
-                {...formik.getFieldProps('dueDate')}
-              />
-              <div className='error '>
-                {formik.touched.dueDate && formik.errors.dueDate ? (
-                  <div>{formik.errors.dueDate}</div>
-                ) : null}
-              </div>
-            </div>
-            <div>
-              <input
-                type='checkbox'
-                id='alert'
-                name='alert'
-                defaultChecked={false}
-              />
-              <label style={{ fontSize: '13px' }} htmlFor='alert'>
-                &nbsp;Alert
-              </label>
-            </div>
-            <div>
-              <CustomInput
-                type='string'
-                name='note'
-                label='Notes'
-                id='note'
-                {...formik.getFieldProps('note')}
-              />
-              <div className='error '>
-                {formik.touched.note && formik.errors.note ? (
-                  <div>{formik.errors.note}</div>
-                ) : null}
-              </div>
-            </div>
-          </div>
-        </section>
+      </div> */}
 
-        <div className='d-flex flex-wrap post-button gap-3'>
-          <button type='submit' className='button border-0'>
-            Add
-          </button>
-          <Link className='button  border-0 ' to='/supplier'>
-            Delete
-          </Link>
-        </div>
-      </form>
+      {/* <div id='add-record-button' style={{textAlign: 'right', display: (!addingRecord ? 'block' : 'none')}}>
+        <button onClick={() => {setAddingRecord(true)}}>+ Add Another Record</button>
+      </div> */}
+
+      {/* <div style={{display: (addingRecord ? 'block' : 'none')}}> */}
+      <div>
+        <form
+          id='records-form'
+          onSubmit={(event) => {event.preventDefault(); return formik.handleSubmit();}}
+          className='d-flex flex-column gap-10'>
+          <section>
+            <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
+              <div>
+                <CustomInput
+                  type='date'
+                  name='date'
+                  label='Date *'
+                  id='date'
+                  {...formik.getFieldProps('date')}
+                />
+                <div className='error '>
+                  {formik.touched.date && formik.errors.date ? (
+                    <div>{formik.errors.date}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <select
+                  style={{ fontSize: '14px', height: '58px' }}
+                  className='  mt-3 form-select text-dark'
+                  name='treatment'
+                  {...formik.getFieldProps('treatment')}>
+                  <option value=''>Select Treatment Type *</option>
+                  <option value='Wellness Exam'>Wellness Exam</option>
+                  <option value='Vaccination'>Vaccination</option>
+                  <option value='Parasite Control'>Parasite Control</option>
+                  <option value='Flea/Tick Control'>Flea/Tick Control</option>
+                  <option value='Fecal Exams/Deworming'>Fecal Exams/Deworming</option>
+                  <option value='Nutrition & Weight'>Nutrition & Weight</option>
+                  <option value='Laboratory Tests'>Laboratory Tests</option>
+                  <option value='Annual Checkup'>Annual Checkup</option>
+                </select>
+                <div className='error '>
+                  {formik.touched.treatment && formik.errors.treatment ? (
+                    <div>{formik.errors.treatment}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <CustomInput
+                  type='string'
+                  name='medication'
+                  label='Medication'
+                  id='medication'
+                  {...formik.getFieldProps('medication')}
+                />
+                <div className='error '>
+                  {formik.touched.medication && formik.errors.medication ? (
+                    <div>{formik.errors.medication}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <CustomInput
+                  type='number'
+                  name='weight'
+                  label='Weight (kg)'
+                  id='weight'
+                  {...formik.getFieldProps('weight')}
+                />
+                <div className='error '>
+                  {formik.touched.weight && formik.errors.weight ? (
+                    <div>{formik.errors.weight}</div>
+                  ) : null}
+                </div>
+              </div>
+              <div>
+                <CustomInput
+                  type='date'
+                  name='dueDate'
+                  label='Due Date'
+                  id='date'
+                  {...formik.getFieldProps('dueDate')}
+                />
+                <div className='error '>
+                  {formik.touched.dueDate && formik.errors.dueDate ? (
+                    <div>{formik.errors.dueDate}</div>
+                  ) : null}
+                </div>
+              </div>
+              {/* <div>
+                <input
+                  type='checkbox'
+                  id='alert'
+                  name='alert'
+                  defaultChecked={false}
+                />
+                <label style={{ fontSize: '13px' }} htmlFor='alert'>
+                  &nbsp;Alert
+                </label>
+              </div> */}
+              <div>
+                <CustomInput
+                  type='string'
+                  name='note'
+                  label='Notes'
+                  id='note'
+                  {...formik.getFieldProps('note')}
+                />
+                <div className='error '>
+                  {formik.touched.note && formik.errors.note ? (
+                    <div>{formik.errors.note}</div>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div className='d-flex flex-wrap post-button gap-3'>
+            <button type='submit' className='button border-0'>
+              Add
+            </button>
+            <Link className='button  border-0 ' to='/supplier'>
+              Clear
+            </Link>
+          </div>
+        </form>
+      </div>
+
+      <br />
+
       <div>
         <table className='list-data'>
           <caption>medical records</caption>
@@ -240,7 +253,7 @@ const PetRecord = (props) => {
               <th>Date</th>
               <th>Treatment Type</th>
               <th>Medication</th>
-              <th>Weight</th>
+              <th style={{textAlign: 'center'}}>Weight</th>
               <th>Due Date</th>
               <th>Notes</th>
             </tr>
@@ -251,13 +264,15 @@ const PetRecord = (props) => {
               <td>{record.date}</td>
               <td>{record.treatment}</td>
               <td>{record.medication}</td>
-              <td>{record.weight}</td>
+              <td style={{textAlign: 'center'}}>
+                {(record.weight !== '') && (Number(record.weight).toFixed(1) + 'kg')}</td>
               <td>{record.dueDate}</td>
               <td>{record.note}</td>
             </tr>
           ))}
           </tbody>
         </table>
+        <br />
         <div className='d-flex flex-wrap post-button gap-3'>
           <button type='submit' className='button border-0' onClick={submitRecords}>
             Save
