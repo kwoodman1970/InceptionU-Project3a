@@ -9,10 +9,9 @@ const PetPublish = () => {
 
   return (
     <>
-      <PetRecords petObjectId='64907d5cf089b3a0e8ea61a3' setCurrentTab={setCurrentTab} setPetObjectId={setPetObjectId} />
+      <PetRecords petObjectId='64907d5cf089b3a0e8ea61a3' setCurrentTab={setCurrentTab} />
 
-      <h4 className=' mt-0'>Post Your Pet</h4>
-      <p className=' mb-0'>Please fill all information to process!</p>
+      <h1 className='home-middel-penel fw-bold'>pet <span>cards</span></h1>
 
       <div className='tabsRow'>
         <div name={`${currentTab === 0}`}>General</div>

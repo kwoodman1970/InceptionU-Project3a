@@ -208,13 +208,13 @@ const PetGeneral = (props) => {
   });
 
   return (
-    <div>
+    <>
+      <h2>general information</h2>
+
       <form
         onSubmit={(event) => {event.preventDefault(); return formik.handleSubmit();}}
         className='d-flex flex-column gap-10'>
         <section>
-          <h5>general information</h5>
-
           <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr 1fr'}}>
             <div style={{gridRowEnd: 'span 4'}}>
               <img
@@ -821,7 +821,7 @@ const PetGeneral = (props) => {
             </div>
           </section>
       </form>
-    </div>
+    </>
   );
 };
 
