@@ -208,7 +208,6 @@ const updatePet = asyncHandler(async (req, res) => {
   const updatedPet = await Pet.findByIdAndUpdate(req.params.id, req.body);
 
   if (updatedPet) {
-  // if (false) {
     res.json({
       _id: updatedPet._id,
       owner_id: updatedPet.owner_id,

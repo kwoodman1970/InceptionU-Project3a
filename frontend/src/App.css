@@ -67,7 +67,6 @@ a {
 }
 
 table.list-data {
-  /* display: inline-block; */
   width:  100%;
   border: 1px solid var(--color-1c1c1b);
   caption-side: top;
