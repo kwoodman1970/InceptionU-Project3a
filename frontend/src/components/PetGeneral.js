@@ -194,7 +194,6 @@ const PetGeneral = (props) => {
             setPetObjectId(response.payload._id);
           }
         });
-        // console.log(createdPet);
 
         // formik.resetForm();
         // dispatch(resetState());

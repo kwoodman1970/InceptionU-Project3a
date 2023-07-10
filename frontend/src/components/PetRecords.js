@@ -3,10 +3,9 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import CustomInput from '../components/CustomInput';
-import { updatePet, reset, resetState } from '../features/pet/petSlice';
+import { updatePet, reset } from '../features/pet/petSlice';
 
 let schema = Yup.object().shape({
   date: Yup.string().required('* Date is required'),
@@ -25,8 +24,6 @@ const PetRecord = (props) => {
     dispatch(reset());
   }, []);
 
-  const API_URL = '/api/img/';
-  const supplierState = useSelector((state) => state.supplier.supplier);
   // const { isError, isSuccess, isLoading, createdPet: createdRecords, message } = newPet;
 
   // useEffect(() => {
@@ -53,12 +50,13 @@ const PetRecord = (props) => {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-        // values.alert = document.getElementById('alert').checked;
+      // The following is left here for future implemention
+      // values.alert = document.getElementById('alert').checked;
 
-        const newRecords = [...records, values];
+      const newRecords = [...records, values];
 
-        setRecords(newRecords);
-        setAddingRecord(false);
+      setRecords(newRecords);
+      setAddingRecord(false);
     },
   });
 
@@ -87,7 +85,7 @@ const PetRecord = (props) => {
   return (
     <>
       <h2>record keeping</h2>
-      {/* The following commented-out sections are to be implemented more fully later */}
+      {/* The following commented-out sections are left here for future implemention */}
 
       {/* <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr'}}>
         <table className='list-data'>
@@ -204,6 +202,8 @@ const PetRecord = (props) => {
                   ) : null}
                 </div>
               </div>
+              {/* The following is left here for future implemention */}
+
               {/* <div>
                 <input
                   type='checkbox'

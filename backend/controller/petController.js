@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler');
+const jwt = require('jsonwebtoken');
 const Pet = require('../models/petModel');
 const User = require('../models/userModel');
 const Supplier = require('../models/supplierModel');
@@ -192,32 +193,32 @@ const getPetsByOwnerId = asyncHandler(async (req, res) => {
 });
 
 const updatePet = asyncHandler(async (req, res) => {
-  const {
-    name,
-    species,
-    // breed,
-    // age,
-    // color,
-    // eye_color,
-    // size,
-    // price,
-    // image_1,
-    // location,
-  } = req.body;
+  /*
+  Middleware should have verified owner identity prior to this function being
+  called.
+  */
 
-  const updatedPet = await Pet.findByIdAndUpdate(req.params.id, req.body);
+  const petId = req.params.id;
+  const supplierId = req?.supplier._id.toString();
 
-  if (updatedPet) {
-    res.json({
-      _id: updatedPet._id,
-      owner_id: updatedPet.owner_id,
-      name: updatedPet.name,
-      species: updatedPet.species,
-    });
-  } else {
+  if (!petId) {
     res.status(404);
     throw new Error('Pet not updated');
   }
+
+  const pet = await Pet.findOneAndUpdate({_id: petId, owner: supplierId}, req.body);
+
+  if (!pet) {
+    res.status(403);
+    throw new Error('Pet not found or not owned by you');
+  }
+
+  res.json({
+    _id: pet._id,
+    owner_id: pet.owner_id,
+    name: pet.name,
+    species: pet.species,
+  });
 });
 
 const deletePet = asyncHandler(async (req, res) => {
