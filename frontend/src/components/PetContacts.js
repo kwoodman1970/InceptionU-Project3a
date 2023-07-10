@@ -7,6 +7,8 @@ import { FaAngleDown, FaPlus } from "react-icons/fa";
 import axios from "axios";
 
 function PetContacts(props) {
+  const setCurrentTab = props.setCurrentTab;
+  const petObjectId = props.petObjectId;
   const [serviceCompanyName, setServiceCompanyName] = useState("");
   const [serviceLocationName, setServiceLocationName] = useState("");
   const [serviceWebsite, setServiceWebsite] = useState("");
@@ -21,14 +23,18 @@ function PetContacts(props) {
   const [accountNumber, setAccountNumber] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [savedData, setSavedData] = useState([]); // Initialize with an empty array
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
 
-  // const [isFaPlus, setIsFaPlus] = useState(false);
-
   const handleSubmit = () => {
+    // Validate required fields before submitting
+    if (!serviceCompanyName || !servicePostalCode || !serviceWebsite) {
+      console.error("Please fill in all required fields");
+
+      return;
+    }
     const newData = {
-      petId: "648ca772f089b3a0e8ea606d",
+      petId: petObjectId,
       serviceCompanyName,
       serviceLocationName,
       serviceWebsite,
@@ -52,11 +58,6 @@ function PetContacts(props) {
       .then((response) => {
         console.log("New pet contact saved successfully");
         setSavedData([...savedData, response.data]); // Add the new pet contact to the existing list
-
-        // Update the saved data with the response from the API
-        //  setSavedData(newData);
-        // setSavedData([...savedData, response.data]);
-
         setIsActive(false);
         // Clear the input fields
         clearFields();
@@ -84,6 +85,7 @@ function PetContacts(props) {
 
   const handleAddContact = () => {
     setIsActive(true);
+    setIsExpanded(false);
   };
 
   const toggleSavedDataItem = (index) => {
@@ -92,18 +94,6 @@ function PetContacts(props) {
     );
     setSavedData(updatedSavedData);
   };
-
-  // useEffect(() => {
-  //   // Fetch saved pet contacts from the backend API
-  //   axios
-  //     .get("/api/pets/:petId")
-  //     .then((response) => {
-  //       setSavedData(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching pet contacts:", error);
-  //     });
-  // }, []);
 
   useEffect(() => {
     const fetchSavedPetContacts = async () => {
@@ -131,10 +121,6 @@ function PetContacts(props) {
       return updatedState;
     });
   };
-
-  // const toggleFaPlus = () => {
-  //   setIsFaPlus(!isFaPlus);
-  // };
 
   return (
     <div
@@ -179,7 +165,7 @@ function PetContacts(props) {
             />
           </h4>
         </div>
-        <div className="feildcontainer" style={{ border: "1px solid #ccc" }}>
+        <div className="feildcontainer" style={{ border: "1px solid #ccc",  }}>
           <section
             className="section-container"
             style={{
@@ -188,7 +174,6 @@ function PetContacts(props) {
               justifyContent: "space-between",
               marginRight: "90px",
               marginLeft: "0px",
-
               marginTop: isActive ? "20px" : "0",
               height: isActive ? "250px" : "auto",
               transition: "height 0.3s ease-in-out",
@@ -394,6 +379,8 @@ function PetContacts(props) {
               id="activateDeactiate"
               isActive={isActive}
               onToggleChange={setIsActive}
+              onToggleChangeOption={setIsExpanded}
+              optionValue={false}
             />
           </div>
 
@@ -404,9 +391,24 @@ function PetContacts(props) {
             <button
               onClick={handleSubmit}
               style={{
-                backgroundColor: "#50D9A3",
-                padding: " 5px 15px",
-                borderRadius: "15px",
+                padding: "13px 33px",
+                fontSize: "14px",
+                borderRadius: "25px",
+                backgroundColor: "#232f3e",
+                color: "#56d97b",
+                border: "1px solid #232f3e",
+                borderTopWidth: "2px",
+                borderLeftWidth: "2px",
+              }}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = "#56d97b";
+                e.target.style.color = "#131921";
+                e.target.style.borderColor = "#56d97b";
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = "#232f3e";
+                e.target.style.color = "#56d97b";
+                e.target.style.borderColor = "#232f3e";
               }}
             >
               Save
@@ -450,7 +452,6 @@ function PetContacts(props) {
                   <h5 style={{ paddingLeft: "10px", marginBottom: "10px" }}>
                     Service Type:{" "}
                     <FaPlus
-                      // onClick={toggleFaPlus}
                       onClick={() => toggleExpand(index)}
                       style={{ marginLeft: "420px" }}
                     />{" "}
@@ -575,14 +576,20 @@ function PetContacts(props) {
                     alignItems: "center",
                   }}
                 >
-                  <button onClick={() => toggleSavedDataItem(index)}></button>
                   <label style={{ paddingLeft: "650px", marginBottom: "10px" }}>
                     <h8 style={{ paddingRight: "10px" }}>Active</h8>
-
                     <ToggleSwitch
                       id={`activateDeactiateSaved_${index}`}
                       isActive={data.isActive}
                       onToggleChange={() => toggleSavedDataItem(index)}
+                      onToggleChangeOption={(value) =>
+                        setExpandedItems((prevState) => {
+                          const updatedState = [...prevState];
+                          updatedState[index] = value;
+                          return updatedState;
+                        })
+                      }
+                      optionValue={false}
                     />
                   </label>
                 </div>

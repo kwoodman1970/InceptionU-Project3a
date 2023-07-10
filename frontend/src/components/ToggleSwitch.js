@@ -1,9 +1,10 @@
 import React from 'react';
 import '../css/ToggleSwitch.css';
 
-const ToggleSwitch = ({ id, isActive, onToggleChange }) => {
+const ToggleSwitch = ({ id, isActive, onToggleChange, onToggleChangeOption, optionValue  }) => {
   const handleChange = () => {
     onToggleChange(!isActive);
+    onToggleChangeOption(optionValue);
   };
 
   return (
