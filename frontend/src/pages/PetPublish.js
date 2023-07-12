@@ -10,7 +10,6 @@ const PetPublish = () => {
 
   return (
     <>
-      <PetContacts setCurrentTab={setCurrentTab} petObjectId="648ca772f089b3a0e8ea606d"/>
       <h1 className='home-middel-penel fw-bold'>pet <span>cards</span></h1>
 
       <h4 className=" mt-0">Post Your Pet</h4>
@@ -25,7 +24,7 @@ const PetPublish = () => {
       <div style={{border: '1px solid black', padding: '4px'}}>
         {currentTab === 0 && <PetGeneral setCurrentTab={setCurrentTab} setPetObjectId={setPetObjectId} cardType='Supplier' />}
         {currentTab === 1 && <PetRecords setCurrentTab={setCurrentTab} petObjectId={petObjectId} />}
-        {currentTab === 2 && <p>Contacts component goes here (Pet object ID is {petObjectId ? petObjectId : 'unknown'})</p>}
+        {currentTab === 2 && <PetContacts setCurrentTab={setCurrentTab} petObjectId={petObjectId} />}
         {currentTab === 3 && <p>Pedigree component goes here (Pet object ID is {petObjectId ? petObjectId : 'unknown'})</p>}
       </div>
     </>

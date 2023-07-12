@@ -56,10 +56,10 @@ function PetContacts(props) {
     console.log("", newData);
     // Make a Put request to the backend API to save the data
     axios
-      .put("/api/pets/addcontacts/648ca772f089b3a0e8ea606d", newData)
+      .put(`/api/pets/addcontacts/${petObjectId}`, newData)
       .then((response) => {
         console.log("New pet contact saved successfully");
-        console.log(response?.data);
+        console.log(response);
         setSavedData([...savedData, response.data]); // Add the new pet contact to the existing list
         setIsActive(false);
         // Clear the input fields
@@ -102,7 +102,7 @@ function PetContacts(props) {
     const fetchSavedPetContacts = async () => {
       try {
         const response = await axios.get(
-          "/api/pets/648ca772f089b3a0e8ea606d/contacts"
+          `/api/pets/${petObjectId}/contacts`
         );
         setSavedData(response.data);
       } catch (error) {
@@ -125,6 +125,8 @@ function PetContacts(props) {
     });
   };
 
+  console.log(savedData);
+
   return (
     <div
       style={{
@@ -136,13 +138,7 @@ function PetContacts(props) {
       <div className="petcontainer">
         <AddContactButton onAddContact={handleAddContact} />
         <h2 style={{ paddingLeft: "50px", paddingRight: "50px" }}>Contacts</h2>
-
-        <p style={{ paddingLeft: "50px", paddingRight: "50px" }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
-          sed lectus non mauris lacinia finibus. Fusce et est nec justo cursus
-          feugiat. Suspendisse potenti. Sed ultrices, sapien ac commodo varius,
-          purus nisl laoreet massa, a interdum nulla erat a mi
-        </p>
+ 
       </div>
 
       <div className="inputcontainer">
@@ -373,9 +369,9 @@ function PetContacts(props) {
 
           <div
             className="toggle-form-group"
-            style={{ marginLeft: "800px", marginTop: "65px" }}
+            style={{ marginLeft: "730px", marginTop: "65px" }}
           >
-            <label style={{ paddingRight: "5px", marginBottom: "10px" }}>
+            <label style={{ paddingRight: "8px", marginBottom: "10px" }}>
               Active
             </label>
             <ToggleSwitch

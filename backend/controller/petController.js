@@ -44,26 +44,10 @@ const createPet = asyncHandler(async (req, res) => {
     socializedWith,
     specialNeeds,
     images,
-    
 } = req.body;
 
-const {serviceCompanyName,
-  serviceLocationName,
-  serviceWebsite,
-  serviceAddress,
-  serviceCity,
-  serviceProvince,
-  servicePostalCode,
-  serviceEmail,
-  servicePhoneNumber,
-  serviceContactFirstName,
-  serviceContactLastName,
-  accountNumber,
-  activateDeactivate,}
-  = req.body;
-
   //input validation
-  if (!name || !species || !breed || !serviceCompanyName || !serviceWebsite || !servicePostalCode) {
+  if (!name || !species || !breed) {
     res.status(400);
     throw new Error('Please fill out all required fields');
   }
@@ -107,23 +91,6 @@ const {serviceCompanyName,
     socializedWith,
     specialNeeds,
     images,
-    contacts: [
-      {
-        serviceCompanyName,
-        serviceLocationName,
-        serviceWebsite,
-        serviceAddress,
-        serviceCity,
-        serviceProvince,
-        servicePostalCode,
-        serviceEmail,
-        servicePhoneNumber,
-        serviceContactFirstName,
-        serviceContactLastName,
-        accountNumber,
-        activateDeactivate,
-      },
-    ]
   });
   if (pet) {
     res.status(200).json({
@@ -333,7 +300,7 @@ console.log("pet : ",pet)
     // Save the updated pet document
     const updatedPet = await pet.updateOne({contacts:pet.contacts});
 
-    res.json(updatedPet);
+    res.json(pet.contacts);
   } catch (error) {
     res.status(400);
     throw new Error(error);
