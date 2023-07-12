@@ -1,5 +1,47 @@
 const mongoose = require('mongoose');
 
+var petRecordSchema = new mongoose.Schema(
+  {
+    date: {
+      type: Date,
+      required: true,
+    },
+    treatment: {
+      type: String,
+      required: true,
+      enum: [
+        'Wellness Exam',
+        'Vaccination',
+        'Parasite Control',
+        'Flea/Tick Control',
+        'Fecal Exams/Deworming',
+        'Nutrition & Weight',
+        'Laboratory Tests',
+        'Annual Checkup',
+      ],
+    },
+    attachment: {
+      type: String,
+    },
+    alert: {
+      type: Boolean,
+      required: true,
+    },
+    medication: {
+      type: String,
+    },
+    weight: {
+      type: Number,
+    },
+    dueDate: {
+      type: Date,
+    },
+    note: {
+      type: String,
+    },
+  }
+)
+
 var petSchema = new mongoose.Schema(
   {
     cardType: {
@@ -265,8 +307,12 @@ var petSchema = new mongoose.Schema(
           },
         },
       ]
-    }
+    },
     
+    records: [petRecordSchema],
+  },
+  {
+    timestamps: true,
   },
 );
 

@@ -59,6 +59,7 @@ function PetContacts(props) {
       .put("/api/pets/addcontacts/648ca772f089b3a0e8ea606d", newData)
       .then((response) => {
         console.log("New pet contact saved successfully");
+        console.log(response?.data);
         setSavedData([...savedData, response.data]); // Add the new pet contact to the existing list
         setIsActive(false);
         // Clear the input fields

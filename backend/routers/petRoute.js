@@ -48,6 +48,8 @@ router.get('/owner/:id', getPetByOwner);
 
 router.get('/search/:query', getPetBySearch);
 
+router.patch('/:id', protectSupplier, updatePet);
+
 router.put('/:id', protectSupplier, updatePetStatus);
 
  router.put('/:petId/contacts', protectSupplier, updatePetContacts);
@@ -56,7 +58,7 @@ router.put('/:id', protectSupplier, updatePetStatus);
 
 router.delete('/:id', protectSupplier, supplier, deletePet);
 
-router.put('/addcontacts/:petId', updatePet);
+router.put('/addcontacts/:petId', updatePetContacts);
 
 // Get saved pet contacts
 // router.get('/contacts', getSavedPetContacts);
