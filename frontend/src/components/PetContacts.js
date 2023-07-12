@@ -4,10 +4,11 @@ import AddContactButton from "./AddContactButton";
 import ToggleSwitch from "./ToggleSwitch";
 import { FaAngleDown, FaPlus } from "react-icons/fa";
 
+
 import axios from "axios";
 
 function PetContacts(props) {
-  const setCurrentTab = props.setCurrentTab;
+  // const setCurrentTab = props.setCurrentTab;
   const petObjectId = props.petObjectId;
   const [serviceCompanyName, setServiceCompanyName] = useState("");
   const [serviceLocationName, setServiceLocationName] = useState("");
@@ -25,6 +26,7 @@ function PetContacts(props) {
   const [savedData, setSavedData] = useState([]); // Initialize with an empty array
   const [isExpanded, setIsExpanded] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
+  
 
   const handleSubmit = () => {
     // Validate required fields before submitting
@@ -132,7 +134,7 @@ function PetContacts(props) {
     >
       <div className="petcontainer">
         <AddContactButton onAddContact={handleAddContact} />
-        <h3 style={{ paddingLeft: "50px", paddingRight: "50px" }}>Contacts</h3>
+        <h2 style={{ paddingLeft: "50px", paddingRight: "50px" }}>Contacts</h2>
 
         <p style={{ paddingLeft: "50px", paddingRight: "50px" }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
@@ -179,8 +181,8 @@ function PetContacts(props) {
               transition: "height 0.3s ease-in-out",
             }}
           >
-            <div className="form-group">
-              <label>Company Name*</label>
+            <div className="form-group ">
+              <label >Company Name*</label>
               <input
                 type="text"
                 value={serviceCompanyName}
@@ -577,7 +579,7 @@ function PetContacts(props) {
                   }}
                 >
                   <label style={{ paddingLeft: "650px", marginBottom: "10px" }}>
-                    <h8 style={{ paddingRight: "10px" }}>Active</h8>
+                    <label style={{ paddingRight: "10px" }}>Active</label>
                     <ToggleSwitch
                       id={`activateDeactiateSaved_${index}`}
                       isActive={data.isActive}
