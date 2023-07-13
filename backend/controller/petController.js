@@ -192,6 +192,12 @@ const getPetsByOwnerId = asyncHandler(async (req, res) => {
   }
 });
 
+// Fetch saved pet contacts
+const getSavedPetContacts = asyncHandler(async (req, res) => {
+  const savedData = await Pet.findById(req.params.petId);
+  res.json(savedData.contacts);
+});
+
 const updatePet = asyncHandler(async (req, res) => {
   /*
   Middleware should have verified owner identity prior to this function being
@@ -374,7 +380,9 @@ module.exports = {
   getAllPets,
   getPetBySearch,
   getPetsByOwnerId,
+  getSavedPetContacts,
   updatePet,
+  updatePetContacts,
   deletePet,
   updatePet,
   updatePetStatus,

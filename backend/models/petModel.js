@@ -259,6 +259,56 @@ var petSchema = new mongoose.Schema(
       type: [String],
     },
     records: [petRecordSchema],
+    contacts:
+    {
+     type: [
+        {
+          serviceCompanyName: {
+            type: String,
+            required: true,
+          },
+          serviceLocationName: {
+            type: String,
+          },
+          serviceWebsite: {
+            type: String,
+            // required: true,
+          },
+          serviceAddress: {
+            type: String,
+          },
+          serviceCity: {
+            type: String,
+          },
+          serviceProvince: {
+            type: String,
+          },
+          servicePostalCode: {
+            type: String,
+            // required: true,
+          },
+          serviceEmail: {
+            type: String,
+          },
+          servicePhoneNumber: {
+            type: String,
+          },
+          serviceContactFirstName: {
+            type: String,
+          },
+          serviceContactLastName: {
+            type: String,
+          },
+          accountNumber: {
+            type: String,
+          },
+          activateDeactivate: {
+            type: Boolean,
+            default: true,
+          },
+        },
+      ]
+    },
   },
   {
     timestamps: true,

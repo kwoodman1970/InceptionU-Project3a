@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PetGeneral from '../components/PetGeneral';
 import PetRecords from '../components/PetRecords';
+import PetContacts from '../components/PetContacts';
 // import '../css/TabsRow.css';
 
 const PetPublish = () => {
@@ -20,7 +21,7 @@ const PetPublish = () => {
       <div style={{border: '1px solid black', padding: '4px'}}>
         {currentTab === 0 && <PetGeneral setCurrentTab={setCurrentTab} setPetObjectId={setPetObjectId} cardType='Supplier' />}
         {currentTab === 1 && <PetRecords setCurrentTab={setCurrentTab} petObjectId={petObjectId} />}
-        {currentTab === 2 && <p>Contacts component goes here (Pet object ID is {petObjectId ? petObjectId : 'unknown'})</p>}
+        {currentTab === 2 && <PetContacts setCurrentTab={setCurrentTab} petObjectId={petObjectId} />}
         {currentTab === 3 && <p>Pedigree component goes here (Pet object ID is {petObjectId ? petObjectId : 'unknown'})</p>}
       </div>
     </>);
