@@ -14,6 +14,7 @@ const {
   getAllPets,
   getPetByOwner,
   getPetBySearch,
+  getSavedPetContacts,
   updatePet,
   updatePetContacts,
   deletePet,
@@ -47,6 +48,8 @@ router.get('/', getAllPets);
 router.get('/owner/:id', getPetByOwner);
 
 router.get('/search/:query', getPetBySearch);
+
+router.get('/:petId/contacts', getSavedPetContacts);
 
 router.patch('/:id', protectSupplier, updatePet);
 

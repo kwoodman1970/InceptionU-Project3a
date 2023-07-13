@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { FaAngleDown, FaPlus } from "react-icons/fa";
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { updatePet, reset } from '../features/pet/petSlice';
 import "../css/PetContacts.css";
 import AddContactButton from "./AddContactButton";
 import ToggleSwitch from "./ToggleSwitch";
-import { FaAngleDown, FaPlus } from "react-icons/fa";
-
-import axios from "axios";
 
 function PetContacts(props) {
-  // const setCurrentTab = props.setCurrentTab;
+  const setCurrentTab = props.setCurrentTab;
   const petObjectId = props.petObjectId;
   const [serviceCompanyName, setServiceCompanyName] = useState("");
   const [serviceLocationName, setServiceLocationName] = useState("");
@@ -21,10 +22,12 @@ function PetContacts(props) {
   const [serviceContactFirstName, setServiceContactFirstName] = useState("");
   const [serviceContactLastName, setServiceContactLastName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
-  const [isActive, setIsActive] = useState(false);
+  const [activateDeactivate, setIsActive] = useState(false);
   const [savedData, setSavedData] = useState([]); // Initialize with an empty array
   const [isExpanded, setIsExpanded] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
+
+  const dispatch = useDispatch();
 
   const handleSubmit = () => {
     // Validate required fields before submitting
@@ -34,7 +37,7 @@ function PetContacts(props) {
       return;
     }
     const newData = {
-      petId: petObjectId,
+      // petId: petObjectId,
       serviceCompanyName,
       serviceLocationName,
       serviceWebsite,
@@ -47,25 +50,34 @@ function PetContacts(props) {
       serviceContactFirstName,
       serviceContactLastName,
       accountNumber,
-      isActive,
+      activateDeactivate,
       // Add more fields here as needed
     };
-    console.log("summiting", newData);
-    console.log("", newData);
     // Make a Put request to the backend API to save the data
-    axios
-      .put(`/api/pets/addcontacts/${petObjectId}`, newData)
-      .then((response) => {
-        console.log("New pet contact saved successfully");
-        console.log(response);
-        setSavedData([...savedData, response.data]); // Add the new pet contact to the existing list
-        setIsActive(false);
-        // Clear the input fields
-        clearFields();
-      })
-      .catch((error) => {
-        console.error("Error saving pet contact:", error);
+
+    const contacts = [...savedData, newData];
+
+    try {
+      const updatedPet = dispatch(updatePet({petObjectId, data: {contacts}}));
+      updatedPet.then((response) => {
+        if (response.error) {
+          toast.error(response.payload);
+        } else {
+          // Clear the input fields
+          clearFields();
+        }
       });
+
+      setSavedData(contacts);
+
+      // formik.resetForm();
+      // dispatch(resetState());
+      // setTimeout(() => {
+      //   navigate('/supplier/all-pets');
+      // }, 1000);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const clearFields = () => {
@@ -90,24 +102,22 @@ function PetContacts(props) {
   };
 
   const toggleSavedDataItem = (index) => {
-    const updatedSavedData = savedData.map((data, i) =>
-      i === index ? { ...data, isActive: !data.isActive } : data
-    );
-    setSavedData(updatedSavedData);
+    const contacts = [...savedData];
+
+    contacts[index].activateDeactivate = !contacts[index].activateDeactivate;
+    try {
+      const updatedPet = dispatch(updatePet({petObjectId, data: {contacts}}));
+      updatedPet.then((response) => {
+        if (response.error) {
+          toast.error(response.payload);
+        }
+      });
+
+      setSavedData(contacts);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  useEffect(() => {
-    const fetchSavedPetContacts = async () => {
-      try {
-        const response = await axios.get(`/api/pets/${petObjectId}/contacts`);
-        setSavedData(response.data);
-      } catch (error) {
-        console.error("Error fetching pet contacts:", error);
-      }
-    };
-
-    fetchSavedPetContacts();
-  }, []);
 
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded);
@@ -121,8 +131,6 @@ function PetContacts(props) {
     });
   };
 
-  console.log(savedData);
-
   return (
     <div
       style={{
@@ -134,19 +142,13 @@ function PetContacts(props) {
       <div className="petcontainer">
         <AddContactButton onAddContact={handleAddContact} />
         <h2 style={{ paddingLeft: "50px", paddingRight: "50px" }}>Contacts</h2>
-        <p style={{ paddingLeft: "50px", paddingRight: "50px" }}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
-          sed lectus non mauris lacinia finibus. Fusce et est nec justo cursus
-          feugiat. Suspendisse potenti. Sed ultrices, sapien ac commodo varius,
-          purus nisl laoreet massa, a interdum nulla erat a mi
-        </p>
       </div>
 
       <div className="inputcontainer">
         <div
           className="service-type"
           style={{
-            backgroundColor: isActive ? "#50D9A3" : "#9f9e9e",
+            backgroundColor: activateDeactivate ? "#50D9A3" : "#9f9e9e",
             padding: "5px 50px",
             color: "white",
             fontSize: "20px",
@@ -174,8 +176,8 @@ function PetContacts(props) {
               justifyContent: "space-between",
               marginRight: "90px",
               marginLeft: "0px",
-              marginTop: isActive ? "20px" : "0",
-              height: isActive ? "250px" : "auto",
+              marginTop: activateDeactivate ? "20px" : "0",
+              height: activateDeactivate ? "250px" : "auto",
               transition: "height 0.3s ease-in-out",
             }}
           >
@@ -205,7 +207,7 @@ function PetContacts(props) {
               />
             </div>
 
-            {isActive && (
+            {activateDeactivate && (
               <>
                 <div className="form-group">
                   <label>Address</label>
@@ -377,7 +379,7 @@ function PetContacts(props) {
             </label>
             <ToggleSwitch
               id="activateDeactiate"
-              isActive={isActive}
+              isActive={activateDeactivate}
               onToggleChange={setIsActive}
               onToggleChangeOption={setIsExpanded}
               optionValue={false}
@@ -411,7 +413,7 @@ function PetContacts(props) {
                 e.target.style.borderColor = "#232f3e";
               }}
             >
-              Save
+              Add
             </button>
           </div>
         </div>
@@ -428,183 +430,181 @@ function PetContacts(props) {
               overflow: "auto",
             }}
           >
-            {savedData.map((data, index) => {
-              console.log('data is', index, data)
-              return (
+            {savedData.map((data, index) => (
+              <div
+                key={index}
+                className="saved-data-item"
+                style={{
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                  padding: "10px",
+                  marginRight: "10px",
+                  marginBottom: "10px",
+                }}
+              >
                 <div
-                  key={index}
-                  className="saved-data-item"
+                  className="service-type"
                   style={{
-                    border: "1px solid #ccc",
-                    borderRadius: "5px",
-                    padding: "10px",
-                    marginRight: "10px",
-                    marginBottom: "10px",
+                    backgroundColor: data.activateDeactivate ? "#50D9A3" : "#9f9e9e",
+                    padding: "5px 50px",
+                    color: "white",
+                    fontSize: "20px",
                   }}
                 >
-                  <div
-                    className="service-type"
-                    style={{
-                      backgroundColor: data.isActive ? "#50D9A3" : "#9f9e9e",
-                      padding: "5px 50px",
-                      color: "white",
-                      fontSize: "20px",
-                    }}
-                  >
-                    <h5 style={{ paddingLeft: "10px", marginBottom: "10px" }}>
-                      Service Type:{" "}
-                      <FaPlus
-                        onClick={() => toggleExpand(index)}
-                        style={{ marginLeft: "420px" }}
-                      />{" "}
-                      Expand
-                    </h5>
-                  </div>
-
-                  <section
-                    className="section-container1"
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      justifyContent: "space-between",
-                      marginRight: "90px",
-                      marginLeft: "50px",
-                      marginTop: data.isActive ? "20px" : "0",
-                      height: data.isActive ? "250px" : "auto",
-                      transition: "height 0.3s ease-in-out",
-                    }}
-                  >
-                    <div className="form-group">
-                      <label>Company Name:</label>
-                      <p>{data.serviceCompanyName}</p>
-                    </div>
-                    <div className="form-group">
-                      <label>Company Location Name:</label>
-                      <p>{data.serviceLocationName}</p>
-                    </div>
-                    <div className="form-group">
-                      <label>Account Number:</label>
-                      <p>{data.accountNumber}</p>
-                    </div>
-
-                    {data.isActive && (
-                      <>
-                        <div className="form-group">
-                          <label>Address:</label>
-                          <p>{data.serviceAddress}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>City/Town:</label>
-                          <p>{data.serviceCity}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Province:</label>
-                          <p>{data.serviceProvince}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>First Name:</label>
-                          <p>{data.serviceContactFirstName}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Last Name:</label>
-                          <p>{data.serviceContactLastName}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Postal Code:</label>
-                          <p>{data.servicePostalCode}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Phone:</label>
-                          <p>{data.servicePhoneNumber}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Email Address:</label>
-                          <p>{data.serviceEmail}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Website:</label>
-                          <p>{data.serviceWebsite}</p>
-                        </div>
-                      </>
-                    )}
-
-                    {expandedItems[index] && (
-                      <>
-                        <div className="form-group">
-                          <label>Address:</label>
-                          <p>{data.serviceAddress}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>City/Town:</label>
-                          <p>{data.serviceCity}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Province:</label>
-                          <p>{data.serviceProvince}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>First Name:</label>
-                          <p>{data.serviceContactFirstName}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Last Name:</label>
-                          <p>{data.serviceContactLastName}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Postal Code:</label>
-                          <p>{data.servicePostalCode}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Phone:</label>
-                          <p>{data.servicePhoneNumber}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Email Address:</label>
-                          <p>{data.serviceEmail}</p>
-                        </div>
-                        <div className="form-group">
-                          <label>Website:</label>
-                          <p>{data.serviceWebsite}</p>
-                        </div>
-                      </>
-                    )}
-                  </section>
-
-                  <div
-                    className="activatedeactivetoggle"
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
-                    <label
-                      style={{ paddingLeft: "650px", marginBottom: "10px" }}
-                    >
-                      <label style={{ paddingRight: "10px" }}>Active</label>
-                      <ToggleSwitch
-                        id={`activateDeactiateSaved_${index}`}
-                        isActive={data.isActive}
-                        onToggleChange={() => toggleSavedDataItem(index)}
-                        onToggleChangeOption={(value) =>
-                          setExpandedItems((prevState) => {
-                            const updatedState = [...prevState];
-                            updatedState[index] = value;
-                            return updatedState;
-                          })
-                        }
-                        optionValue={false}
-                      />
-                    </label>
-                  </div>
+                  <h5 style={{ paddingLeft: "10px", marginBottom: "10px" }}>
+                    Service Type:{" "}
+                    <FaPlus
+                      onClick={() => toggleExpand(index)}
+                      style={{ marginLeft: "420px" }}
+                    />{" "}
+                    Expand
+                  </h5>
                 </div>
-              );
-            })}
+
+                <section
+                  className="section-container1"
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "space-between",
+                    marginRight: "90px",
+                    marginLeft: "50px",
+                    marginTop: data.activateDeactivate ? "20px" : "0",
+                    height: data.activateDeactivate ? "250px" : "auto",
+                    transition: "height 0.3s ease-in-out",
+                  }}
+                >
+                  <div className="form-group">
+                    <label>Company Name:</label>
+                    <p>{data.serviceCompanyName}</p>
+                  </div>
+                  <div className="form-group">
+                    <label>Company Location Name:</label>
+                    <p>{data.serviceLocationName}</p>
+                  </div>
+                  <div className="form-group">
+                    <label>Account Number:</label>
+                    <p>{data.accountNumber}</p>
+                  </div>
+
+                  {data.activateDeactivate && (
+                    <>
+                      <div className="form-group">
+                        <label>Address:</label>
+                        <p>{data.serviceAddress}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>City/Town:</label>
+                        <p>{data.serviceCity}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Province:</label>
+                        <p>{data.serviceProvince}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>First Name:</label>
+                        <p>{data.serviceContactFirstName}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Last Name:</label>
+                        <p>{data.serviceContactLastName}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Postal Code:</label>
+                        <p>{data.servicePostalCode}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Phone:</label>
+                        <p>{data.servicePhoneNumber}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Email Address:</label>
+                        <p>{data.serviceEmail}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Website:</label>
+                        <p>{data.serviceWebsite}</p>
+                      </div>
+                    </>
+                  )}
+
+                  {expandedItems[index] && (
+                    <>
+                      <div className="form-group">
+                        <label>Address:</label>
+                        <p>{data.serviceAddress}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>City/Town:</label>
+                        <p>{data.serviceCity}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Province:</label>
+                        <p>{data.serviceProvince}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>First Name:</label>
+                        <p>{data.serviceContactFirstName}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Last Name:</label>
+                        <p>{data.serviceContactLastName}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Postal Code:</label>
+                        <p>{data.servicePostalCode}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Phone:</label>
+                        <p>{data.servicePhoneNumber}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Email Address:</label>
+                        <p>{data.serviceEmail}</p>
+                      </div>
+                      <div className="form-group">
+                        <label>Website:</label>
+                        <p>{data.serviceWebsite}</p>
+                      </div>
+                    </>
+                  )}
+                </section>
+
+                <div
+                  className="activatedeactivetoggle"
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <label style={{ paddingLeft: "650px", marginBottom: "10px" }}>
+                    <label style={{ paddingRight: "10px" }}>Active</label>
+                    <ToggleSwitch
+                      id={`activateDeactiateSaved_${index}`}
+                      isActive={data.activateDeactivate}
+                      onToggleChange={() => toggleSavedDataItem(index)}
+                      onToggleChangeOption={(value) =>
+                        setExpandedItems((prevState) => {
+                          const updatedState = [...prevState];
+                          updatedState[index] = value;
+                          return updatedState;
+                        })
+                      }
+                      optionValue={false}
+                    />
+                  </label>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
+      <button type='submit' className='button border-0' onClick={() => {setCurrentTab((currentTab) => currentTab + 1);}}>
+        Save
+      </button>
     </div>
   );
 }
 
-export default PetContacts;  
+export default PetContacts;
