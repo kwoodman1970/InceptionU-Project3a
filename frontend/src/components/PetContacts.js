@@ -4,7 +4,6 @@ import AddContactButton from "./AddContactButton";
 import ToggleSwitch from "./ToggleSwitch";
 import { FaAngleDown, FaPlus } from "react-icons/fa";
 
-
 import axios from "axios";
 
 function PetContacts(props) {
@@ -26,7 +25,6 @@ function PetContacts(props) {
   const [savedData, setSavedData] = useState([]); // Initialize with an empty array
   const [isExpanded, setIsExpanded] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
-  
 
   const handleSubmit = () => {
     // Validate required fields before submitting
@@ -101,9 +99,7 @@ function PetContacts(props) {
   useEffect(() => {
     const fetchSavedPetContacts = async () => {
       try {
-        const response = await axios.get(
-          `/api/pets/${petObjectId}/contacts`
-        );
+        const response = await axios.get(`/api/pets/${petObjectId}/contacts`);
         setSavedData(response.data);
       } catch (error) {
         console.error("Error fetching pet contacts:", error);
@@ -138,7 +134,12 @@ function PetContacts(props) {
       <div className="petcontainer">
         <AddContactButton onAddContact={handleAddContact} />
         <h2 style={{ paddingLeft: "50px", paddingRight: "50px" }}>Contacts</h2>
- 
+        <p style={{ paddingLeft: "50px", paddingRight: "50px" }}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
+          sed lectus non mauris lacinia finibus. Fusce et est nec justo cursus
+          feugiat. Suspendisse potenti. Sed ultrices, sapien ac commodo varius,
+          purus nisl laoreet massa, a interdum nulla erat a mi
+        </p>
       </div>
 
       <div className="inputcontainer">
@@ -164,7 +165,7 @@ function PetContacts(props) {
             />
           </h4>
         </div>
-        <div className="feildcontainer" style={{ border: "1px solid #ccc",  }}>
+        <div className="feildcontainer" style={{ border: "1px solid #ccc" }}>
           <section
             className="section-container"
             style={{
@@ -179,7 +180,7 @@ function PetContacts(props) {
             }}
           >
             <div className="form-group ">
-              <label >Company Name*</label>
+              <label>Company Name*</label>
               <input
                 type="text"
                 value={serviceCompanyName}
@@ -427,173 +428,178 @@ function PetContacts(props) {
               overflow: "auto",
             }}
           >
-            {savedData.map((data, index) => (
-              <div
-                key={index}
-                className="saved-data-item"
-                style={{
-                  border: "1px solid #ccc",
-                  borderRadius: "5px",
-                  padding: "10px",
-                  marginRight: "10px",
-                  marginBottom: "10px",
-                }}
-              >
+            {savedData.map((data, index) => {
+              console.log('data is', index, data)
+              return (
                 <div
-                  className="service-type"
+                  key={index}
+                  className="saved-data-item"
                   style={{
-                    backgroundColor: data.isActive ? "#50D9A3" : "#9f9e9e",
-                    padding: "5px 50px",
-                    color: "white",
-                    fontSize: "20px",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px",
+                    padding: "10px",
+                    marginRight: "10px",
+                    marginBottom: "10px",
                   }}
                 >
-                  <h5 style={{ paddingLeft: "10px", marginBottom: "10px" }}>
-                    Service Type:{" "}
-                    <FaPlus
-                      onClick={() => toggleExpand(index)}
-                      style={{ marginLeft: "420px" }}
-                    />{" "}
-                    Expand
-                  </h5>
+                  <div
+                    className="service-type"
+                    style={{
+                      backgroundColor: data.isActive ? "#50D9A3" : "#9f9e9e",
+                      padding: "5px 50px",
+                      color: "white",
+                      fontSize: "20px",
+                    }}
+                  >
+                    <h5 style={{ paddingLeft: "10px", marginBottom: "10px" }}>
+                      Service Type:{" "}
+                      <FaPlus
+                        onClick={() => toggleExpand(index)}
+                        style={{ marginLeft: "420px" }}
+                      />{" "}
+                      Expand
+                    </h5>
+                  </div>
+
+                  <section
+                    className="section-container1"
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "space-between",
+                      marginRight: "90px",
+                      marginLeft: "50px",
+                      marginTop: data.isActive ? "20px" : "0",
+                      height: data.isActive ? "250px" : "auto",
+                      transition: "height 0.3s ease-in-out",
+                    }}
+                  >
+                    <div className="form-group">
+                      <label>Company Name:</label>
+                      <p>{data.serviceCompanyName}</p>
+                    </div>
+                    <div className="form-group">
+                      <label>Company Location Name:</label>
+                      <p>{data.serviceLocationName}</p>
+                    </div>
+                    <div className="form-group">
+                      <label>Account Number:</label>
+                      <p>{data.accountNumber}</p>
+                    </div>
+
+                    {data.isActive && (
+                      <>
+                        <div className="form-group">
+                          <label>Address:</label>
+                          <p>{data.serviceAddress}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>City/Town:</label>
+                          <p>{data.serviceCity}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Province:</label>
+                          <p>{data.serviceProvince}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>First Name:</label>
+                          <p>{data.serviceContactFirstName}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Last Name:</label>
+                          <p>{data.serviceContactLastName}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Postal Code:</label>
+                          <p>{data.servicePostalCode}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Phone:</label>
+                          <p>{data.servicePhoneNumber}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Email Address:</label>
+                          <p>{data.serviceEmail}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Website:</label>
+                          <p>{data.serviceWebsite}</p>
+                        </div>
+                      </>
+                    )}
+
+                    {expandedItems[index] && (
+                      <>
+                        <div className="form-group">
+                          <label>Address:</label>
+                          <p>{data.serviceAddress}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>City/Town:</label>
+                          <p>{data.serviceCity}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Province:</label>
+                          <p>{data.serviceProvince}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>First Name:</label>
+                          <p>{data.serviceContactFirstName}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Last Name:</label>
+                          <p>{data.serviceContactLastName}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Postal Code:</label>
+                          <p>{data.servicePostalCode}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Phone:</label>
+                          <p>{data.servicePhoneNumber}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Email Address:</label>
+                          <p>{data.serviceEmail}</p>
+                        </div>
+                        <div className="form-group">
+                          <label>Website:</label>
+                          <p>{data.serviceWebsite}</p>
+                        </div>
+                      </>
+                    )}
+                  </section>
+
+                  <div
+                    className="activatedeactivetoggle"
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    <label
+                      style={{ paddingLeft: "650px", marginBottom: "10px" }}
+                    >
+                      <label style={{ paddingRight: "10px" }}>Active</label>
+                      <ToggleSwitch
+                        id={`activateDeactiateSaved_${index}`}
+                        isActive={data.isActive}
+                        onToggleChange={() => toggleSavedDataItem(index)}
+                        onToggleChangeOption={(value) =>
+                          setExpandedItems((prevState) => {
+                            const updatedState = [...prevState];
+                            updatedState[index] = value;
+                            return updatedState;
+                          })
+                        }
+                        optionValue={false}
+                      />
+                    </label>
+                  </div>
                 </div>
-
-                <section
-                  className="section-container1"
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "space-between",
-                    marginRight: "90px",
-                    marginLeft: "50px",
-                    marginTop: data.isActive ? "20px" : "0",
-                    height: data.isActive ? "250px" : "auto",
-                    transition: "height 0.3s ease-in-out",
-                  }}
-                >
-                  <div className="form-group">
-                    <label>Company Name:</label>
-                    <p>{data.serviceCompanyName}</p>
-                  </div>
-                  <div className="form-group">
-                    <label>Company Location Name:</label>
-                    <p>{data.serviceLocationName}</p>
-                  </div>
-                  <div className="form-group">
-                    <label>Account Number:</label>
-                    <p>{data.accountNumber}</p>
-                  </div>
-
-                  {data.isActive && (
-                    <>
-                      <div className="form-group">
-                        <label>Address:</label>
-                        <p>{data.serviceAddress}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>City/Town:</label>
-                        <p>{data.serviceCity}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Province:</label>
-                        <p>{data.serviceProvince}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>First Name:</label>
-                        <p>{data.serviceContactFirstName}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Last Name:</label>
-                        <p>{data.serviceContactLastName}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Postal Code:</label>
-                        <p>{data.servicePostalCode}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Phone:</label>
-                        <p>{data.servicePhoneNumber}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Email Address:</label>
-                        <p>{data.serviceEmail}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Website:</label>
-                        <p>{data.serviceWebsite}</p>
-                      </div>
-                    </>
-                  )}
-
-                  {expandedItems[index] && (
-                    <>
-                      <div className="form-group">
-                        <label>Address:</label>
-                        <p>{data.serviceAddress}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>City/Town:</label>
-                        <p>{data.serviceCity}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Province:</label>
-                        <p>{data.serviceProvince}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>First Name:</label>
-                        <p>{data.serviceContactFirstName}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Last Name:</label>
-                        <p>{data.serviceContactLastName}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Postal Code:</label>
-                        <p>{data.servicePostalCode}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Phone:</label>
-                        <p>{data.servicePhoneNumber}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Email Address:</label>
-                        <p>{data.serviceEmail}</p>
-                      </div>
-                      <div className="form-group">
-                        <label>Website:</label>
-                        <p>{data.serviceWebsite}</p>
-                      </div>
-                    </>
-                  )}
-                </section>
-
-                <div
-                  className="activatedeactivetoggle"
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <label style={{ paddingLeft: "650px", marginBottom: "10px" }}>
-                    <label style={{ paddingRight: "10px" }}>Active</label>
-                    <ToggleSwitch
-                      id={`activateDeactiateSaved_${index}`}
-                      isActive={data.isActive}
-                      onToggleChange={() => toggleSavedDataItem(index)}
-                      onToggleChangeOption={(value) =>
-                        setExpandedItems((prevState) => {
-                          const updatedState = [...prevState];
-                          updatedState[index] = value;
-                          return updatedState;
-                        })
-                      }
-                      optionValue={false}
-                    />
-                  </label>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -601,4 +607,4 @@ function PetContacts(props) {
   );
 }
 
-export default PetContacts;
+export default PetContacts;  
