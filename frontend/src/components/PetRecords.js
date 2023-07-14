@@ -285,7 +285,9 @@ const PetRecord = (props) => {
               <td style={{textAlign: 'center'}}>
                 {(record.weight !== '') && (Number(record.weight).toFixed(1) + 'kg')}</td>
               <td>{record.dueDate}</td>
-              <td><input type='file' onChange={uploadDocument} title="+ add" /></td>
+              <td><label> + add
+                <input style={{opacity:0}} type='file' accept='.xls,.csv,.pdf,.doc,.docx,.jpg,.jpeg,.png' onChange={uploadDocument} />
+                </label></td>
               <td>{record.note}</td>
             </tr>
           ))}
