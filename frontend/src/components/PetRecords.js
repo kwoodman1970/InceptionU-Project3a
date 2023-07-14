@@ -255,6 +255,7 @@ const PetRecord = (props) => {
               <th>Medication</th>
               <th style={{textAlign: 'center'}}>Weight</th>
               <th>Due Date</th>
+              <th>Attachement</th>
               <th>Notes</th>
             </tr>
           </thead>
@@ -267,6 +268,7 @@ const PetRecord = (props) => {
               <td style={{textAlign: 'center'}}>
                 {(record.weight !== '') && (Number(record.weight).toFixed(1) + 'kg')}</td>
               <td>{record.dueDate}</td>
+              <td><button>+ add</button></td>
               <td>{record.note}</td>
             </tr>
           ))}
