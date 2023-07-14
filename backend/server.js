@@ -8,6 +8,7 @@ const categoryRoute = require('./routers/petCategoryRoute');
 const petRoute = require('./routers/petRoute');
 const supplierRoute = require('./routers/supplierRoute');
 const imgRoute = require('./routers/imgRoute');
+const docsRoute = require('./routers/docsRoute');
 const uploadRoute = require('./routers/uploadRoute');
 const enquiryRoute = require('./routers/enquiryRoute');
 const requestPetRoute = require('./routers/requestPetRoute');
@@ -68,8 +69,11 @@ app.use('/api/supplier', supplierRoute);
 
 // img route
 app.use('/api/img', imgRoute);
-app.use('/api/avatar', avatarRoute); 
+app.use('/api/avatar', avatarRoute);
 app.use('/api/upload', uploadRoute);
+
+// documents route
+app.use('/api/docs', docsRoute);
 
 // enquiry route
 app.use('/api/enquiry', enquiryRoute);
