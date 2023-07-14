@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 import CustomInput from '../components/CustomInput';
 import { updatePet, reset } from '../features/pet/petSlice';
 
@@ -82,7 +83,23 @@ const PetRecord = (props) => {
     }
   }
 
-  return (
+  async function uploadDocument(element) {
+    const API_URL = '/api/img/';
+    const formData = new FormData();
+
+    formData.append('image', element.target.files[0]);
+    await axios
+      .post(API_URL, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((res) => {
+        console.log(res.data.name);
+      })
+  }
+
+   return (
     <>
       <h2>record keeping</h2>
       {/* The following commented-out sections are left here for future implemention */}
@@ -268,7 +285,7 @@ const PetRecord = (props) => {
               <td style={{textAlign: 'center'}}>
                 {(record.weight !== '') && (Number(record.weight).toFixed(1) + 'kg')}</td>
               <td>{record.dueDate}</td>
-              <td><button>+ add</button></td>
+              <td><input type='file' onChange={uploadDocument} title="+ add" /></td>
               <td>{record.note}</td>
             </tr>
           ))}
