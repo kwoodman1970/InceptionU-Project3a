@@ -102,8 +102,8 @@ const PetRecord = (props) => {
           toast.success('Successfull added attachment');
         })
       } catch(error) {
-        console.log(error);
-      }
+         toast.error("Attachment not summited");
+        }
   }
 
    return (
@@ -279,7 +279,7 @@ const PetRecord = (props) => {
               <th>Medication</th>
               <th style={{textAlign: 'center'}}>Weight</th>
               <th>Due Date</th>
-              <th>Attachement</th>
+              <th>Attachment</th>
               <th>Notes</th>
             </tr>
           </thead>
@@ -292,9 +292,8 @@ const PetRecord = (props) => {
               <td style={{textAlign: 'center'}}>
                 {(record.weight !== '') && (Number(record.weight).toFixed(1) + 'kg')}</td>
               <td>{record.dueDate}</td>
-              <td><label> + add
-                <input id={`AddAttachment_${index}`} style={{opacity:0}} type='file'
-                  accept='.xls,.csv,.pdf,.doc,.docx,.jpg,.jpeg,.png' onChange={uploadDocument} />
+              <td><label className='button border-0'> + add
+                <input style={{display:'none'}} type='file' accept='.xls,.csv,.pdf,.doc,.docx,.jpg,.jpeg,.png' onChange={uploadDocument} />
                 </label></td>
               <td>{record.note}</td>
             </tr>
