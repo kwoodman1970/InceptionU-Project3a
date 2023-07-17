@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import CustomInput from '../components/CustomInput';
 import { updatePet, reset } from '../features/pet/petSlice';
+import {FaCheck} from "react-icons/fa";
 
 let schema = Yup.object().shape({
   date: Yup.string().required('* Date is required'),
@@ -304,7 +305,7 @@ const PetRecord = (props) => {
                   <input id={`AddAttachment_${index}`} style={{display: 'none'}} type='file'
                     accept='.xls,.csv,.pdf,.doc,.docx,.jpg,.jpeg,.png' onChange={uploadDocument} />
                 </label>
-                <span id={`Done_${index}`} style={{display: 'none'}}>Checkmark!</span>
+                <span id={`Done_${index}`} style={{display: 'none'}}><FaCheck style={{color: "#56d97b",}} /></span>
               </td>
               <td>{record.note}</td>
             </tr>
