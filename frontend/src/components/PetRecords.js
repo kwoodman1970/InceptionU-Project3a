@@ -86,6 +86,7 @@ const PetRecord = (props) => {
   async function uploadDocument(element) {
     const API_URL = '/api/docs/';
     const formData = new FormData();
+    const index = parseInt(element.target.id.substring(14)); // "AddAttachment_i"
 
     formData.append('attachment', element.target.files[0]);
     try {
@@ -96,6 +97,8 @@ const PetRecord = (props) => {
           },
         })
         .then((res) => {
+          console.log(`Adding "${res.data.name} to record ${index}`);
+          records[index].attachment = res.data.name;
           toast.success('Successfull added attachment');
         })
       } catch(error) {
@@ -290,7 +293,8 @@ const PetRecord = (props) => {
                 {(record.weight !== '') && (Number(record.weight).toFixed(1) + 'kg')}</td>
               <td>{record.dueDate}</td>
               <td><label> + add
-                <input style={{opacity:0}} type='file' accept='.xls,.csv,.pdf,.doc,.docx,.jpg,.jpeg,.png' onChange={uploadDocument} />
+                <input id={`AddAttachment_${index}`} style={{opacity:0}} type='file'
+                  accept='.xls,.csv,.pdf,.doc,.docx,.jpg,.jpeg,.png' onChange={uploadDocument} />
                 </label></td>
               <td>{record.note}</td>
             </tr>
