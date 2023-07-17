@@ -84,19 +84,23 @@ const PetRecord = (props) => {
   }
 
   async function uploadDocument(element) {
-    const API_URL = '/api/img/';
+    const API_URL = '/api/docs/';
     const formData = new FormData();
 
-    formData.append('image', element.target.files[0]);
-    await axios
-      .post(API_URL, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((res) => {
-        console.log(res.data.name);
-      })
+    formData.append('attachment', element.target.files[0]);
+    try {
+      await axios
+        .post(API_URL, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((res) => {
+          toast.success('Successfull added attachment');
+        })
+      } catch(error) {
+        console.log(error);
+      }
   }
 
    return (

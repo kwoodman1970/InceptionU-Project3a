@@ -7,7 +7,6 @@ const fs = require('fs');
 // const __dirname = path.dirname(__filename);
 
 const createDoc = (req, res) => {
-  console.log(__dirname);
   // Define the storage location and filename for uploaded files
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -28,8 +27,9 @@ const createDoc = (req, res) => {
   });
 
   // Use the upload middleware to handle file upload
-  upload.single('document')(req, res, function (err) {
+  upload.single('attachment')(req, res, function (err) {
     if (err) {
+      console.log(err);
       return res.status(500).send(err.message);
     }
 
@@ -45,25 +45,13 @@ const createDoc = (req, res) => {
       req.file.filename,
     );
 
-    sharp(documentPath)
-      .resize(800, 600)
-      .toFile(outputDocumentPath, (err, info) => {
-        if (err) {
-          return res.status(500).send(err.message);
-        }
-        // Send the URL of the resized document to the client
-        fs.unlink(documentPath, (err) => {
-          if (err) {
-            return res.status(500).send(err.message);
-          }
-        });
-        res.status(200).send({
-          url: `/public/documents/pets/${req.file.filename}`,
-          name: req.file.filename,
-        });
-      });
+    res.status(200).send({
+      url: documentPath,
+      name: req.file.filename,
+    });
   });
 };
+
 const createProfileDoc = (req, res) => {
   console.log(__dirname);
   // Define the storage location and filename for uploaded files
