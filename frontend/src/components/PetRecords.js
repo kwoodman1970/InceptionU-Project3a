@@ -99,6 +99,13 @@ const PetRecord = (props) => {
         .then((res) => {
           console.log(`Adding "${res.data.name} to record ${index}`);
           records[index].attachment = res.data.name;
+
+          const buttonElement = document.getElementById(`AddButton_${index}`);
+          const doneElement = document.getElementById(`Done_${index}`);
+
+          buttonElement.style.display = 'none';
+          doneElement.style.display = 'block';
+
           toast.success('Successfull added attachment');
         })
       } catch(error) {
@@ -279,7 +286,7 @@ const PetRecord = (props) => {
               <th>Medication</th>
               <th style={{textAlign: 'center'}}>Weight</th>
               <th>Due Date</th>
-              <th>Attachment</th>
+              <th style={{textAlign: 'center'}}>Attachment</th>
               <th>Notes</th>
             </tr>
           </thead>
@@ -292,9 +299,13 @@ const PetRecord = (props) => {
               <td style={{textAlign: 'center'}}>
                 {(record.weight !== '') && (Number(record.weight).toFixed(1) + 'kg')}</td>
               <td>{record.dueDate}</td>
-              <td><label className='button border-0'> + add
-                <input style={{display:'none'}} type='file' accept='.xls,.csv,.pdf,.doc,.docx,.jpg,.jpeg,.png' onChange={uploadDocument} />
-                </label></td>
+              <td style={{textAlign: 'center'}}>
+                <label id={`AddButton_${index}`} className='button border-0'> + add
+                  <input id={`AddAttachment_${index}`} style={{display: 'none'}} type='file'
+                    accept='.xls,.csv,.pdf,.doc,.docx,.jpg,.jpeg,.png' onChange={uploadDocument} />
+                </label>
+                <span id={`Done_${index}`} style={{display: 'none'}}>Checkmark!</span>
+              </td>
               <td>{record.note}</td>
             </tr>
           ))}
