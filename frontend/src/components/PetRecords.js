@@ -101,6 +101,8 @@ const PetRecord = (props) => {
           console.log(`Adding "${res.data.name} to record ${index}`);
           records[index].attachment = res.data.name;
 
+          /* TODO:  replace DOM-based visibility with React-ish visibility */
+
           const buttonElement = document.getElementById(`AddButton_${index}`);
           const doneElement = document.getElementById(`Done_${index}`);
 
@@ -301,6 +303,7 @@ const PetRecord = (props) => {
                 {(record.weight !== '') && (Number(record.weight).toFixed(1) + 'kg')}</td>
               <td>{record.dueDate}</td>
               <td style={{textAlign: 'center'}}>
+                {/* TODO:  replace DOM-based visibility with React-ish visibility */}
                 <label id={`AddButton_${index}`} className='button border-0'> + add
                   <input id={`AddAttachment_${index}`} style={{display: 'none'}} type='file'
                     accept='.xls,.csv,.pdf,.doc,.docx,.jpg,.jpeg,.png' onChange={uploadDocument} />

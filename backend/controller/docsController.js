@@ -39,11 +39,6 @@ const createDoc = (req, res) => {
       '../public/documents',
       req.file.filename,
     );
-    const outputDocumentPath = path.join(
-      __dirname,
-      '../public/documents/pets',
-      req.file.filename,
-    );
 
     res.status(200).send({
       url: documentPath,
