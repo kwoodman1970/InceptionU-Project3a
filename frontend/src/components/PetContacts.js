@@ -7,6 +7,7 @@ import "../css/PetContacts.css";
 import AddContactButton from "./AddContactButton";
 import ToggleSwitch from "./ToggleSwitch";
 
+
 function PetContacts(props) {
   const setCurrentTab = props.setCurrentTab;
   const petObjectId = props.petObjectId;
@@ -65,6 +66,7 @@ function PetContacts(props) {
         } else {
           // Clear the input fields
           clearFields();
+          toast.success('Successfull added contact');
         }
       });
 
@@ -386,11 +388,13 @@ function PetContacts(props) {
             />
           </div>
 
-          <div
-            className="save-button"
+          <label  className='button border-0'
+            // className="save-button"
             style={{ marginLeft: "50px", marginTop: "20px" }}
+            onClick={handleSubmit}
           >
-            <button
+            
+            {/* <button
               onClick={handleSubmit}
               style={{
                 padding: "13px 33px",
@@ -412,10 +416,10 @@ function PetContacts(props) {
                 e.target.style.color = "#56d97b";
                 e.target.style.borderColor = "#232f3e";
               }}
-            >
+            > */}
               Add
-            </button>
-          </div>
+            {/* </button> */}
+          </label>
         </div>
       </div>
       <div>
