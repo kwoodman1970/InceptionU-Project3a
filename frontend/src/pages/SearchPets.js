@@ -498,7 +498,7 @@ function SearchPets() {
                 petId={pet._id}
                 species={pet.species}
                 breed={pet.breed}
-                img={pet.images[0]} // Assuming the first image is used as the thumbnail
+                img={pet.pictures[0]} // Assuming the first image is used as the thumbnail
                 name={pet.name}
                 key={pet.id}
                 desc={pet.owner.name}
