@@ -1,13 +1,10 @@
 const mongoose = require('mongoose'); // Erase if already required
 
-// Declare the Schema of the Mongo model
-var petCategorySchema = new mongoose.Schema(
+// Declare the Schemas of the Mongo models
+
+const petBreedSchema = new mongoose.Schema(
   {
-    species: {
-      type: String,
-      required: true,
-    },
-    breed: {
+    name: {
       type: String,
       required: true,
     },
@@ -21,5 +18,18 @@ var petCategorySchema = new mongoose.Schema(
   },
 );
 
+var petCategorySchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    breeds: [petBreedSchema]
+  },
+  {
+    timestamps: true,
+  },
+);
+
 //Export the model
-module.exports = mongoose.model('PetCategory', petCategorySchema);
+module.exports = mongoose.model('petcategories2', petCategorySchema);

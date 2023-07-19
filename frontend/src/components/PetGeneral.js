@@ -46,6 +46,7 @@ const PetGeneral = (props) => {
 
   const [isActive, setIsActive] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
+  const [breeds, setBreeds]= useState(['Select Breed *']);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
 
@@ -65,6 +66,15 @@ const PetGeneral = (props) => {
     const imageElement = document.getElementById('MainPicture');
 
     imageElement?.setAttribute('src', newSource);
+  }
+
+  function updateForm(changedElement) {
+    if (changedElement.target.name === 'species') {
+      const species   = changedElement.target.value;
+      const newBreeds = speciesState.find((element) => element.name === species)?.breeds;
+
+      setBreeds(newBreeds ? newBreeds : []);
+    }
   }
 
   function buildStringsArrayFromCheckboxes(elementIds) {
@@ -211,6 +221,7 @@ const PetGeneral = (props) => {
       <h2>general information</h2>
 
       <form
+        onChange={updateForm}
         onSubmit={(event) => {event.preventDefault(); return formik.handleSubmit();}}
         className='d-flex flex-column gap-10'>
         <section>
@@ -278,10 +289,10 @@ const PetGeneral = (props) => {
                   {...formik.getFieldProps('species')}>
                   <option value=''>Select Species *</option>
 
-                  {speciesState.map((i, j) => {
+                  {speciesState.map((species, index) => {
                     return (
-                      <option key={j} value={i.species}>
-                        {i.species}
+                      <option key={index} value={species.name}>
+                        {species.name}
                       </option>
                     );
                   })}
@@ -300,10 +311,10 @@ const PetGeneral = (props) => {
                   {...formik.getFieldProps('breed')}>
                   <option value=''>Select Breed *</option>
 
-                  {speciesState.map((i, j) => {
+                  {breeds.map((breed, index) => {
                     return (
-                      <option key={j} value={i.breed}>
-                        {i.breed}
+                      <option key={index} value={breed.name}>
+                        {breed.name}
                       </option>
                     );
                   })}
