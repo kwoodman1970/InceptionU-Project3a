@@ -134,7 +134,7 @@ function PetContacts(props) {
   };
 
   return (
-    <div
+    <div 
       style={{
         backgroundColor: "#edf3f0",
         margin: "0 70px",
