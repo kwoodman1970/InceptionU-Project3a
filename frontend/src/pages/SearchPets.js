@@ -15,6 +15,7 @@ import iconSelectUrl from '../icons/marker-icon-select.png';
 import iconUserUrl from '../icons/marker-icon-user.png';
 import loactionUserUrl from '../icons/userLocation.png';
 import filterUrl from '../icons/filter.png';
+import SearchPetCriteria from '../components/SearchPetCriteria';
 
 const customIcon = L.icon({
   iconUrl: iconUrl, iconSize: [30, 80],
@@ -545,6 +546,7 @@ function SearchPets() {
         {/*  )}*/}
         {/*/>*/}
       </div>
+      <SearchPetCriteria />
       <div className='col-md-8' style={{ paddingTop: '1rem' }}>
         <MapContainer
           center={userLocation ? userLocation : defaultCenter}
