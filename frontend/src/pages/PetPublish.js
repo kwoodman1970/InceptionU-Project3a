@@ -14,7 +14,6 @@ const PetPublish = () => {
 
       <h4 className=" mt-0">Post Your Pet</h4>
       <p className=" mb-0">Please fill all information to process!</p>
-      <PetRecords setCurrentTab={setCurrentTab} petObjectId={petObjectId} />
 
       <div className="tabsRow">
         <div name={`${currentTab === 0}`}>General</div>
