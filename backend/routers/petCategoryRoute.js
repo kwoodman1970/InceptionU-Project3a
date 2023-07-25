@@ -15,7 +15,7 @@ const router = express.Router();
 router.post('/add-species', protect, admin, createPetCategory); // token and admin to create pet category [protect, admin,]
 router.put('/:id', protect, admin, updatePetCategory); // token and admin to create pet category
 router.delete('/:id', protect, admin, deletePetCategory); // token and admin to create pet category
-router.get('/:id', protect, getPetCategory); // token and admin to create pet category
-router.get('/', protect, getAllPetCategory); // token and admin to create pet category
+router.get('/:id', getPetCategory);
+router.get('/', getAllPetCategory);
 
 module.exports = router;

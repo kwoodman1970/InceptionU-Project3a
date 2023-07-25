@@ -1,7 +1,7 @@
 import axios from 'axios';
 const API_URL = '/api/species';
 
-const getSpecies = async (token) => {
+const getSpecies = async () => {
   // const getTokenFromLocalStorage = localStorage.getItem('user')
   //   ? JSON.parse(localStorage.getItem('user'))
   //   : '';
@@ -12,13 +12,15 @@ const getSpecies = async (token) => {
   //     Accept: 'application/json',
   //   },
   // };
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
 
-  const response = await axios.get(API_URL, config);
+  // const config = {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  // };
+
+  const response = await axios.get(API_URL);
+  console.log(`Received ${response.data}`);
   return response.data;
 };
 
