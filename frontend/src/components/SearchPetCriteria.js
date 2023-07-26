@@ -28,6 +28,15 @@ const SearchPetCriteria = (props) => {
     dispatch(reset());
   }, []);
 
+  function updateForm(changedElement) {
+    if (changedElement.target.name === 'species') {
+      const species   = changedElement.target.value;
+      const newBreeds = speciesState.find((element) => element.name === species)?.breeds;
+
+      setBreeds(newBreeds ? newBreeds : []);
+    }
+  }
+
   // const { isError, isSuccess, isLoading, createdPet: createdRecords, message } = newPet;
 
   // useEffect(() => {
@@ -155,7 +164,8 @@ const SearchPetCriteria = (props) => {
       {/* <div style={{display: (addingRecord ? 'block' : 'none')}}> */}
       <div>
         <form
-          className='d-flex flex-column gap-10'>
+          className='d-flex flex-column gap-10'
+          onChange={updateForm}>
           <section>
             <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr'}}>
               <div>
@@ -202,7 +212,7 @@ const SearchPetCriteria = (props) => {
                   <option value='1000000000'>How much do you want to pay for your pet?</option>
                   <option value='100'>$100</option>
                   <option value='1000'>$1000</option>
-                  
+
                 </select>
                 <div className='error '>
                   {formik.touched.maxPrice && formik.errors.maxPrice ? (
@@ -254,7 +264,7 @@ const SearchPetCriteria = (props) => {
                   ) : null}
                 </div>
                 </div>
-                
+
                 <div>
                 <select
                   style={{ fontSize: '14px', height: '58px' }}
