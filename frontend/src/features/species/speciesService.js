@@ -20,7 +20,6 @@ const getSpecies = async () => {
   // };
 
   const response = await axios.get(API_URL);
-  console.log(`Received ${response.data}`);
   return response.data;
 };
 

@@ -546,7 +546,6 @@ function SearchPets() {
         {/*  )}*/}
         {/*/>*/}
       </div>
-      <SearchPetCriteria />
       <div className='col-md-8' style={{ paddingTop: '1rem' }}>
         <MapContainer
           center={userLocation ? userLocation : defaultCenter}

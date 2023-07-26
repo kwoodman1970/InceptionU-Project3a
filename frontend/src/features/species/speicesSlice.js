@@ -11,7 +11,6 @@ const initialState = {
 export const getSpecies = createAsyncThunk(
   'supplier/get-speices',
   async (_, thunkAPI) => {
-    console.log('Requesting all species...');
     try {
       return await speciesService.getSpecies();
     } catch (error) {
