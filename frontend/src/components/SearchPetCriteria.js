@@ -1,31 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { toast } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 import CustomInput from '../components/CustomInput';
-import { updatePet, reset } from '../features/pet/petSlice';
 import { getSpecies } from '../features/species/speicesSlice';
 
 let schema = Yup.object().shape({
-  date: Yup.string().required('* Date is required'),
-  treatment: Yup.string().required('* Treatment Type is required'),
+  // date: Yup.string().required('* Date is required'),
+  // treatment: Yup.string().required('* Treatment Type is required'),
 });
 
 const SearchPetCriteria = (props) => {
-  const setCurrentTab = props.setCurrentTab;
-  const petObjectId = props.petObjectId;
   const speciesState = useSelector((state) => state.species.species);
   const [breeds, setBreeds]= useState(['Select Breed *']);
-  const [records, setRecords] = useState([]);
-  const [addingRecord, setAddingRecord] = useState(false);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getSpecies());
-    dispatch(reset());
   }, []);
 
   function updateForm(changedElement) {
@@ -37,131 +29,24 @@ const SearchPetCriteria = (props) => {
     }
   }
 
-  // const { isError, isSuccess, isLoading, createdPet: createdRecords, message } = newPet;
-
-  // useEffect(() => {
-  //   if (isSuccess && createdRecords) {
-  //     toast.success('Successfull added records');
-  //     dispatch(resetState());
-  //   }
-
-  //   if (isError) {
-  //     toast.error(message);
-  //     dispatch(resetState());
-  //   }
-  // }, [isSuccess, isError, isLoading, createdRecords, dispatch, message]);
-
   const formik = useFormik({
     initialValues: {
-      date: '',
-      maxPrice: '',
-      alert: false,
-      medication: '',
-      weight: '',
-      dueDate: '',
-      note: '',
+      // date: '',
+      // maxPrice: '',
+      // alert: false,
+      // medication: '',
+      // weight: '',
+      // dueDate: '',
+      // note: '',
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      // The following is left here for future implemention
-      // values.alert = document.getElementById('alert').checked;
-
-      const newRecords = [...records, values];
-
-      setRecords(newRecords);
-      setAddingRecord(false);
+      // Filter gets applied at this point, form closes
     },
   });
 
-  const submitRecords = async () => {
-    try {
-      const updatedPet = dispatch(updatePet({petObjectId, data: {records}}));
-      updatedPet.then((response) => {
-        if (response.error) {
-          toast.error(response.payload);
-        } else {
-          setCurrentTab((currentTab) => currentTab + 1);
-          toast.success('Successfull added records');
-        }
-      });
-
-      // formik.resetForm();
-      // dispatch(resetState());
-      // setTimeout(() => {
-      //   navigate('/supplier/all-pets');
-      // }, 1000);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function uploadDocument(element) {
-    const API_URL = '/api/docs/';
-    const formData = new FormData();
-    const index = parseInt(element.target.id.substring(14)); // "AddAttachment_i"
-
-    formData.append('attachment', element.target.files[0]);
-    try {
-      await axios
-        .post(API_URL, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((res) => {
-          console.log(`Adding "${res.data.name} to record ${index}`);
-          records[index].attachment = res.data.name;
-
-          /* TODO:  replace DOM-based visibility with React-ish visibility */
-
-          const buttonElement = document.getElementById(`AddButton_${index}`);
-          const doneElement = document.getElementById(`Done_${index}`);
-
-          buttonElement.style.display = 'none';
-          doneElement.style.display = 'block';
-
-          toast.success('Successfull added attachment');
-        })
-      } catch(error) {
-         toast.error("Attachment not summited");
-        }
-  }
-
    return (
     <>
-      <h2>find a pet</h2>
-      {/* The following commented-out sections are left here for future implemention */}
-
-      {/* <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr'}}>
-        <table className='list-data'>
-          <caption style={{backgroundColor: 'red'}}>alerts</caption>
-          <tbody>
-            {records?.map((record, index) => (
-              (record.alert &&
-              <tr key={index}>
-                <td>{record.dueDate}</td>
-                <td>{record.treatment}</td>
-              </tr>
-            )))}
-          </tbody>
-        </table>
-        <table className='list-data'>
-          <caption>current medications</caption>
-          <tbody>
-            {records?.map((record, index) => (
-              record.medication && <tr key={index}>
-                <td>{record.medication}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div> */}
-
-      {/* <div id='add-record-button' style={{textAlign: 'right', display: (!addingRecord ? 'block' : 'none')}}>
-        <button onClick={() => {setAddingRecord(true)}}>+ Add Another Record</button>
-      </div> */}
-
-      {/* <div style={{display: (addingRecord ? 'block' : 'none')}}> */}
       <div>
         <form
           className='d-flex flex-column gap-10'
@@ -287,7 +172,7 @@ const SearchPetCriteria = (props) => {
             </section>
             <div className='d-flex flex-wrap post-button gap-3'>
             <button type='submit' className='button border-0'>
-              Add
+              Apply
             </button>
             <Link className='button  border-0 ' to='/supplier'>
               Clear

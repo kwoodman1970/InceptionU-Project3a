@@ -483,6 +483,7 @@ function SearchPets() {
             </Dropdown>
           </div>
         </div>
+        <SearchPetCriteria />
         <div
           className='row col-md-12 mt-3 mb-3'
           id='scrollableDiv'
