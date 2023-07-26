@@ -41,7 +41,15 @@ const SearchPetCriteria = (props) => {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      // Filter gets applied at this point, form closes
+      const newQuery = {}
+
+      if (values.price != '') newQuery.price = values.price;
+      if (values.species != '') newQuery.species = values.species;
+      if (values.breed != '') newQuery.breed = values.breed;
+      if (values.sex != '') newQuery.sex = values.sex;
+
+      // props.setQuery({price: parseInt(values.price), species: values.species, breed: values.breed, sex: values.sex});
+      props.setQuery(Object.keys(newQuery).length > 0 ? newQuery : null);
     },
   });
 
@@ -50,7 +58,8 @@ const SearchPetCriteria = (props) => {
       <div>
         <form
           className='d-flex flex-column gap-10'
-          onChange={updateForm}>
+          onChange={updateForm}
+          onSubmit={(event) => {event.preventDefault(); return formik.handleSubmit();}}>
           <section>
             <div className='my-2 w-100 rounded-3 mx-auto' style={{display: 'grid', gridTemplateColumns: '1fr 1fr'}}>
               <div>
@@ -94,9 +103,9 @@ const SearchPetCriteria = (props) => {
                   className='  mt-3 form-select text-dark'
                   name='maxPrice'
                   {...formik.getFieldProps('maxPrice')}>
-                  <option value='1000000000'>How much do you want to pay for your pet?</option>
-                  <option value='100'>$100</option>
-                  <option value='1000'>$1000</option>
+                  <option value={''}>How much do you want to pay for your pet?</option>
+                  <option value={100}>$100</option>
+                  <option value={1000}>$1000</option>
 
                 </select>
                 <div className='error '>
@@ -111,7 +120,7 @@ const SearchPetCriteria = (props) => {
                   className='  mt-3 form-select text-dark'
                   name='species'
                   {...formik.getFieldProps('species')}>
-                  <option value=''>What pet species are you looking for?</option>
+                  <option value={''}>What pet species are you looking for?</option>
 
                   {speciesState.map((species, index) => {
                     return (
@@ -133,7 +142,7 @@ const SearchPetCriteria = (props) => {
                   className='  mt-3 form-select text-dark'
                   name='breed'
                   {...formik.getFieldProps('breed')}>
-                  <option value=''>Are you looking for a specific breed?</option>
+                  <option value={''}>Are you looking for a specific breed?</option>
 
                   {breeds.map((breed, index) => {
                     return (
@@ -156,8 +165,8 @@ const SearchPetCriteria = (props) => {
                   className='  mt-3 form-select text-dark'
                   name='sex'
                   {...formik.getFieldProps('sex')}>
-                  <option value='No Preference'>What sex are you looking for?</option>
-                  <option value='No Preference'>No Preference</option>
+                  <option value={''}>What sex are you looking for?</option>
+                  <option value={''}>No Preference</option>
                   <option value='Unknown'>Unknown</option>
                   <option value='Female'>Female</option>
                   <option value='Male'>Male</option>

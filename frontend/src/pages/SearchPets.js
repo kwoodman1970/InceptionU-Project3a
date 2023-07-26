@@ -46,9 +46,11 @@ const filterMaxAge = 15;
 const filterMaxDistance = 30;
 
 function SearchPets() {
-  const [state, setState] = useState(null);
   const location = useLocation();
-  const query = new URLSearchParams(location.search).get('query');
+  const URLQuery = new URLSearchParams(location.search).get('query');
+
+  const [state, setState] = useState(null);
+  const [query, setQuery] = useState(URLQuery ? URLQuery : null);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -168,7 +170,7 @@ function SearchPets() {
     fetchUserLocation();
     if (query) {
       axios
-        .get(`/api/pets/search/${query}`)
+        .get(`/api/pets/search/${JSON.stringify(query)}`)
         .then((res) => {
           setResults(res.data);
         })
@@ -483,7 +485,7 @@ function SearchPets() {
             </Dropdown>
           </div>
         </div>
-        <SearchPetCriteria />
+        <SearchPetCriteria setQuery={setQuery} />
         <div
           className='row col-md-12 mt-3 mb-3'
           id='scrollableDiv'

@@ -152,12 +152,20 @@ const getPetBySpecies = asyncHandler(async (req, res) => {
 });
 
 const getPetBySearch = asyncHandler(async (req, res) => {
+  const query = JSON.parse(req.params.query);
+  const queryParameters = [];
+
+  // if (query.name) queryParameters.push({ $regex: query.name, $options: 'i' });
+  // if (query.species) queryParameters.push({ $regex: query.species, $options: 'i' });
+  // if (query.breed) queryParameters.push({ $regex: query.breed, $options: 'i' });
+
+  if (query.name) queryParameters.push({ name: query.name });
+  if (query.species) queryParameters.push({ species: query.species });
+  if (query.breed) queryParameters.push({ breed: query.breed });
+  if (query.sex) queryParameters.push({ sex: query.sex });
+
   const pets = await Pet.find({
-    $or: [
-      { name: { $regex: req.params.query, $options: 'i' } },
-      { species: { $regex: req.params.query, $options: 'i' } },
-      { breed: { $regex: req.params.query, $options: 'i' } },
-    ],
+    $and: queryParameters
   }).populate({
     path: 'owner',
     select: 'name businessInfo phone',
@@ -483,4 +491,4 @@ module.exports = {
   updatePetStatus,
   toWishList,
   countPets,
-}; 
+};
