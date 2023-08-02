@@ -19,7 +19,8 @@ const PetRecord = (props) => {
   const petObjectId = props.petObjectId;
 
   const [records, setRecords] = useState([]);
-  const [addingRecord, setAddingRecord] = useState(false);
+  // The following is left here for future implemention
+  // const [addingRecord, setAddingRecord] = useState(false);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -58,7 +59,8 @@ const PetRecord = (props) => {
       const newRecords = [...records, values];
 
       setRecords(newRecords);
-      setAddingRecord(false);
+      // The following is left here for future implemention
+      // setAddingRecord(false);
     },
   });
 
