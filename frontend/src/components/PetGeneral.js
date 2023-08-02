@@ -566,7 +566,7 @@ const PetGeneral = (props) => {
                   <option value=''>Select Size *</option>
                   <option value='No Preference'>No Preference</option>
                   <option value='Not Applicable'>Not Applicable</option>
-                  <option value='Miniture'>Miniture</option>
+                  <option value='Miniature'>Miniature</option>
                   <option value='X-Small'>X-Small</option>
                   <option value='Small'>Small</option>
                   <option value='Small-Medium'>Small-Medium</option>
