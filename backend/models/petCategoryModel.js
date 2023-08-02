@@ -32,4 +32,4 @@ var petCategorySchema = new mongoose.Schema(
 );
 
 //Export the model
-module.exports = mongoose.model('petcategories2', petCategorySchema);
+module.exports = mongoose.model('petcategories', petCategorySchema);
