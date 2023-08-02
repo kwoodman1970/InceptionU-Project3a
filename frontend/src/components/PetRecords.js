@@ -98,7 +98,6 @@ const PetRecord = (props) => {
           },
         })
         .then((res) => {
-          console.log(`Adding "${res.data.name} to record ${index}`);
           records[index].attachment = res.data.name;
 
           /* TODO:  replace DOM-based visibility with React-ish visibility */
