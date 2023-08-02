@@ -155,9 +155,9 @@ const getPetBySearch = asyncHandler(async (req, res) => {
   const query = JSON.parse(req.params.query);
   const queryParameters = [];
 
-  // if (query.name) queryParameters.push({ $regex: query.name, $options: 'i' });
-  // if (query.species) queryParameters.push({ $regex: query.species, $options: 'i' });
-  // if (query.breed) queryParameters.push({ $regex: query.breed, $options: 'i' });
+  /*
+  TODO:  implement additional search criteria.
+  */
 
   if (query.name) queryParameters.push({ name: query.name });
   if (query.species) queryParameters.push({ species: query.species });
