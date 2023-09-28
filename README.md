@@ -1,3 +1,92 @@
+# InceptionU Project 3 &ndash; PAWSitive PetStarz
+
+**Status:**  Ended<br />
+*Code has been delivered to our client and we are no longer developing it.*
+
+## About This Project
+
+I was on a team with [Pooja](https://github.com/poojamlvy) and one other person (who shall remain nameless because he barely contributed anything and [ghosted](https://en.wikipedia.org/wiki/Ghosting_(behavior)) *absolutely everyone* after the project's first week).  We had the honour of working on [PAWSitive PetStarz](https://www.petstarz.ca/) for Project 3 in the [Full Stack Developer](https://www.inceptionu.com/full-stack-developer-program/) program at [InceptionU](https://www.inceptionu.com/) (we were given three projects to do altogether).
+
+### The Assignment
+
+The goal of Project 3 was to deeply understand a problem/opportunity and build an effective response.
+
+We were given additional features to strive for, such as:
+
+- [React Components](https://react.dev/learn)
+- server implementation of a [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) API
+- data stored/retrieved from [MongoDB](https://www.mongodb.com/)
+- user authentication
+- [React Router](https://www.npmjs.com/package/react-router)
+- include authorization (roles/permissions)
+- "solid" user experience
+- [React Context](https://react.dev/reference/react/useContext)
+- multiple user types
+- [React Native](https://reactnative.dev/)
+- [SQL](https://en.wikipedia.org/wiki/SQL)
+- [Python](https://www.python.org/)/[Django](https://www.djangoproject.com/) for the server
+- second application for administrator
+- analytics
+- automated testing
+
+### The Result
+
+Watch our [demonstration video](https://www.youtube.com/watch?v=3aLnxrPMmDY).
+
+### Development
+
+[Our client](https://www.petstarz.ca/) provided us with:
+
+- a pre-existing code base that had been developed by a team of students at [SAIT](https://www.sait.ca/)
+- a list of pet species, breeds and physical & psychological attributes to be included
+- a list of features in [Trello](https://trello.com/) that she wanted us to implement
+- a visual guide in [Figma](https://www.figma.com/)
+
+We had the good fortune of having an experienced scrum master &ndash; [Steve](https://www.linkedin.com/in/steve-johnson-35b767199/?lipi=urn%3Ali%3Apage%3Ad_flagship3_people_connections%3BqyNftLSjRxOPUoQ6EsJh2Q%3D%3D) &ndash; to guide us.
+
+**Our main task was to create a form for pet suppliers to input their pets and associated records** (such as medical records and veterinarian contact information) into the application.
+
+We started by getting the pre-existing code up & running and connected to a [MongoDB](https://www.mongodb.com/) database.  We then explored the project's operation to understand how it worked.  Once we had that information, we began modifying the schemas, the back end and the front end piece by piece until we'd implemented the desired set of functioning forms.
+
+We had [scrum](https://en.wikipedia.org/wiki/Scrum_(software_development)) sessions with week-long sprints, and [our client](https://www.petstarz.ca/) was involved at every step offering direction and approval when needed.  She also arranged for a meeting with the original [SAIT](https://www.sait.ca/) team early on so that we could ask them questions about their design and implementation decisions.  [Shane](https://github.com/scfast) and [Tony](https://github.com/acidtone/) did code reviews with us and offered helpful suggestions.
+
+**We coded to the same style and architecture as the original codebase to maintain consistency.**  It was neither possible nor practical to improve on these within the project's timeframe and they were not within the scope of [our client's](https://www.petstarz.ca/) requirements.
+
+## Technologies Worked With
+
+- [Vite](https://vitejs.dev/)
+- [React](https://react.dev/)
+  - [useState](https://react.dev/reference/react/useState/)
+  - [useEffect](https://react.dev/reference/react/useEffect/)
+- [Axios](https://axios-http.com/)
+- [Formik](https://formik.org/)
+- [React-Toastify](https://github.com/fkhadra/react-toastify#readme)
+- [Node.js](https://nodejs.org/)
+- [Express.js](https://expressjs.com/)
+- [JSON Web Tokens](https://jwt.io/)
+- [Figma](https://www.figma.com/)
+- [Trello](https://trello.com/)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [MongoDB Compass](https://www.mongodb.com/products/tools/compass/)
+- [Git](https://git-scm.com/) & [GitHub](https://github.com/) (obviously...)
+
+## About This Repository
+
+[Our client](https://www.petstarz.ca/) has intellectual property in the codebase so **this repository contains *only* the files that we worked on.**  It is *not* functional, but you can watch our [demonstration video](https://www.youtube.com/watch?v=3aLnxrPMmDY) to see the results.
+
+## Copyright Notice
+
+The files in this repository are made available under the [GitHub Terms of Service](https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#5-license-grant-to-other-users).  Beyond that, I [reserve all other rights](https://choosealicense.com/no-permission/).
+
+Copyright &copy; 2023 Kevin Woodman
+
+---
+
+***The rest of this document is the pre-existing README.md file that was written by the [SAIT](https://www.sait.ca/) team:***
+
+---
+---
+
 # PetStarz
 
 ## Description
