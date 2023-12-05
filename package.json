@@ -45,11 +45,11 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^7.1.2",
-    "sharp": "0.31.1",
+    "sharp": "^0.33.0",
     "stripe": "^11.16.0"
   },
   "devDependencies": {
     "concurrently": "^7.6.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^3.0.2"
   }
 }
