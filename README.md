@@ -5,7 +5,7 @@
 
 ## About This Project
 
-I was on a team with [Pooja](https://github.com/poojamlvy) and one other person (who shall remain nameless because he barely contributed anything and [ghosted](https://en.wikipedia.org/wiki/Ghosting_(behavior)) *absolutely everyone* after the project's first week).  We had the honour of working on [PAWSitive PetStarz](https://www.petstarz.ca/) for Project 3 in the [Full Stack Developer](https://www.inceptionu.com/full-stack-developer-program/) program at [InceptionU](https://www.inceptionu.com/) (we were given three projects to do altogether).
+I was on a team with [Pooja](https://github.com/poojamlvy) (plus one other learner whose involvement was minimal).  We had the honour of working on [PAWSitive PetStarz](https://www.petstarz.ca/) for Project 3 in the [Full Stack Developer](https://www.inceptionu.com/full-stack-developer-program/) program at [InceptionU](https://www.inceptionu.com/) (we were given three projects to do altogether).
 
 ### The Assignment
 
@@ -52,7 +52,7 @@ We had [scrum](https://en.wikipedia.org/wiki/Scrum_(software_development)) sessi
 
 **We coded to the same style and architecture as the original codebase to maintain consistency.**  It was neither possible nor practical to improve on these within the project's timeframe and they were not within the scope of [our client's](https://www.petstarz.ca/) requirements.
 
-## Technologies Worked With
+## Technologies Used
 
 - [Vite](https://vitejs.dev/)
 - [React](https://react.dev/)
@@ -70,9 +70,13 @@ We had [scrum](https://en.wikipedia.org/wiki/Scrum_(software_development)) sessi
 - [MongoDB Compass](https://www.mongodb.com/products/tools/compass/)
 - [Git](https://git-scm.com/) & [GitHub](https://github.com/) (obviously...)
 
-## About This Repository
+## Why This Project Isn't Installable
 
 [Our client](https://www.petstarz.ca/) has intellectual property in the codebase so **this repository contains *only* the files that we worked on.**  It is *not* functional, but you can watch our [demonstration video](https://www.youtube.com/watch?v=3aLnxrPMmDY) to see the results.
+
+## How to Contribute
+
+I'm not accepting contributions to this project.
 
 ## Copyright Notice
 
@@ -82,9 +86,8 @@ Copyright &copy; 2023 Kevin Woodman
 
 ---
 
-***The rest of this document is the pre-existing README.md file that was written by the [SAIT](https://www.sait.ca/) team:***
+***The rest of this document is the pre-existing README.md file that was written by the original [SAIT](https://www.sait.ca/) team:***
 
----
 ---
 
 # PetStarz
